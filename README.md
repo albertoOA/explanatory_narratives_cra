@@ -10,7 +10,7 @@ In the package, we already provide a virtual environment but it was built for ou
 
 ```
 cd <explanatory_narratives_cra_folder>/python_environment
-python3 -m xoncra
+python3 -m venv xoncra
 source xoncra/bin/activate
 
 pip3 install catkin_pkg rospkg pyyaml future
