@@ -391,9 +391,12 @@ def get_instances_of_target_class(client_rosprolog, ontological_class, t_localit
     class_instances = dict()
 
     # positive instances of the classes
-    query = client_rosprolog.query("kb_call((triple(I, rdf:type, "+domain_ontology_label+":'"+ontological_class+"') during[T1, T2], "\
-                                   "(T1>="+str(t_locality[0])+", T1=<"+str(t_locality[1])+"; T2>="+str(t_locality[0])+", T2=<"+str(t_locality[1])+"; "\
-                                   +str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2))).")
+    if t_locality: 
+        query = client_rosprolog.query("kb_call((triple(I, rdf:type, "+domain_ontology_label+":'"+ontological_class+"') during[T1, T2], "\
+                                    "(T1>="+str(t_locality[0])+", T1=<"+str(t_locality[1])+"; T2>="+str(t_locality[0])+", T2=<"+str(t_locality[1])+"; "\
+                                    +str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2))).") # ; T2=:=inf (after =<T2 and before ))).)
+    else:
+        query = client_rosprolog.query("kb_call(triple(I, rdf:type, "+domain_ontology_label+":'"+ontological_class+"') during[T1, T2]).")
 
     for solution in query.solutions():
         class_instances[solution['I'].split('#')[-1]] =  [solution['T1'], solution['T2']] # instance without ontology iri
@@ -401,10 +404,17 @@ def get_instances_of_target_class(client_rosprolog, ontological_class, t_localit
     query.finish()
 
     # negative instances of the classes
-    q_ = "kb_call((triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2], (T1>="+str(t_locality[0])+", T1=<"+str(t_locality[1])+"; "\
-         "T2>="+str(t_locality[0])+", T2=<"+str(t_locality[1])+"; "+str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2))), "\
-         "kb_call(triple(D, owl:'sourceIndividual', S) during [T1, T2]), kb_call(triple(D, owl:'assertionProperty', rdf:type) during [T1, T2]), "\
-         "kb_call(triple(D, owl:'targetIndividual', "+domain_ontology_label+":'"+ontological_class+"') during [T1, T2])."
+    if t_locality:
+        q_ = "kb_call((triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2], (T1>="+str(t_locality[0])+", T1=<"+str(t_locality[1])+"; "\
+            "T2>="+str(t_locality[0])+", T2=<"+str(t_locality[1])+"; "+str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2))), "\
+            "kb_call(triple(D, owl:'sourceIndividual', S) during [T1, T2]), kb_call(triple(D, owl:'assertionProperty', rdf:type) during [T1, T2]), "\
+            "kb_call(triple(D, owl:'targetIndividual', "+domain_ontology_label+":'"+ontological_class+"') during [T1, T2])." # ; T2=:=inf (after =<T2 and before ))),)
+    else:
+        q_ = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), \
+            kb_call(triple(D, owl:'sourceIndividual', S) during [T1, T2]), \
+            kb_call(triple(D, owl:'assertionProperty', rdf:type) during [T1, T2]), \
+            kb_call(triple(D, owl:'targetIndividual', "+domain_ontology_label+":'"+ontological_class+"') during [T1, T2])."
+
     query = client_rosprolog.query(q_)
     for solution in query.solutions():
         class_instances[solution['S'].split('#')[-1]] =  [solution['T1'], solution['T2']] 
@@ -452,7 +462,8 @@ def invert_tuple_(tuple_in, ont_property_inverse_dict):
 
 def extract_individual_from_tuple_element(tuple_element_in):
     tuple_element = str(tuple_element_in)
-    interesting_information = tuple_element.split(':')[-1]
+    information_to_delete = tuple_element.split(':')[0] # the URI label
+    interesting_information = tuple_element.replace(information_to_delete+":", '')
     
     return interesting_information
 
