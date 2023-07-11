@@ -178,13 +178,13 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance
             q_ = "kb_call(triple("+semantic_map_namespace_cloth+":'"+class_instance+"', Rx, Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), "\
                  "kb_call((triple(Ex, R, E) during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
-                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2)))."
+                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2; T2=:=inf)))."
             assertion_type = "affirmative"
         elif (r == 1):
             q_ = "kb_call(triple("+semantic_map_namespace_cloth+":'"+class_instance+"', Rx, Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), " \
                  "kb_call((triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
-                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2))), "\
+                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2; T2=:=inf))), "\
                  "kb_call(triple(D, owl:'sourceIndividual', Ex) during [T1, T2]), " \
                  "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2])."
             assertion_type = "negative"
@@ -194,7 +194,7 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance
                  "kb_call(triple(Dx, owl:'assertionProperty', Rx) during [Tx1, Tx2]), kb_call(triple(Dx, owl:'targetIndividual', Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), "\
                  "kb_call((triple(Ex, R, E) during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
-                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2)))."
+                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2; T2=:=inf)))."
             assertion_type = "affirmative"
         else: 
             q_ = "kb_call(triple(Dx, Rdx, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
@@ -202,7 +202,7 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance
                  "kb_call(triple(Dx, owl:'assertionProperty', Rx) during [Tx1, Tx2]), kb_call(triple(Dx, owl:'targetIndividual', Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), "\
                  "kb_call((triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
-                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2))), "\
+                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2; T2=:=inf))), "\
                  "kb_call(triple(D, owl:'sourceIndividual', Ex) during [T1, T2]), kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
                  "kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2])."
             assertion_type = "negative"
@@ -377,10 +377,14 @@ def group_tuples_in_a_sentence(tuples_dict_in): # ont_prop_plural_dict
 def kb_solution_to_tuple_(assertion_type, class_ont_uri, class_instance, solution):
     # note that the query solution should contain the fields 'R', 'E', 'T1' and 'T2', which will be transformed into tuples
     tuple_ = list()
-
+    print(extract_individual_from_kb_answer(solution['E']))
     tuple_.append(class_ont_uri+":"+class_instance)
     tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['R'])] + ':' + extract_individual_from_kb_answer(solution['R']))
-    tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['E'])] + ':' + extract_individual_from_kb_answer(solution['E']))
+    if extract_raw_uri_from_kb_answer(solution['E']):
+        # data asserted by means of dul:'hasDataValue', does not have any URI 
+        tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['E'])] + ':' + extract_individual_from_kb_answer(solution['E']))
+    else:
+        tuple_.append(':' + extract_individual_from_kb_answer(solution['E']))        
     tuple_.append('start:' + str(solution['T1']))
     tuple_.append('end:' + str(solution['T2']))
     tuple_.append(assertion_type) # whether the triple was asserted as affirtmative or negative (e.g., 'it is not a collaboration')

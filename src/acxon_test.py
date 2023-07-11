@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     # settings variables
     t_locality = [1.0, 5.0]
-    specificity = 2 # from 1 to 3
+    specificity = 3 # from 1 to 3
     classes_to_query = ["dul:'Plan'"]
     narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_narratives_with_specificity_" + str(specificity) + ".txt"
 
