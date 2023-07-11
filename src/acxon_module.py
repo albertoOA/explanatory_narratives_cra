@@ -525,7 +525,6 @@ def group_tuples_of_same_object_type(tuples_in): # ont_prop_plural_dict
                one_tuple_[3] == tuples_cp[i][3] and one_tuple_[4] == tuples_cp[i][4] and \
                one_tuple_[5] == tuples_cp[i][5]):
                 # 
-                one_tuple_[1] = extract_individual_from_tuple_element(one_tuple_[1])
                 if type(one_tuple_[2]) == list:
                     one_tuple_[2].append(tuples_cp[i][2])
                 else:
@@ -539,6 +538,7 @@ def group_tuples_of_same_object_type(tuples_in): # ont_prop_plural_dict
             else:
                 continue
         
+        one_tuple_[1] = extract_individual_from_tuple_element(one_tuple_[1])
         new_tuples.append(one_tuple_)
         tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
     
