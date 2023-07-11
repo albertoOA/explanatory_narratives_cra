@@ -377,7 +377,6 @@ def group_tuples_in_a_sentence(tuples_dict_in): # ont_prop_plural_dict
 def kb_solution_to_tuple_(assertion_type, class_ont_uri, class_instance, solution):
     # note that the query solution should contain the fields 'R', 'E', 'T1' and 'T2', which will be transformed into tuples
     tuple_ = list()
-    print(extract_individual_from_kb_answer(solution['E']))
     tuple_.append(class_ont_uri+":"+class_instance)
     tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['R'])] + ':' + extract_individual_from_kb_answer(solution['R']))
     if extract_raw_uri_from_kb_answer(solution['E']):
