@@ -41,15 +41,16 @@ from prolog_module import *
 from rosprolog_client import PrologException, Prolog
 
 
-def retrieve_narrative_tuples_(client_rosprolog, ontological_classes, t_locality, specificity):
+def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_locality, specificity):
     tuples = dict()
 
     ont_property_inverse_dict = get_ontology_property_and_inverse_dict(client_rosprolog)
 
-    for ontological_class in ontological_classes:
-        # extract the instances of the target classes
-        class_instances = get_instances_of_target_class(client_rosprolog, ontological_class, t_locality) 
+    for entities_pair in ontological_entities_pairs:
+        # extract the pairs of instances of the target classes
+        instances_pairs = get_pairs_of_instances_of_target_classes(client_rosprolog, entities_pair, t_locality) 
 
+        """
         #for assertion_type, instances_list in class_instances.items():
         for class_instance, instance_time_interval in class_instances.items():
             # initialize the dictionary key
@@ -70,7 +71,8 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_classes, t_locality
                     retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict)
                 else:
                     pass
-            
+        """
+
     return tuples
 
 
@@ -390,42 +392,62 @@ def kb_solution_to_tuple_(assertion_type, class_ont_uri, class_instance, solutio
     return tuple_
 
 
-def get_instances_of_target_class(client_rosprolog, ontological_class, t_locality):
+def get_pairs_of_instances_of_target_classes(client_rosprolog, ontological_classes_pair, t_locality):
     class_instances = dict()
+    instances_pairs = dict()
+    instances_pairs["pairs"] = list()
+    instances_pairs["intervals"] = list()
 
-    # positive instances of the classes
-    if t_locality: 
-        query = client_rosprolog.query("kb_call((triple(I, rdf:type, "+ontological_class+") during[T1, T2], "\
-                                    "(T1>="+str(t_locality[0])+", T1=<"+str(t_locality[1])+"; T2>="+str(t_locality[0])+", T2=<"+str(t_locality[1])+"; "\
-                                    +str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2; T2=:=inf))).")
-    else:
-        query = client_rosprolog.query("kb_call(triple(I, rdf:type, "+ontological_class+") during[T1, T2]).")
+    for ontological_class in ontological_classes_pair:
+        # positive instances of the classes
+        if t_locality: 
+            query = client_rosprolog.query("kb_call((triple(I, rdf:type, "+ontological_class+") during[T1, T2], "\
+                                        "(T1>="+str(t_locality[0])+", T1=<"+str(t_locality[1])+"; T2>="+str(t_locality[0])+", T2=<"+str(t_locality[1])+"; "\
+                                        +str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2; T2=:=inf))).")
+        else:
+            query = client_rosprolog.query("kb_call(triple(I, rdf:type, "+ontological_class+") during[T1, T2]).")
 
-    for solution in query.solutions():
-        class_instances[solution['I'].split('#')[-1]] =  [solution['T1'], solution['T2']] # instance without ontology iri
-        #print('Found solution. I = %s, T1 = %s, T2 = %s' % (solution['I'], solution['T1'], solution['T2']))
-    query.finish()
+        for solution in query.solutions():
+            class_instances[solution['I'].split('#')[-1]] =  [solution['T1'], solution['T2']] # instance without ontology iri
+            #print('Found solution. I = %s, T1 = %s, T2 = %s' % (solution['I'], solution['T1'], solution['T2']))
+        query.finish()
 
-    # negative instances of the classes
-    if t_locality:
-        q_ = "kb_call((triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2], (T1>="+str(t_locality[0])+", T1=<"+str(t_locality[1])+"; "\
-            "T2>="+str(t_locality[0])+", T2=<"+str(t_locality[1])+"; "+str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2; T2=:=inf))), "\
-            "kb_call(triple(D, owl:'sourceIndividual', S) during [T1, T2]), kb_call(triple(D, owl:'assertionProperty', rdf:type) during [T1, T2]), "\
-            "kb_call(triple(D, owl:'targetIndividual', "+ontological_class+") during [T1, T2])."
-    else:
-        q_ = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), \
-            kb_call(triple(D, owl:'sourceIndividual', S) during [T1, T2]), \
-            kb_call(triple(D, owl:'assertionProperty', rdf:type) during [T1, T2]), \
-            kb_call(triple(D, owl:'targetIndividual', "+ontological_class+") during [T1, T2])."
+        # negative instances of the classes
+        if t_locality:
+            q_ = "kb_call((triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2], (T1>="+str(t_locality[0])+", T1=<"+str(t_locality[1])+"; "\
+                "T2>="+str(t_locality[0])+", T2=<"+str(t_locality[1])+"; "+str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2; T2=:=inf))), "\
+                "kb_call(triple(D, owl:'sourceIndividual', S) during [T1, T2]), kb_call(triple(D, owl:'assertionProperty', rdf:type) during [T1, T2]), "\
+                "kb_call(triple(D, owl:'targetIndividual', "+ontological_class+") during [T1, T2])."
+        else:
+            q_ = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), \
+                kb_call(triple(D, owl:'sourceIndividual', S) during [T1, T2]), \
+                kb_call(triple(D, owl:'assertionProperty', rdf:type) during [T1, T2]), \
+                kb_call(triple(D, owl:'targetIndividual', "+ontological_class+") during [T1, T2])."
+            
+        query = client_rosprolog.query(q_)
+
+        for solution in query.solutions():
+            class_instances[solution['S'].split('#')[-1]] =  [solution['T1'], solution['T2']] 
+        query.finish()
         
-    query = client_rosprolog.query(q_)
+    # create the pairs
+    for instanceA, time_intervalA in class_instances.items():
+        for instanceB, time_intervalB in class_instances.items():
+            if instanceA != instanceB:
+                new_pair = [instanceA, instanceB]
+                new_pair_copy = new_pair[:]
+                new_pair_copy.reverse()
+            else:
+                continue
 
-    for solution in query.solutions():
-        class_instances[solution['S'].split('#')[-1]] =  [solution['T1'], solution['T2']] 
-    query.finish()
-    
-    #print(class_instances)
-    return class_instances
+            if new_pair not in instances_pairs["pairs"] and new_pair_copy not in instances_pairs["pairs"]:
+                instances_pairs["pairs"].append(new_pair)
+                instances_pairs["intervals"].append([time_intervalA, time_intervalB]) # instance without ontology iri
+            else:
+                pass
+
+    print(instances_pairs)
+    return instances_pairs
 
 
 def get_ontology_property_and_inverse_dict(client_rosprolog):
