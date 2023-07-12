@@ -580,8 +580,12 @@ def tuples_list_to_text_with_aggregation(tuples_in):
 
         tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
 
-        tuple_start = extract_individual_from_tuple_element(tuple_[3])
-        tuple_end = extract_individual_from_tuple_element(tuple_[4])
+        if (extract_individual_from_tuple_element(tuple_[4]) == 'Infinity'):
+            tuple_start = ''
+            tuple_end = ''
+        else:
+            tuple_start = extract_individual_from_tuple_element(tuple_[3])
+            tuple_end = extract_individual_from_tuple_element(tuple_[4])
 
         if not text: 
             # empty text

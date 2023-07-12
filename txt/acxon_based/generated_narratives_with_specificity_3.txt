@@ -1,7 +1,7 @@
 
 
 ·····Explanation for: plan_0_2023-07-12_08:52:29.627924-UTC
-'plan_0_2023-07-12_08:52:29.627924-U T C' is a type of 'Plan' from _ to Infinity and defines task 'task_0_grasp-folded-garment and task_1_grasp-unfolded-garment and task_2_lift and task_3_lift and task_4_pile-garment and task_5_fold-garment and task_6_grasp-folded-garment and task_7_grasp-unfolded-garment and task_8_lift and task_9_lift and task_10_pile-garment and task_11_fold-garment and task_12_grasp-folded-garment and task_13_lift and task_14_pile-garment and task_15_grasp-pile-of-garments'. 
+'plan_0_2023-07-12_08:52:29.627924-U T C' is a type of 'Plan' and defines task 'task_0_grasp-folded-garment and task_1_grasp-unfolded-garment and task_2_lift and task_3_lift and task_4_pile-garment and task_5_fold-garment and task_6_grasp-folded-garment and task_7_grasp-unfolded-garment and task_8_lift and task_9_lift and task_10_pile-garment and task_11_fold-garment and task_12_grasp-folded-garment and task_13_lift and task_14_pile-garment and task_15_grasp-pile-of-garments'. 
 
 'plan_0_2023-07-12_08:52:29.627924-U T C_makespan' is a type of 'Quality' and is expected makespan 'plan_0_2023-07-12_08:52:29.627924-U T C' and has data value '1000.0089721679688'. 
 
@@ -245,7 +245,7 @@
 
 
 ·····Explanation for: plan_0_2023-07-12_08:52:57.277025-UTC
-'plan_0_2023-07-12_08:52:57.277025-U T C' is a type of 'Plan' from _ to Infinity and defines task 'task_0_grasp-unfolded-garment and task_1_lift and task_2_fold-garment and task_3_grasp-folded-garment and task_4_grasp-unfolded-garment and task_5_lift and task_6_lift and task_7_pile-garment and task_8_fold-garment and task_9_fold-garment and task_10_grasp-folded-garment and task_11_grasp-unfolded-garment and task_12_pile-garment and task_13_grasp-folded-garment and task_14_lift and task_15_grasp-folded-garment and task_16_pile-garment and task_17_fold-garment and task_18_lift and task_19_grasp-folded-garment and task_20_pile-garment and task_21_lift and task_22_grasp-pile-of-garments and task_23_pile-garment'. 
+'plan_0_2023-07-12_08:52:57.277025-U T C' is a type of 'Plan' and defines task 'task_0_grasp-unfolded-garment and task_1_lift and task_2_fold-garment and task_3_grasp-folded-garment and task_4_grasp-unfolded-garment and task_5_lift and task_6_lift and task_7_pile-garment and task_8_fold-garment and task_9_fold-garment and task_10_grasp-folded-garment and task_11_grasp-unfolded-garment and task_12_pile-garment and task_13_grasp-folded-garment and task_14_lift and task_15_grasp-folded-garment and task_16_pile-garment and task_17_fold-garment and task_18_lift and task_19_grasp-folded-garment and task_20_pile-garment and task_21_lift and task_22_grasp-pile-of-garments and task_23_pile-garment'. 
 
 'plan_0_2023-07-12_08:52:57.277025-U T C_makespan' is a type of 'Quality' and is expected makespan 'plan_0_2023-07-12_08:52:57.277025-U T C' and has data value '1300.011962890625'. 
 
