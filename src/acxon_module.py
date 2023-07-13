@@ -140,45 +140,6 @@ def retrieve_narrative_pairs_of_tuples_specificity_one(client_rosprolog, pair_id
 
         query.finish()
 
-def retrieve_narrative_tuples_specificity_one(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict):
-    # note that the variable tuples is modified within this function
-    for r in range(2):
-        ##print(r)
-        if (r == 0):
-            q_ = "kb_call(triple("+class_instance+", R, E) during [T1, T2]), "\
-                 "not(dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', R))."
-            assertion_type = "affirmative"
-        else: 
-            q_ = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
-                 "kb_call(triple(D, owl:'sourceIndividual', "+class_instance+") during [T1, T2]), "\
-                 "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2]), "\
-                 "not(dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', R))."
-            assertion_type = "negative"
-
-        query = client_rosprolog.query(q_)
-
-        for solution in query.solutions():
-            class_ont_uri = semantic_map_namespace_cloth
-            tr_ = kb_solution_to_tuple_(assertion_type, class_ont_uri, class_instance, solution) 
-            #print(tr_)
-            if (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[0]) and extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1]) and tuples[class_instance]):
-                tr_[3] = ''
-                tr_[4] = ''
-            else:
-                pass
-
-            tr_inv_ = invert_tuple_(tr_, ont_property_inverse_dict)
-            if tr_ in tuples[class_instance]:
-                #print("Tuple already in list.")
-                pass
-            elif tr_inv_ in tuples[class_instance]:
-                #print("Inverse tuple already in list.")
-                pass
-            else:
-                tuples[class_instance].append(tr_)
-
-        query.finish()
-
 
 def retrieve_narrative_tuples_specificity_two(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict):
     for r in range(2):
