@@ -43,7 +43,7 @@ from rosprolog_client import PrologException, Prolog
 
 def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_locality, specificity):
     tuples = dict() # k: pair_id, v: list of tuples
-    tuples_pairs = dict() # k: pair_id, v: pairs
+    pairs_id_to_pairs_to_compare_dict = dict() # k: pair_id, v: pairs
 
     ont_property_inverse_dict = get_ontology_property_and_inverse_dict(client_rosprolog)
 
@@ -60,13 +60,13 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
             # initialize the dictionary key
             pair_id = "pair_" + str(i)
             tuples[pair_id] = list()
-            tuples_pairs[pair_id] = pairs_list[i]
+            pairs_id_to_pairs_to_compare_dict[pair_id] = pairs_list[i]
 
             if (specificity < 1 or specificity > 3):
                 print("Error while executing retrieve_narrative_tuples, inccorrect specificity value.")
             else:
                 if (specificity >= 1):
-                    retrieve_narrative_pairs_of_tuples_specificity_one(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], tuples, ont_property_inverse_dict)
+                    retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], tuples, ont_property_inverse_dict)
                 else:
                     pass
                 """
@@ -81,7 +81,7 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
         """
         print(tuples)
 
-    return tuples
+    return tuples, pairs_id_to_pairs_to_compare_dict
 
 
 def construct_narrative(client_rosprolog, target_instance, tuples_in):

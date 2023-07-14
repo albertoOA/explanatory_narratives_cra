@@ -28,18 +28,18 @@ if __name__ == '__main__':
 
     # settings variables
     t_locality = [1.0, 5.0]
-    specificity = 3 # from 1 to 3
+    specificity = 1 # from 1 to 3
     pairs_to_query = [["dul:'Plan'", "dul:'Plan'"]]
-    narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_narratives_with_specificity_" + str(specificity) + ".txt"
+    narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_c_narratives_with_specificity_" + str(specificity) + ".txt"
 
-    triples_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_to_query, t_locality, specificity)
+    tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_to_query, t_locality, specificity)
 
     """
     f = open(narratives_file, "w")
 
-    for queried_instance, triples in triples_dict.items():
-      introductory_text = "\n\n·····Explanation for: " + queried_instance + "\n"
-      narrative = construct_narrative(client_rosprolog, queried_instance, triples)
+    for pair_to_compare_id, triples in tuples_dict.items():
+      introductory_text = "\n\n·····Explanation for: " + pair_to_compare_id + "\n"
+      narrative = construct_narrative(client_rosprolog, pairs_id_to_pairs_to_compare_dict[pair_to_compare_id], triples)
 
       f.write(introductory_text)
       f.write(narrative)
