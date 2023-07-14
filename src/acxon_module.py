@@ -102,7 +102,7 @@ def construct_narrative(client_rosprolog, target_instance, tuples_in):
 
 
 # retrieve narrative tuples functions
-def retrieve_narrative_pairs_of_tuples_specificity_one(client_rosprolog, pair_id, pair_of_instances, instance_time_interval, tuples, ont_property_inverse_dict):
+def retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pair_of_instances, instance_time_interval, tuples, ont_property_inverse_dict):
     # note that the variable tuples is modified within this function
     for r in range(2):
         ##print(r)
@@ -119,7 +119,6 @@ def retrieve_narrative_pairs_of_tuples_specificity_one(client_rosprolog, pair_id
         query = client_rosprolog.query(q_)
 
         for solution in query.solutions():
-            class_ont_uri = semantic_map_namespace_cloth
             tr_ = kb_solution_to_tuple_(assertion_type, pair_of_instances, solution) 
             #print(tr_)
             if (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[0]) and extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1]) and tuples[class_instance]):
