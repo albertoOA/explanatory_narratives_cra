@@ -41,7 +41,7 @@ from prolog_module import *
 from rosprolog_client import PrologException, Prolog
 
 
-def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_locality, specificity):
+def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_locality, constrained_ontological_scope, specificity):
     tuples = dict() # k: pair_id, v: list of tuples
     pairs_id_to_pairs_to_compare_dict = dict() # k: pair_id, v: pairs
 
@@ -68,12 +68,12 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
                 if (specificity >= 1):
                     retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], tuples, ont_property_inverse_dict)
                 else:
-                    pass
-                """
+                    pass            
                 if (specificity >= 2):
-                    retrieve_narrative_tuples_specificity_two(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict)
+                    retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], constrained_ontological_scope, tuples, ont_property_inverse_dict)
                 else:
                     pass
+                """
                 if (specificity == 3):
                     retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict)
                 else:
@@ -102,7 +102,8 @@ def construct_narrative(client_rosprolog, target_instance, tuples_in):
 
 
 # retrieve narrative tuples functions
-def retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pair_of_instances, instance_time_interval, tuples, ont_property_inverse_dict):
+def retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pair_of_instances, \
+                                            instance_time_interval, tuples, ont_property_inverse_dict):
     # note that the variable tuples is modified within this function
     for i in range(0, len(pair_of_instances)):
         q_1 = "kb_call(triple('"+pair_of_instances[0]+"', R, '"+pair_of_instances[1]+"') during [T1, T2])."
@@ -121,7 +122,7 @@ def retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pair_of
 
         for assertion_type, query in queries_to_kb_dict.items():
             for solution in query.solutions():
-                tr_ = kb_solution_to_tuple_specificity_one_(assertion_type, pair_of_instances, solution) 
+                tr_ = kb_solution_to_tuple_specificity_one(assertion_type, pair_of_instances, solution) 
                 #print(tr_)
                 if (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[i][0]) \
                  and extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[i][1])):
@@ -143,43 +144,104 @@ def retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pair_of
             query.finish()
 
 
-def retrieve_narrative_tuples_specificity_two(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict):
-    for r in range(2):
-        ##print(r)
-        if (r == 0):
-            q_ = "kb_call(triple("+class_instance+", R, E) during [T1, T2]), "\
-                 "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', R)."
-            assertion_type = "affirmative"
-        else: 
-            q_ = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
-                 "kb_call(triple(D, owl:'sourceIndividual', "+class_instance+") during [T1, T2]), "\
-                 "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2]), "\
-                 "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', R)."
-            assertion_type = "negative"
+def retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pair_of_instances, \
+                                            instance_time_interval, constrained_ontological_scope, \
+                                            tuples, ont_property_inverse_dict):
+    objects_related_to_instance = dict()
+    for i in range(0, len(pair_of_instances)):
+        objects_related_to_instance[pair_of_instances[i]] = list()
+        
+        for ontological_class in constrained_ontological_scope:
+            q_1 = "kb_call(triple('"+pair_of_instances[i]+"', R, E) during [T1, T2]), "\
+                "kb_call(triple(E, rdf:'type', "+ontological_class+"))."
+            assertion_type_1 = "affirmative"
 
-        query = client_rosprolog.query(q_)
+            q_2 = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+                "kb_call(triple(D, owl:'sourceIndividual', '"+pair_of_instances[i]+"') during [T1, T2]), "\
+                "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
+                "kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2]), "\
+                "kb_call(triple(E, rdf:'type', "+ontological_class+"))."
+            assertion_type_2 = "negative"
 
-        for solution in query.solutions():
-            class_ont_uri = semantic_map_namespace_cloth
-            tr_ = kb_solution_to_tuple_(assertion_type, class_ont_uri, class_instance, solution)
-            #print(tr_)
-            if (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[0]) and extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1])):
-                tr_[3] = ''
-                tr_[4] = ''
-            else:
-                pass
+            
 
-            tr_inv_ = invert_tuple_(tr_, ont_property_inverse_dict)
-            if tr_ in tuples[class_instance]:
-                #print("Tuple already in list.")
-                pass
-            elif tr_inv_ in tuples[class_instance]:
-                #print("Inverse tuple already in list.")
-                pass
-            else:
-                tuples[class_instance].append(tr_)
+            query_aff = client_rosprolog.query(q_1)
+            query_neg = client_rosprolog.query(q_2)
 
-        query.finish()
+            queries_to_kb_dict = {assertion_type_1:query_aff, assertion_type_2:query_neg}
+
+            for assertion_type, query in queries_to_kb_dict.items():
+                for solution in query.solutions():
+                    tr_ = kb_solution_to_tuple_specificity_two(assertion_type, pair_of_instances[i], solution['E'], solution)
+                    #print(tr_)
+                    if (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[i][0]) and extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[i][1])):
+                        tr_[3] = ''
+                        tr_[4] = ''
+                    else:
+                        pass
+
+                    tr_inv_ = invert_tuple_(tr_, ont_property_inverse_dict)
+                    if tr_ in tuples[pair_id]:
+                        #print("Tuple already in list.")
+                        pass
+                    elif tr_inv_ in tuples[pair_id]:
+                        #print("Inverse tuple already in list.")
+                        pass
+                    else:
+                        tuples[pair_id].append(tr_)
+                        objects_related_to_instance[pair_of_instances[i]].append(tr_[2])
+
+                query.finish()
+        
+    # query for the relationships between the objects of the two instances that are related through the same ontological property
+    objects_related_to_instance_a = objects_related_to_instance[pair_of_instances[0]]
+    objects_related_to_instance_b = objects_related_to_instance[pair_of_instances[1]]
+
+    for object_a in objects_related_to_instance_a:
+        for object_b in objects_related_to_instance_b:
+            q_1 = "dif(Oa, E), kb_call(triple("+object_a+", R, "+object_b+") during [T1, T2])"
+            assertion_type_1 = "affirmative"
+
+            q_2 = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+                "kb_call(triple(D, owl:'sourceIndividual', "+object_a+") during [T1, T2]), "\
+                "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
+                "kb_call(triple(D, owl:'targetIndividual', "+object_b+") during [T1, T2])."
+            assertion_type_2 = "negative"
+
+            query_aff = client_rosprolog.query(q_1)
+            query_neg = client_rosprolog.query(q_2)
+
+            queries_to_kb_dict.clear()
+            queries_to_kb_dict = {assertion_type_1:query_aff, assertion_type_2:query_neg}
+
+            for assertion_type, query in queries_to_kb_dict.items():
+                for solution in query.solutions():
+                    tuple_relation = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['R'])] \
+                        + ":'" + extract_individual_from_kb_answer(solution['R']) + "'"
+                    tuple_start = 'start:' + str(solution['T1'])
+                    tuple_end = 'end:' + str(solution['T2'])
+                    tr_ = construct_tuple_from_its_elements(assertion_type, object_a, object_b, tuple_relation, tuple_start, tuple_end)
+                    #print(tr_)
+                    if ((extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[0][0]) and \
+                         extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[0][1])) or \
+                         (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[1][0]) and \
+                         extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1][1]))):
+                        tr_[3] = ''
+                        tr_[4] = ''
+                    else:
+                        pass
+
+                    tr_inv_ = invert_tuple_(tr_, ont_property_inverse_dict)
+                    if tr_ in tuples[pair_id]:
+                        #print("Tuple already in list.")
+                        pass
+                    elif tr_inv_ in tuples[pair_id]:
+                        #print("Inverse tuple already in list.")
+                        pass
+                    else:
+                        tuples[pair_id].append(tr_)
+
+                query.finish()
 
 
 def retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict):
@@ -385,14 +447,36 @@ def group_tuples_in_a_sentence(tuples_dict_in): # ont_prop_plural_dict
 
 
 # util functions
-def kb_solution_to_tuple_specificity_one_(assertion_type, pair_of_instances, solution):
+def kb_solution_to_tuple_specificity_one(assertion_type, pair_of_instances, solution):
     # note that the query solution should contain the fields 'R', 'T1' and 'T2', which will be transformed into tuples
     tuple_ = list()
-    tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(pair_of_instances[0])] + ':' + extract_individual_from_kb_answer(pair_of_instances[0]))
-    tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['R'])] + ':' + extract_individual_from_kb_answer(solution['R']))
-    tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(pair_of_instances[1])] + ':' + extract_individual_from_kb_answer(pair_of_instances[1]))    
+    tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(pair_of_instances[0])] + ":'" + extract_individual_from_kb_answer(pair_of_instances[0]) + "'")
+    tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['R'])] + ":'" + extract_individual_from_kb_answer(solution['R']) + "'")
+    tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(pair_of_instances[1])] + ":'" + extract_individual_from_kb_answer(pair_of_instances[1]) + "'")    
     tuple_.append('start:' + str(solution['T1']))
     tuple_.append('end:' + str(solution['T2']))
+    tuple_.append(assertion_type) # whether the triple was asserted as affirtmative or negative (e.g., 'it is not a collaboration')
+    return tuple_
+
+def kb_solution_to_tuple_specificity_two(assertion_type, kb_subject, kb_object, solution):
+    # note that the query solution should contain the fields 'R', 'T1' and 'T2', which will be transformed into tuples
+    tuple_ = list()
+    tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(kb_subject)] + ":'" + extract_individual_from_kb_answer(kb_subject) + "'")
+    tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['R'])] + ":'" + extract_individual_from_kb_answer(solution['R']) + "'")
+    tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(kb_object)] + ":'" + extract_individual_from_kb_answer(kb_object) + "'")    
+    tuple_.append('start:' + str(solution['T1']))
+    tuple_.append('end:' + str(solution['T2']))
+    tuple_.append(assertion_type) # whether the triple was asserted as affirtmative or negative (e.g., 'it is not a collaboration')
+    return tuple_
+
+def construct_tuple_from_its_elements(assertion_type, tuple_subject, tuple_object, tuple_relation, tuple_start, tuple_end):
+    # note that the query solution should contain the fields 'R', 'T1' and 'T2', which will be transformed into tuples
+    tuple_ = list()
+    tuple_.append(tuple_subject)
+    tuple_.append(tuple_relation)
+    tuple_.append(tuple_object)    
+    tuple_.append(tuple_start)
+    tuple_.append(tuple_end)
     tuple_.append(assertion_type) # whether the triple was asserted as affirtmative or negative (e.g., 'it is not a collaboration')
     return tuple_
 

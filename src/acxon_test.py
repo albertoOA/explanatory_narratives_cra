@@ -28,11 +28,12 @@ if __name__ == '__main__':
 
     # settings variables
     t_locality = [1.0, 5.0]
-    specificity = 1 # from 1 to 3
+    specificity = 2 # from 1 to 3
     pairs_to_query = [["dul:'Plan'", "dul:'Plan'"]]
+    constrained_ontological_scope = ["dul:'Quality'", "dul:'Event'"] # classes to constrain the scope of the narrative
     narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_c_narratives_with_specificity_" + str(specificity) + ".txt"
 
-    tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_to_query, t_locality, specificity)
+    tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_to_query, t_locality, constrained_ontological_scope, specificity)
 
     """
     f = open(narratives_file, "w")
