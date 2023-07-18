@@ -81,7 +81,8 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
                 else:
                     pass
 
-                #tuples[pair_id] = prune_tuples(tuples[pair_id])
+            tuples[pair_id][pairs_list[i][0]], tuples[pair_id][pairs_list[i][1]] = \
+                prune_tuples(tuples[pair_id][pairs_list[i][0]], tuples[pair_id][pairs_list[i][1]])
 
         print(tuples)
 
@@ -136,10 +137,10 @@ def retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pair_of
                     pass
 
                 tr_inv_ = invert_tuple_(tr_, ont_property_inverse_dict)
-                if tr_ in tuples[pair_id][pair_of_instances[i]]:
+                if tr_ in tuples[pair_id][pair_of_instances[0]] or tr_ in tuples[pair_id][pair_of_instances[1]]:
                     ## print("Tuple already in list.")
                     pass
-                elif tr_inv_ in tuples[pair_id][pair_of_instances[i]]:
+                elif tr_inv_ in tuples[pair_id][pair_of_instances[0]] or tr_inv_ in tuples[pair_id][pair_of_instances[1]]:
                     ## print("Inverse tuple already in list.")
                     pass
                 else:
@@ -396,28 +397,42 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, pair_id, pair_
                 query.finish()
 
 # prune the set of tuples to remove the knowledge that does not differ between the pair of instances
-def prune_tuples(tuples):
-    pair_tuples_cp = tuples.copy()
-    while pair_tuples_cp:
-        tp_ = pair_tuples_cp.pop(0)
-        tp_to_delete = list()
-        for tuple in tuples:
+def prune_tuples(tuples_instance_a, tuples_instance_b):
+    
+    tuples_instance_a_cp = tuples_instance_a.copy() # list()
+    tuples_instance_b_cp = tuples_instance_b.copy() # list()
+
+    tp_to_delete = list()
+    while tuples_instance_a_cp:
+        tp_ = tuples_instance_a_cp.pop(0)
+        for tuple in tuples_instance_b:
             if tp_[0] != tuple[0] and tp_[1] == tuple[1] and tp_[2] == tuple[2]:
                 if tp_ not in tp_to_delete:
                     tp_to_delete.append(tp_)
                 else:
                     pass
-                if tuple not in tp_to_delete:
-                    tp_to_delete.append(tuple)
+            else:
+                pass
+    
+    pruned_tuples_instance_a = list()
+    pruned_tuples_instance_a = [i for i in tuples_instance_a if i not in tp_to_delete]
+
+    tp_to_delete = list()
+    while tuples_instance_b_cp:
+        tp_ = tuples_instance_b_cp.pop(0)
+        for tuple in tuples_instance_a:
+            if tp_[1] == tuple[1] and tp_[2] == tuple[2]: # tp_[0] != tuple[0] or tp_[0] == tuple[0]  
+                if tp_ not in tp_to_delete:
+                    tp_to_delete.append(tp_)
                 else:
                     pass
             else:
                 pass
     
-    pruned_tuples = list()
-    pruned_tuples = [i for i in tuples if i not in tp_to_delete]
+    pruned_tuples_instance_b = list()
+    pruned_tuples_instance_b = [i for i in tuples_instance_b if i not in tp_to_delete]
 
-    return pruned_tuples
+    return pruned_tuples_instance_a, pruned_tuples_instance_b
 
 # construct explanation functions
 def cast_tuples(target_instance, tuples_in, ont_prop_dict):
