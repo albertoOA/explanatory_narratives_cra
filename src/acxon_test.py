@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     # settings variables
     t_locality = [1.0, 5.0]
-    specificity = 2 # from 1 to 3
+    specificity = 3 # from 1 to 3
     pairs_to_query = [["dul:'Plan'", "dul:'Plan'"]]
     constrained_ontological_scope = ["dul:'Quality'", "dul:'Event'"] # classes to constrain the scope of the narrative
     narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_c_narratives_with_specificity_" + str(specificity) + ".txt"
