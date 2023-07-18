@@ -79,6 +79,8 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
                 else:
                     pass
 
+            tuples[pair_id] = prune_tuples(tuples[pair_id])
+
         print(tuples)
 
     return tuples, pairs_id_to_pairs_to_compare_dict
@@ -192,7 +194,7 @@ def retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pair_of
                         objects_related_to_instance[pair_of_instances[i]].append(tr_[2])
 
                 query.finish()
-        
+
     # query for the relationships between the objects of the two instances that are related through the same ontological property
     objects_related_to_instance_a = objects_related_to_instance[pair_of_instances[0]]
     objects_related_to_instance_b = objects_related_to_instance[pair_of_instances[1]]
@@ -391,7 +393,29 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, pair_id, pair_
 
                 query.finish()
 
+# prune the set of tuples to remove the knowledge that does not differ between the pair of instances
+def prune_tuples(tuples):
+    pair_tuples_cp = tuples.copy()
+    while pair_tuples_cp:
+        tp_ = pair_tuples_cp.pop(0)
+        tp_to_delete = list()
+        for tuple in tuples:
+            if tp_[0] != tuple[0] and tp_[1] == tuple[1] and tp_[2] == tuple[2]:
+                if tp_ not in tp_to_delete:
+                    tp_to_delete.append(tp_)
+                else:
+                    pass
+                if tuple not in tp_to_delete:
+                    tp_to_delete.append(tuple)
+                else:
+                    pass
+            else:
+                pass
+    
+    pruned_tuples = list()
+    pruned_tuples = [i for i in tuples if i not in tp_to_delete]
 
+    return pruned_tuples
 
 # construct explanation functions
 def cast_tuples(target_instance, tuples_in, ont_prop_dict):
