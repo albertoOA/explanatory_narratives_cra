@@ -172,7 +172,7 @@ def retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pair_of
 
             for assertion_type, query in queries_to_kb_dict.items():
                 for solution in query.solutions():
-                    tr_ = kb_solution_to_tuple_specificity_two(assertion_type, pair_of_instances[i], solution['E'], solution)
+                    tr_ = kb_solution_to_tuple_specificity_greater_than_one(assertion_type, pair_of_instances[i], solution['E'], solution)
                     ## print(tr_)
                     if (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[i][0]) and extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[i][1])):
                         tr_[3] = ''
@@ -306,7 +306,7 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, pair_id, pair_
             for assertion_type, queries in queries_to_kb_dict.items():
                 for query in queries:
                     for solution in query.solutions():
-                        tr_ = kb_solution_to_tuple_specificity_two(assertion_type, solution['Ex'], solution['E'], solution)
+                        tr_ = kb_solution_to_tuple_specificity_greater_than_one(assertion_type, solution['Ex'], solution['E'], solution)
                         ## print(tr_)
                         if (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[i][0]) and extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[i][1])):
                             tr_[3] = ''
@@ -536,7 +536,7 @@ def kb_solution_to_tuple_specificity_one(assertion_type, pair_of_instances, solu
     tuple_.append(assertion_type) # whether the triple was asserted as affirtmative or negative (e.g., 'it is not a collaboration')
     return tuple_
 
-def kb_solution_to_tuple_specificity_two(assertion_type, kb_subject, kb_object, solution):
+def kb_solution_to_tuple_specificity_greater_than_one(assertion_type, kb_subject, kb_object, solution):
     # note that the query solution should contain the fields 'R', 'T1' and 'T2', which will be transformed into tuples
     tuple_ = list()
     tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(kb_subject)] + ":'" + extract_individual_from_kb_answer(kb_subject) + "'")
