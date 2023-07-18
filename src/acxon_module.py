@@ -60,7 +60,9 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
         for i in range(0, len(pairs_list)):
             # initialize the dictionary key
             pair_id = "pair_" + str(i)
-            tuples[pair_id] = list()
+            tuples[pair_id] = dict()
+            tuples[pair_id][pairs_list[i][0]] = list()
+            tuples[pair_id][pairs_list[i][1]] = list()
             pairs_id_to_pairs_to_compare_dict[pair_id] = pairs_list[i]
 
             if (specificity < 1 or specificity > 3):
@@ -79,7 +81,7 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
                 else:
                     pass
 
-            tuples[pair_id] = prune_tuples(tuples[pair_id])
+                #tuples[pair_id] = prune_tuples(tuples[pair_id])
 
         print(tuples)
 
@@ -134,14 +136,14 @@ def retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pair_of
                     pass
 
                 tr_inv_ = invert_tuple_(tr_, ont_property_inverse_dict)
-                if tr_ in tuples[pair_id]:
+                if tr_ in tuples[pair_id][pair_of_instances[i]]:
                     ## print("Tuple already in list.")
                     pass
-                elif tr_inv_ in tuples[pair_id]:
+                elif tr_inv_ in tuples[pair_id][pair_of_instances[i]]:
                     ## print("Inverse tuple already in list.")
                     pass
                 else:
-                    tuples[pair_id].append(tr_)
+                    tuples[pair_id][pair_of_instances[i]].append(tr_)
 
             query.finish()
 
@@ -183,14 +185,14 @@ def retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pair_of
                         pass
 
                     tr_inv_ = invert_tuple_(tr_, ont_property_inverse_dict)
-                    if tr_ in tuples[pair_id]:
-                        ## print("Tuple already in list.")
+                    if tr_ in tuples[pair_id][pair_of_instances[0]] or tr_ in tuples[pair_id][pair_of_instances[1]]:
+                        ## print("Tuple already in lists.")
                         pass
-                    elif tr_inv_ in tuples[pair_id]:
-                        ## print("Inverse tuple already in list.")
+                    elif tr_inv_ in tuples[pair_id][pair_of_instances[0]] or tr_inv_ in tuples[pair_id][pair_of_instances[1]]:
+                        ## print("Inverse tuple already in lists.")
                         pass
                     else:
-                        tuples[pair_id].append(tr_)
+                        tuples[pair_id][pair_of_instances[i]].append(tr_)
                         objects_related_to_instance[pair_of_instances[i]].append(tr_[2])
 
                 query.finish()
@@ -234,14 +236,14 @@ def retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pair_of
                         pass
 
                     tr_inv_ = invert_tuple_(tr_, ont_property_inverse_dict)
-                    if tr_ in tuples[pair_id]:
+                    if tr_ in tuples[pair_id][pair_of_instances[0]] or tr_ in tuples[pair_id][pair_of_instances[1]]:
                         ## print("Tuple already in list.")
                         pass
-                    elif tr_inv_ in tuples[pair_id]:
+                    elif tr_inv_ in tuples[pair_id][pair_of_instances[0]] or tr_inv_ in tuples[pair_id][pair_of_instances[1]]:
                         ## print("Inverse tuple already in list.")
                         pass
                     else:
-                        tuples[pair_id].append(tr_)
+                        tuples[pair_id][pair_of_instances[0]].append(tr_)
 
                 query.finish()
 
@@ -320,14 +322,14 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, pair_id, pair_
                         ## print(tr_)
                         ## print(tr_inv_)
                         ## print("_-_-_- tr vs inverted\n\n")
-                        if tr_ in tuples[pair_id]:
+                        if tr_ in tuples[pair_id][pair_of_instances[0]] or tr_ in tuples[pair_id][pair_of_instances[1]]:
                             ## print("Tuple already in list.")
                             pass
-                        elif tr_inv_ in tuples[pair_id]:
+                        elif tr_inv_ in tuples[pair_id][pair_of_instances[0]] or tr_inv_ in tuples[pair_id][pair_of_instances[1]]:
                             ## print("Inverse tuple already in list.")
                             pass
                         else:
-                            tuples[pair_id].append(tr_)
+                            tuples[pair_id][pair_of_instances[i]].append(tr_)
                             if (tr_[1] != "dul:'hasDataValue'"):
                                 objects_related_to_instance[pair_of_instances[i]].append(tr_[2])
                                 ## print(tr_)
@@ -382,14 +384,14 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, pair_id, pair_
                         pass
 
                     tr_inv_ = invert_tuple_(tr_, ont_property_inverse_dict)
-                    if tr_ in tuples[pair_id]:
+                    if tr_ in tuples[pair_id][pair_of_instances[0]] or tr_ in tuples[pair_id][pair_of_instances[1]]:
                         ## print("Tuple already in list.")
                         pass
-                    elif tr_inv_ in tuples[pair_id]:
+                    elif tr_inv_ in tuples[pair_id][pair_of_instances[0]] or tr_inv_ in tuples[pair_id][pair_of_instances[1]]:
                         ## print("Inverse tuple already in list.")
                         pass
                     else:
-                        tuples[pair_id].append(tr_)
+                        tuples[pair_id][pair_of_instances[0]].append(tr_)
 
                 query.finish()
 
