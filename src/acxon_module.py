@@ -89,17 +89,18 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
     return tuples, pairs_id_to_pairs_to_compare_dict
 
 
-def construct_narrative(client_rosprolog, target_instance, tuples_in):
+def construct_narrative(client_rosprolog, target_pair_of_instances, tuples_of_the_pair_in):
     sentence = ''
 
     ont_property_inverse_dict = get_ontology_property_and_inverse_dict(client_rosprolog)
     
-    mod_tuples_cast = cast_tuples(target_instance, tuples_in, ont_property_inverse_dict)
-    mod_tuples_clus = cluster_tuples(mod_tuples_cast)
-    mod_tuples_ord = order_tuples(target_instance, mod_tuples_clus)
-    sentence = group_tuples_in_a_sentence(mod_tuples_ord) 
-    sentence = sentence + '\n'
-        
+    mod_tuples_cast = cast_c_tuples(target_pair_of_instances, tuples_of_the_pair_in, ont_property_inverse_dict)
+    mod_tuples_clus = cluster_c_tuples(target_pair_of_instances, mod_tuples_cast)
+    mod_tuples_ord = order_c_tuples(mod_tuples_clus)
+    #sentence = group_c_tuples_in_a_sentence(mod_tuples_ord) 
+    #sentence = sentence + '\n'
+
+    print(mod_tuples_ord)    
     return sentence
 
 
@@ -435,61 +436,86 @@ def prune_tuples(tuples_instance_a, tuples_instance_b):
     return pruned_tuples_instance_a, pruned_tuples_instance_b
 
 # construct explanation functions
-def cast_tuples(target_instance, tuples_in, ont_prop_dict):
+def cast_c_tuples(pair_of_instances, tuples_of_the_pair_in, ont_prop_dict):
     # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
     # unify properties using their inverse: inverse those where the main instance is object 
     # and also make sure that we do not use a property and its inverse (we change the ones 
     # that appear later when going through the tuples)
     casted_tuples = []
-    tuples = tuples_in.copy()
+    tuples_of_the_pair = tuples_of_the_pair_in.copy()
 
 
-    for tuple_ in tuples:
-        if target_instance in tuple_[2]:
-            ## print("if instance is object")
-            if invert_tuple_(tuple_, ont_prop_dict) in casted_tuples: # avoid repetitions when there are more than 2 target instances
-                ## print("if inverted in casted")
-                pass
-            else:
-                casted_tuples.append(invert_tuple_(tuple_, ont_prop_dict))
-        else:
-            ## print("if instance is not object")
-            tuple_property = extract_individual_from_tuple_element(tuple_[1])
-            concatenated_casted_tuples = []
-            casted_tuples_cp = casted_tuples.copy()
-            [concatenated_casted_tuples.extend(el) for el in casted_tuples_cp]
-
-            if tuple_property in ont_prop_dict and any(ont_prop_dict[tuple_property] in s for s in concatenated_casted_tuples):
-                ## print("if prop in casted")
-                if invert_tuple_(tuple_, ont_prop_dict) in casted_tuples: # avoid repetitions e.g. isWorsePlanThan
+    for target_instance in pair_of_instances:
+        for tuple_ in tuples_of_the_pair[target_instance]:
+            if target_instance in tuple_[2]:
+                ## print("if instance is object")
+                if invert_tuple_(tuple_, ont_prop_dict) in casted_tuples: # avoid repetitions when there are more than 2 target instances
                     ## print("if inverted in casted")
                     pass
                 else:
-                    ## print("if inverted not in casted")
                     casted_tuples.append(invert_tuple_(tuple_, ont_prop_dict))
             else:
-                ## print("if prop not in casted")
-                if tuple_ in casted_tuples: # avoid repetitions when there are more than 2 main instances
-                    pass
+                ## print("if instance is not object")
+                tuple_property = extract_individual_from_tuple_element(tuple_[1])
+                concatenated_casted_tuples = []
+                casted_tuples_cp = casted_tuples.copy()
+                [concatenated_casted_tuples.extend(el) for el in casted_tuples_cp]
+
+                if tuple_property in ont_prop_dict and any(ont_prop_dict[tuple_property] in s for s in concatenated_casted_tuples):
+                    ## print("if prop in casted")
+                    if invert_tuple_(tuple_, ont_prop_dict) in casted_tuples: # avoid repetitions e.g. isWorsePlanThan
+                        ## print("if inverted in casted")
+                        pass
+                    else:
+                        ## print("if inverted not in casted")
+                        casted_tuples.append(invert_tuple_(tuple_, ont_prop_dict))
                 else:
-                    casted_tuples.append(tuple_)
+                    ## print("if prop not in casted")
+                    if tuple_ in casted_tuples: # avoid repetitions when there are more than 2 main instances
+                        pass
+                    else:
+                        casted_tuples.append(tuple_)
 
     
     return casted_tuples
 
 
-def cluster_tuples(tuples_in):
+def cluster_c_tuples(pair_of_instances, tuples_in):
     # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
-    # -tuples about a single instance/entity are clustered together
+    # -tuples about direct relationship between the two instances are clustered together 
+    # -tuples about the main instances related to other entities are clustered together
+    # -tuples about a single instance/entity are clustered together (using the remaining tuples)
     clustered_tuples_dict = dict()
     tuples = tuples_in.copy()
     
     tuples_cp = tuples.copy()
+
+    # cluster tuples that relate the two instances to each other
+    indices = find_indices_of_tuples_including_the_pair(pair_of_instances, tuples_cp)
+    related_tuples = extract_related_tuples(tuples_cp, indices)
+    clustered_tuples_dict["tuples_specificity_one"] = related_tuples
+
+    indices_to_remove = indices.copy()
+    indices_to_remove.append(0)
+    tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
+
+    # cluster tuples that include one of the instances as subject related to objects, 
+    # and the relations (if any) between the objects
+    indices = find_indices_of_tuples_including_an_instance_as_subject(pair_of_instances, tuples_cp)
+    related_tuples = extract_related_tuples(tuples_cp, indices)
+    clustered_tuples_dict["tuples_specificity_two"] = related_tuples
+
+    indices_to_remove = indices.copy()
+    indices_to_remove.append(0)
+    tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
+
+    # cluster the rest of tuples by subject
     cont = 0
     while tuples_cp:
         indices = find_indices_of_related_tuples(tuples_cp[0], tuples_cp) 
         related_tuples = extract_related_tuples(tuples_cp, indices)
         clustered_tuples_dict[cont] = related_tuples
+        #clustered_tuples_dict[tuples_cp[0][0]] = related_tuples # alternative to previous line
         indices_to_remove = indices.copy()
         indices_to_remove.append(0)
         tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
@@ -498,9 +524,11 @@ def cluster_tuples(tuples_in):
     return clustered_tuples_dict
 
 
-def order_tuples(target_instance, tuples_dict_in):
+def order_c_tuples(tuples_dict_in):
     # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
-    # -(between sentences) external ordering: much info > less info (except the main instance to explain, it always goes first)
+    # -(between sentences) external ordering: tuples relating the two instances go first
+    # -(between sentences) external ordering: tuples in which one instance is subject in the triple go after
+    # -(between sentences) external ordering: much info > less info (remaining tuples)
     # -(within a sentence) internal ordering: superclass > attributes
     ordered_tuples = dict()
     ordered_tuples_ext = dict()
@@ -509,18 +537,21 @@ def order_tuples(target_instance, tuples_dict_in):
     
     # external ordering
     tuples_dict_cp = tuples_dict.copy()
+
+    ordered_tuples_ext["tuples_specificity_one"] = tuples_dict_cp["tuples_specificity_one"]
+    tuples_dict_cp.pop("tuples_specificity_one")
+
+    ordered_tuples_ext["tuples_specificity_two"] = tuples_dict_cp["tuples_specificity_two"]
+    tuples_dict_cp.pop("tuples_specificity_two")
+
     cont = 0
     while (tuples_dict_cp):
         key_with_max_info = list(tuples_dict_cp.keys())[0]
         for key, value in tuples_dict_cp.items():
-            if any(target_instance in tuple_element for tuple_element in value[0]):
-                key_with_max_info = key
-                break
-            else:
-                if len(tuples_dict_cp[key_with_max_info]) < len(value):
+            if len(tuples_dict_cp[key_with_max_info]) < len(value):
                     key_with_max_info = key
-                else:
-                    pass
+            else:
+                pass
         
         ordered_tuples_ext[cont] = tuples_dict_cp[key_with_max_info]
         tuples_dict_cp.pop(key_with_max_info)
@@ -735,6 +766,13 @@ def extract_raw_uri_from_kb_answer(kb_answer_element_in):
     return uri
 
 
+def from_uri_based_ontology_entity_to_uri_label_based(entity):
+    mod_entity = (owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(entity)] \
+                + ":'" + extract_individual_from_kb_answer(entity) + "'")
+    
+    return mod_entity
+
+
 def find_indices_of_related_tuples(tuple_in, tuples_in):
     indices = []
     tuple_ = tuple_in.copy()
@@ -745,6 +783,39 @@ def find_indices_of_related_tuples(tuple_in, tuples_in):
             indices.append(i)
     
     return indices
+
+
+def find_indices_of_tuples_including_the_pair(pair_of_instances, tuples_in):
+    indices = []
+    tuples = tuples_in.copy()
+    pair_of_instances_with_uri_label = list()
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[0]))
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
+    
+    for i in range (0, len(tuples)):
+        if pair_of_instances_with_uri_label[0] == tuples[i][0] and pair_of_instances_with_uri_label[1] == tuples[i][2] \
+            or pair_of_instances_with_uri_label[1] == tuples[i][0] and pair_of_instances_with_uri_label[0] == tuples[i][2]:
+            indices.append(i)
+
+    return indices 
+
+
+def find_indices_of_tuples_including_an_instance_as_subject(pair_of_instances, tuples_in):
+    indices = []
+    tuples = tuples_in.copy()
+    pair_of_instances_with_uri_label = list()
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[0]))
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
+    
+    for i in range (0, len(tuples)):
+        if pair_of_instances_with_uri_label[0] == tuples[i][0] or pair_of_instances_with_uri_label[1] == tuples[i][0]:
+            indices.append(i)
+
+    return indices 
 
 
 def extract_related_tuples(tuples_in, indices):
