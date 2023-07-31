@@ -100,7 +100,17 @@ def construct_narrative(client_rosprolog, target_pair_of_instances, tuples_of_th
     #sentence = group_c_tuples_in_a_sentence(mod_tuples_ord) 
     #sentence = sentence + '\n'
 
-    print(mod_tuples_ord)    
+    print("\n After clustering:\n")
+    for k, v in mod_tuples_clus.items():
+            print(k)
+            print(v)
+            print("---\n")    
+
+    print("\n After ordering:\n")
+    for k, v in mod_tuples_ord.items():
+            print(k)
+            print(v)
+            print("---\n")  
     return sentence
 
 
@@ -483,8 +493,7 @@ def cast_c_tuples(pair_of_instances, tuples_of_the_pair_in, ont_prop_dict):
 def cluster_c_tuples(pair_of_instances, tuples_in):
     # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
     # -tuples about direct relationship between the two instances are clustered together 
-    # -tuples about the main instances related to other entities are clustered together
-    # -tuples about a single instance/entity are clustered together (using the remaining tuples)
+    # -tuples about a single instance are clustered together by predicate (using the remaining tuples)
     clustered_tuples_dict = dict()
     tuples = tuples_in.copy()
     
@@ -499,27 +508,17 @@ def cluster_c_tuples(pair_of_instances, tuples_in):
     indices_to_remove.append(0)
     tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
 
-    # cluster tuples that include one of the instances as subject related to objects, 
-    # and the relations (if any) between the objects
-    indices = find_indices_of_tuples_including_an_instance_as_subject(pair_of_instances, tuples_cp)
-    related_tuples = extract_related_tuples(tuples_cp, indices)
-    clustered_tuples_dict["tuples_specificity_two"] = related_tuples
-
-    indices_to_remove = indices.copy()
-    indices_to_remove.append(0)
-    tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
-
-    # cluster the rest of tuples by subject
-    cont = 0
+    # cluster the remaining tuples by predicate
+    ## cont = 0
     while tuples_cp:
-        indices = find_indices_of_related_tuples(tuples_cp[0], tuples_cp) 
+        indices = find_indices_of_related_tuples(pair_of_instances, tuples_cp[0], tuples_cp) 
         related_tuples = extract_related_tuples(tuples_cp, indices)
-        clustered_tuples_dict[cont] = related_tuples
-        #clustered_tuples_dict[tuples_cp[0][0]] = related_tuples # alternative to previous line
+        ## clustered_tuples_dict[cont] = related_tuples # alternative to the next line
+        clustered_tuples_dict[tuples_cp[0][1]] = related_tuples # alternative to the previous line
         indices_to_remove = indices.copy()
         indices_to_remove.append(0)
         tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
-        cont += 1
+        ## cont += 1
     
     return clustered_tuples_dict
 
@@ -527,7 +526,6 @@ def cluster_c_tuples(pair_of_instances, tuples_in):
 def order_c_tuples(tuples_dict_in):
     # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
     # -(between sentences) external ordering: tuples relating the two instances go first
-    # -(between sentences) external ordering: tuples in which one instance is subject in the triple go after
     # -(between sentences) external ordering: much info > less info (remaining tuples)
     # -(within a sentence) internal ordering: superclass > attributes
     ordered_tuples = dict()
@@ -540,9 +538,6 @@ def order_c_tuples(tuples_dict_in):
 
     ordered_tuples_ext["tuples_specificity_one"] = tuples_dict_cp["tuples_specificity_one"]
     tuples_dict_cp.pop("tuples_specificity_one")
-
-    ordered_tuples_ext["tuples_specificity_two"] = tuples_dict_cp["tuples_specificity_two"]
-    tuples_dict_cp.pop("tuples_specificity_two")
 
     cont = 0
     while (tuples_dict_cp):
@@ -773,15 +768,33 @@ def from_uri_based_ontology_entity_to_uri_label_based(entity):
     return mod_entity
 
 
-def find_indices_of_related_tuples(tuple_in, tuples_in):
+def find_indices_of_related_tuples(pair_of_instances, tuple_in, tuples_in):
     indices = []
     tuple_ = tuple_in.copy()
     tuples = tuples_in.copy()
+
+    pair_of_instances_with_uri_label = list()
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[0]))
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
     
     for i in range (0, len(tuples)):
-        if tuple_[0] == tuples[i][0]:
-            indices.append(i)
-    
+        if pair_of_instances_with_uri_label[0] == tuples[i][0] or pair_of_instances_with_uri_label[1] == tuples[i][0]:
+            if tuple_[1] == tuples[i][1]:
+                indices.append(i)
+                for j in range (0, len(tuples)):
+                    if tuples[i][2] == tuples[j][0]:
+                        # This also captures the horizontal relations (e.g. has worse quality value) at level 2, 
+                        # for the level 3 it is not needed to capture them, since they will be narrated in a
+                        # different sentence, otherwise, the sentences would be too long. Hence, they will be 
+                        # clustered in another cluster
+                        indices.append(j) 
+                    else:
+                        pass
+            else:
+                pass
+
     return indices
 
 
