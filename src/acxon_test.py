@@ -44,6 +44,8 @@ if __name__ == '__main__':
       narrative = construct_narrative(client_rosprolog, pairs_id_to_pairs_to_compare_dict[pair_to_compare_id], \
                                       tuples_of_the_pair)
       
+      print(narrative)
+      
       #f.write(introductory_text)
       #f.write(narrative)
 

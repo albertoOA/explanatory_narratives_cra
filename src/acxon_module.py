@@ -97,8 +97,6 @@ def construct_narrative(client_rosprolog, target_pair_of_instances, tuples_of_th
     mod_tuples_cast = cast_c_tuples(target_pair_of_instances, tuples_of_the_pair_in, ont_property_inverse_dict)
     mod_tuples_clus = cluster_c_tuples(target_pair_of_instances, mod_tuples_cast)
     mod_tuples_ord = order_c_tuples(mod_tuples_clus)
-    #sentence = group_c_tuples_in_a_sentence(mod_tuples_ord) 
-    #sentence = sentence + '\n'
 
     print("\n After clustering:\n")
     for k, v in mod_tuples_clus.items():
@@ -111,6 +109,11 @@ def construct_narrative(client_rosprolog, target_pair_of_instances, tuples_of_th
             print(k)
             print(v)
             print("---\n")  
+    
+
+    sentence = group_c_tuples_in_a_sentence(mod_tuples_ord) 
+    sentence = sentence + '\n'
+
     return sentence
 
 
@@ -532,14 +535,15 @@ def order_c_tuples(tuples_dict_in):
     ordered_tuples_ext = dict()
     ordered_tuples_int = dict()
     tuples_dict = tuples_dict_in.copy()
+    cont = 0
     
     # external ordering
     tuples_dict_cp = tuples_dict.copy()
 
-    ordered_tuples_ext["tuples_specificity_one"] = tuples_dict_cp["tuples_specificity_one"]
+    ordered_tuples_ext[cont] = tuples_dict_cp["tuples_specificity_one"]
     tuples_dict_cp.pop("tuples_specificity_one")
-
-    cont = 0
+    cont += 1
+    
     while (tuples_dict_cp):
         key_with_max_info = list(tuples_dict_cp.keys())[0]
         for key, value in tuples_dict_cp.items():
@@ -569,19 +573,27 @@ def order_c_tuples(tuples_dict_in):
     return ordered_tuples
 
 
-def group_tuples_in_a_sentence(tuples_dict_in): # ont_prop_plural_dict
+def group_c_tuples_in_a_sentence(tuples_dict_in): # ont_prop_plural_dict
     # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
-    # -subject grouping: all tuples with the same subject are grouped (and)
-    # -object grouping: objects that share subject and property are grouped
+    # the following grouping strategies are done for each cluster, which contains contrastive related tuples!
+    # -object grouping: objects that share subject and property are grouped (and)
+    # -predicate grouping: predicates that relate the same subject and object are grouped (and)
+    # TODO (ONLY IF NEEDED) -subject grouping: all tuples with the same subject are grouped (and)
+    # -contrastive sentence grouping: contrastive sentences are formed using the tuples from each cluster
     grouped_tuples = dict()
     aux_dict = dict()
     sentence = ''
     tuples_dict = tuples_dict_in.copy()
     
-    # object grouping 
-    for key, tuples in tuples_dict.items():
+    for i in range(0, len(tuples_dict.keys())):
         # object grouping
-        grouped_tuples_by_object = group_tuples_of_same_object_type(tuples) 
+        grouped_tuples_by_object = group_tuples_of_same_object_type(tuples_dict[i]) 
+
+        # predicate grouping
+        grouped_tuples_by_predicate = group_tuples_of_same_predicate(grouped_tuples_by_object) 
+
+        print(grouped_tuples_by_predicate)
+        print("·· _ ··\n")
         # subject grouping and sentence generation
         sentence = sentence + tuples_list_to_text_with_aggregation(grouped_tuples_by_object) + '. \n\n'
         
@@ -866,7 +878,41 @@ def group_tuples_of_same_object_type(tuples_in): # ont_prop_plural_dict
             else:
                 continue
         
-        one_tuple_[1] = extract_individual_from_tuple_element(one_tuple_[1])
+        ## PLAYING one_tuple_[1] = extract_individual_from_tuple_element(one_tuple_[1])
+        new_tuples.append(one_tuple_)
+        tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
+    
+    return new_tuples
+
+
+def group_tuples_of_same_predicate(tuples_in): # ont_prop_plural_dict
+    new_tuples = list()
+    tuples = tuples_in.copy()
+    
+    tuples_cp = tuples.copy()
+    while tuples_cp:
+        ## print(tuples_cp)
+        one_tuple_ = tuples_cp.pop(0)
+        indices_to_remove = []
+        for i in range(0, len(tuples_cp)):
+            if (one_tuple_[0] == tuples_cp[i][0] and one_tuple_[2] == tuples_cp[i][2] and \
+               one_tuple_[3] == tuples_cp[i][3] and one_tuple_[4] == tuples_cp[i][4] and \
+               one_tuple_[5] == tuples_cp[i][5]):
+                # 
+                if type(one_tuple_[1]) == list:
+                    one_tuple_[1].append(tuples_cp[i][1])
+                else:
+                    new_list = []
+                    new_list.append(one_tuple_[1])
+                    new_list.append(tuples_cp[i][1])
+                    one_tuple_[1] = new_list.copy()
+
+
+                indices_to_remove.append(i)
+            else:
+                continue
+        
+        ## PLAYING one_tuple_[2] = extract_individual_from_tuple_element(one_tuple_[2])
         new_tuples.append(one_tuple_)
         tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
     
@@ -881,7 +927,19 @@ def tuples_list_to_text_with_aggregation(tuples_in):
         tuple_subject = extract_individual_from_tuple_element(tuple_[0])
         tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
         
-        tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
+        if type(tuple_[1]) == list:
+            tuple_relationship = ''
+            for obj in tuple_[1]:
+                if not tuple_relationship:
+                    tuple_relationship = extract_individual_from_tuple_element(obj)
+                else: 
+                    if tuple_[5] == "negative":
+                        tuple_relationship = tuple_relationship + ' and (not)' + extract_individual_from_tuple_element(obj)
+                    else:
+                        tuple_relationship = tuple_relationship + ' and ' + extract_individual_from_tuple_element(obj)        
+        else:
+            tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
+        
         if tuple_relationship == "type":
             tuple_relationship = "isATypeOf"
         else:
