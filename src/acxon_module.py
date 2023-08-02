@@ -111,7 +111,8 @@ def construct_narrative(client_rosprolog, target_pair_of_instances, tuples_of_th
             print("---\n")  
     
 
-    sentence = group_c_tuples_in_a_sentence(mod_tuples_ord) 
+    mod_tuples_group = group_c_tuples(mod_tuples_ord) 
+    sentence = group_c_tuples_in_a_sentence(target_pair_of_instances, mod_tuples_group)
     sentence = sentence + '\n'
 
     return sentence
@@ -557,6 +558,7 @@ def order_c_tuples(tuples_dict_in):
         cont += 1
         
     # internal ordering
+    """
     for key, value in ordered_tuples_ext.items():
         new_value = list()
         
@@ -569,20 +571,18 @@ def order_c_tuples(tuples_dict_in):
         ordered_tuples_int[key] = new_value
         
     ordered_tuples = ordered_tuples_int.copy()
-    
+    """
+    ordered_tuples = ordered_tuples_ext.copy()
+
     return ordered_tuples
 
 
-def group_c_tuples_in_a_sentence(tuples_dict_in): # ont_prop_plural_dict
+def group_c_tuples(tuples_dict_in): # ont_prop_plural_dict
     # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
     # the following grouping strategies are done for each cluster, which contains contrastive related tuples!
     # -object grouping: objects that share subject and property are grouped (and)
     # -predicate grouping: predicates that relate the same subject and object are grouped (and)
-    # TODO (ONLY IF NEEDED) -subject grouping: all tuples with the same subject are grouped (and)
-    # -contrastive sentence grouping: contrastive sentences are formed using the tuples from each cluster
     grouped_tuples = dict()
-    aux_dict = dict()
-    sentence = ''
     tuples_dict = tuples_dict_in.copy()
     
     for i in range(0, len(tuples_dict.keys())):
@@ -594,8 +594,156 @@ def group_c_tuples_in_a_sentence(tuples_dict_in): # ont_prop_plural_dict
 
         print(grouped_tuples_by_predicate)
         print("·· _ ··\n")
+
+        grouped_tuples[i] = grouped_tuples_by_predicate
+ 
+    return grouped_tuples
+
+
+def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_plural_dict
+    # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
+    # the following grouping strategies are done for each cluster, which contains contrastive related tuples!
+    # TODO (ONLY IF NEEDED) -subject grouping: all tuples with the same subject are grouped (and)
+    # -contrastive sentence grouping: contrastive sentences are formed using the tuples from each cluster
+    sentence = ''
+    tuples_dict = tuples_dict_in.copy()
+    pair_of_instances_with_uri_label = list()
+    text_for_each_cluster_dict = dict()
+    tuple_a = list()
+    tuple_b = list()
+
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[0]))
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
+    
+    for i in range(0, len(tuples_dict.keys())):
+        tuples_cp = tuples_dict[i].copy()
+        index_a = None
+        index_b = None
+        index_ = None
+        indices_related_to_a = list()
+        indices_related_to_b = list()
+        indices_related_to_instance = list()
+        indices_unrelated_to_instance = list()
+
+        for q in range(0, len(tuples_cp)):
+            for j in range(0, len(tuples_cp)):
+                if tuples_cp[q][0] == pair_of_instances_with_uri_label[0] and \
+                  tuples_cp[j][0] == pair_of_instances_with_uri_label[1] \
+                  and tuples_cp[q][1] == tuples_cp[j][1]:
+                    index_a = [q]  # index must be in a list format to use 'extract_related_tuples'
+                    index_b = [j]
+                    break
+                elif tuples_cp[q][0] == pair_of_instances_with_uri_label[0]:
+                    index_ = [q]
+                elif tuples_cp[j][0] == pair_of_instances_with_uri_label[1]:
+                    index_ = [j]
+                else:
+                    continue
+        
+        # extracting the tuples related to the main ones (horizontal relations from level 2 and level 3)
+        if index_a and index_b:  
+            tuple_a = extract_related_tuples(tuples_cp, index_a)[0] # it returns a list of lists (just one in here)
+            tuple_b = extract_related_tuples(tuples_cp, index_b)[0] # it returns a list of lists (just one in here)
+
+            for q in range(0, len(tuples_cp)):
+                if tuples_cp[index_a[0]][2] == tuples_cp[q][0]:
+                    indices_related_to_a.append(q)
+                elif tuples_cp[index_b[0]][2] == tuples_cp[q][0]:
+                    indices_related_to_b.append(q)
+                else:
+                    if q == index_a[0] or q == index_b[0]:
+                        pass
+                    else: 
+                        indices_unrelated_to_instance.append(q)
+            
+            # checking if we are considering all possible tuples
+            if indices_unrelated_to_instance:
+                print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
+                print(indices_unrelated_to_instance)
+            else:
+                print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
+                pass
+
+            tuples_related_to_a = extract_related_tuples(tuples_cp, indices_related_to_a)
+            tuples_related_to_b = extract_related_tuples(tuples_cp, indices_related_to_b)
+
+            # construct text for the two instances to compare 
+            text_a = construct_text_from_single_tuple(tuple_a)
+            if tuples_related_to_a:
+                text_a = text_a + ", which " + construct_aggregated_text_from_multiple_tuples(tuples_related_to_a)
+            else: 
+                pass
+
+            text_b = construct_text_from_single_tuple(tuple_b)
+            if tuples_related_to_b:
+                text_b = text_b + ", which " + construct_aggregated_text_from_multiple_tuples(tuples_related_to_b)
+            else: 
+                pass
+
+            # construct the text for a single cluster
+            text_for_each_cluster_dict[i] = text_a + "; while " + text_b
+
+            print(text_a + "; while " + text_b + ". ")
+            print("|Ix2|\n")
+            continue
+        elif index_: 
+            tuple_ = extract_related_tuples(tuples_cp, index_)[0] # it returns a list of lists (just one in here)
+            
+            for q in range(0, len(tuples_cp)):
+                if tuples_cp[index_[0]][2] == tuples_cp[q][0]:
+                    indices_related_to_instance.append(q)
+                else:
+                    if q == index_[0]:
+                        pass
+                    else: 
+                        indices_unrelated_to_instance.append(q)
+            
+            # checking if we are considering all possible tuples
+            if indices_unrelated_to_instance:
+                print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
+                print(indices_unrelated_to_instance)
+            else:
+                print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
+                pass
+
+            tuples_related_to_instance = extract_related_tuples(tuples_cp, indices_related_to_instance)
+
+            # construct text for the two instances to compare 
+            text_ = construct_text_from_single_tuple(tuple_)
+            if tuples_related_to_instance:
+                text_ = text_ + ", which " + construct_aggregated_text_from_multiple_tuples(tuples_related_to_instance)
+            else:
+                pass
+
+            # construct the text for a single cluster
+            text_for_each_cluster_dict[i] = text_
+
+            print(text_ + ". ")
+            print("|I|\n")
+            continue
+        else:
+            pass
+
+    for text_ in text_for_each_cluster_dict.values():
+        sentence = sentence + text_ + ". "
+    
+    return sentence
+
+
+def group_c_tuples_in_a_sentence_security_copy(tuples_dict_in): # ont_prop_plural_dict
+    # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
+    # the following grouping strategies are done for each cluster, which contains contrastive related tuples!
+    # TODO (ONLY IF NEEDED) -subject grouping: all tuples with the same subject are grouped (and)
+    # -contrastive sentence grouping: contrastive sentences are formed using the tuples from each cluster
+    sentence = ''
+    tuples_dict = tuples_dict_in.copy()
+    
+    for i in range(0, len(tuples_dict.keys())):
+        tuples_cp = tuples_dict[i].copy()
         # subject grouping and sentence generation
-        sentence = sentence + tuples_list_to_text_with_aggregation(grouped_tuples_by_object) + '. \n\n'
+        sentence = sentence + tuples_list_to_text_with_aggregation(tuples_cp) + '. \n\n'
         
     return sentence
 
@@ -917,6 +1065,201 @@ def group_tuples_of_same_predicate(tuples_in): # ont_prop_plural_dict
         tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
     
     return new_tuples
+
+
+def construct_text_from_single_tuple(tuple_in):
+    text = ''
+    tuple_ = tuple_in.copy()
+    
+    tuple_subject = extract_individual_from_tuple_element(tuple_[0])
+    ## tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
+
+    if type(tuple_[1]) == list:
+        tuple_relationship = ''
+        for obj in tuple_[1]:
+            if not tuple_relationship:
+                tuple_relationship = extract_individual_from_tuple_element(obj)
+            else: 
+                if tuple_[5] == "negative":
+                    tuple_relationship = tuple_relationship + ' and (not)' + extract_individual_from_tuple_element(obj)
+                else:
+                    tuple_relationship = tuple_relationship + ' and ' + extract_individual_from_tuple_element(obj)        
+    else:
+        tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
+    
+    if tuple_relationship == "type":
+        tuple_relationship = "isATypeOf"
+    else:
+        pass
+    tuple_relationship = re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_relationship) # adding space between words
+    tuple_relationship = tuple_relationship.lower() # lowercase
+    if tuple_[5] == "negative":
+        tuple_relationship = "(not) " + tuple_relationship
+    else:
+        pass
+
+    if type(tuple_[2]) == list:
+        tuple_object = ''
+        for obj in tuple_[2]:
+            if not tuple_object:
+                tuple_object = extract_individual_from_tuple_element(obj)
+            else: 
+                tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
+    else:
+        tuple_object = extract_individual_from_tuple_element(tuple_[2])
+
+    ## tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
+
+    if (extract_individual_from_tuple_element(tuple_[4]) == 'Infinity'):
+        tuple_start = ''
+        tuple_end = ''
+    else:
+        tuple_start = extract_individual_from_tuple_element(tuple_[3])
+        tuple_end = extract_individual_from_tuple_element(tuple_[4])
+
+    if (tuple_start and tuple_end):
+        text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
+    else:
+        text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object 
+
+    return text
+
+
+def construct_aggregated_text_from_single_tuple(tuple_in):
+    """
+    the constructed text is meant to be aggregated to an existent tuple that already contains the subject. 
+    """
+    text = ''
+    tuple_ = tuple_in.copy()
+    
+    if type(tuple_[1]) == list:
+        tuple_relationship = ''
+        for obj in tuple_[1]:
+            if not tuple_relationship:
+                tuple_relationship = extract_individual_from_tuple_element(obj)
+            else: 
+                if tuple_[5] == "negative":
+                    tuple_relationship = tuple_relationship + ' and (not)' + extract_individual_from_tuple_element(obj)
+                else:
+                    tuple_relationship = tuple_relationship + ' and ' + extract_individual_from_tuple_element(obj)        
+    else:
+        tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
+    
+    if tuple_relationship == "type":
+        tuple_relationship = "isATypeOf"
+    else:
+        pass
+    tuple_relationship = re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_relationship) # adding space between words
+    tuple_relationship = tuple_relationship.lower() # lowercase
+    if tuple_[5] == "negative":
+        tuple_relationship = "(not) " + tuple_relationship
+    else:
+        pass
+
+    if type(tuple_[2]) == list:
+        tuple_object = ''
+        for obj in tuple_[2]:
+            if not tuple_object:
+                tuple_object = extract_individual_from_tuple_element(obj)
+            else: 
+                tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
+    else:
+        tuple_object = extract_individual_from_tuple_element(tuple_[2])
+
+    ## tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
+
+    if (extract_individual_from_tuple_element(tuple_[4]) == 'Infinity'):
+        tuple_start = ''
+        tuple_end = ''
+    else:
+        tuple_start = extract_individual_from_tuple_element(tuple_[3])
+        tuple_end = extract_individual_from_tuple_element(tuple_[4])
+
+    if (tuple_start and tuple_end):
+        text = tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
+    else:
+        text = tuple_relationship + ' ' + tuple_object 
+
+    return text
+
+
+def construct_aggregated_text_from_multiple_tuples(tuples_in): 
+    text = ''
+    tuples_cp = tuples_in.copy()
+
+    for tuple_ in tuples_cp:
+        if not text:
+            text = text + construct_aggregated_text_from_single_tuple(tuple_)
+        else:
+            text = text + " and " + construct_aggregated_text_from_single_tuple(tuple_)
+
+    return text
+
+def tuples_list_to_text_with_c_aggregation(pair_of_instances, tuples_in):
+    text = ''
+    tuples = tuples_in.copy()
+    
+    for tuple_ in tuples:
+        tuple_subject = extract_individual_from_tuple_element(tuple_[0])
+        tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
+        
+        if type(tuple_[1]) == list:
+            tuple_relationship = ''
+            for obj in tuple_[1]:
+                if not tuple_relationship:
+                    tuple_relationship = extract_individual_from_tuple_element(obj)
+                else: 
+                    if tuple_[5] == "negative":
+                        tuple_relationship = tuple_relationship + ' and (not)' + extract_individual_from_tuple_element(obj)
+                    else:
+                        tuple_relationship = tuple_relationship + ' and ' + extract_individual_from_tuple_element(obj)        
+        else:
+            tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
+        
+        if tuple_relationship == "type":
+            tuple_relationship = "isATypeOf"
+        else:
+            pass
+        tuple_relationship = re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_relationship) # adding space between words
+        tuple_relationship = tuple_relationship.lower() # lowercase
+        if tuple_[5] == "negative":
+            tuple_relationship = "(not) " + tuple_relationship
+        else:
+            pass
+
+        if type(tuple_[2]) == list:
+            tuple_object = ''
+            for obj in tuple_[2]:
+                if not tuple_object:
+                    tuple_object = extract_individual_from_tuple_element(obj)
+                else: 
+                    tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
+        else:
+            tuple_object = extract_individual_from_tuple_element(tuple_[2])
+
+        tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
+
+        if (extract_individual_from_tuple_element(tuple_[4]) == 'Infinity'):
+            tuple_start = ''
+            tuple_end = ''
+        else:
+            tuple_start = extract_individual_from_tuple_element(tuple_[3])
+            tuple_end = extract_individual_from_tuple_element(tuple_[4])
+
+        if not text: 
+            # empty text
+            if (tuple_start and tuple_end):
+                text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
+            else:
+                text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object 
+        else:
+            # non-empty text
+            if (tuple_start and tuple_end):
+                text = text + ' and ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
+            else:
+                text = text + ' and ' + tuple_relationship + ' ' + tuple_object 
+
+    return text
 
 
 def tuples_list_to_text_with_aggregation(tuples_in):
