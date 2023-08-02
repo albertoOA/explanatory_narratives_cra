@@ -39,11 +39,12 @@ if __name__ == '__main__':
     #f = open(narratives_file, "w")
 
     for pair_to_compare_id, tuples_of_the_pair in tuples_dict.items():
-      introductory_text = "\n\n·····Explanation for: " + pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][0] \
-        + "and " + pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1] + "\n"
+      introductory_text = "\n\n·····C-Narrative for: " + pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][0] \
+        + " and " + pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1] + "\n"
       narrative = construct_narrative(client_rosprolog, pairs_id_to_pairs_to_compare_dict[pair_to_compare_id], \
                                       tuples_of_the_pair)
       
+      print(introductory_text)
       print(narrative)
       
       #f.write(introductory_text)

@@ -84,7 +84,7 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
             tuples[pair_id][pairs_list[i][0]], tuples[pair_id][pairs_list[i][1]] = \
                 prune_tuples(tuples[pair_id][pairs_list[i][0]], tuples[pair_id][pairs_list[i][1]])
 
-        print(tuples)
+        ## print(tuples)
 
     return tuples, pairs_id_to_pairs_to_compare_dict
 
@@ -98,6 +98,7 @@ def construct_narrative(client_rosprolog, target_pair_of_instances, tuples_of_th
     mod_tuples_clus = cluster_c_tuples(target_pair_of_instances, mod_tuples_cast)
     mod_tuples_ord = order_c_tuples(mod_tuples_clus)
 
+    """
     print("\n After clustering:\n")
     for k, v in mod_tuples_clus.items():
             print(k)
@@ -109,7 +110,7 @@ def construct_narrative(client_rosprolog, target_pair_of_instances, tuples_of_th
             print(k)
             print(v)
             print("---\n")  
-    
+    """
 
     mod_tuples_group = group_c_tuples(mod_tuples_ord) 
     sentence = group_c_tuples_in_a_sentence(target_pair_of_instances, mod_tuples_group)
@@ -592,8 +593,8 @@ def group_c_tuples(tuples_dict_in): # ont_prop_plural_dict
         # predicate grouping
         grouped_tuples_by_predicate = group_tuples_of_same_predicate(grouped_tuples_by_object) 
 
-        print(grouped_tuples_by_predicate)
-        print("·· _ ··\n")
+        ## print(grouped_tuples_by_predicate)
+        ## print("·· _ ··\n")
 
         grouped_tuples[i] = grouped_tuples_by_predicate
  
@@ -663,7 +664,7 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
                 print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
                 print(indices_unrelated_to_instance)
             else:
-                print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
+                ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
                 pass
 
             tuples_related_to_a = extract_related_tuples(tuples_cp, indices_related_to_a)
@@ -685,8 +686,8 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
             # construct the text for a single cluster
             text_for_each_cluster_dict[i] = text_a + "; while " + text_b
 
-            print(text_a + "; while " + text_b + ". ")
-            print("|Ix2|\n")
+            ## print(text_a + "; while " + text_b + ". ")
+            ## print("|Ix2|\n")
             continue
         elif index_: 
             tuple_ = extract_related_tuples(tuples_cp, index_)[0] # it returns a list of lists (just one in here)
@@ -705,7 +706,7 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
                 print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
                 print(indices_unrelated_to_instance)
             else:
-                print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
+                ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
                 pass
 
             tuples_related_to_instance = extract_related_tuples(tuples_cp, indices_related_to_instance)
@@ -720,8 +721,8 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
             # construct the text for a single cluster
             text_for_each_cluster_dict[i] = text_
 
-            print(text_ + ". ")
-            print("|I|\n")
+            ## print(text_ + ". ")
+            ## print("|I|\n")
             continue
         else:
             pass
