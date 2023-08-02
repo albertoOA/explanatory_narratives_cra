@@ -36,20 +36,20 @@ if __name__ == '__main__':
     tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_to_query, t_locality, constrained_ontological_scope, specificity)
 
     
-    #f = open(narratives_file, "w")
+    f = open(narratives_file, "w")
 
     for pair_to_compare_id, tuples_of_the_pair in tuples_dict.items():
       introductory_text = "\n\n·····C-Narrative for: " + pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][0] \
-        + " and " + pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1] + "\n"
+        + " and " + pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1] + "\n\n"
       narrative = construct_narrative(client_rosprolog, pairs_id_to_pairs_to_compare_dict[pair_to_compare_id], \
                                       tuples_of_the_pair)
       
-      print(introductory_text)
-      print(narrative)
+      ## print(introductory_text)
+      ## print(narrative)
       
-      #f.write(introductory_text)
-      #f.write(narrative)
+      f.write(introductory_text)
+      f.write(narrative)
 
-    #f.close()
+    f.close()
 
     print("[acxon_test.py] Narratives have been properly generated, check the 'txt'.")
