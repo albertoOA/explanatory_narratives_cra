@@ -732,22 +732,6 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
     return sentence
 
 
-def group_c_tuples_in_a_sentence_security_copy(tuples_dict_in): # ont_prop_plural_dict
-    # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
-    # the following grouping strategies are done for each cluster, which contains contrastive related tuples!
-    # TODO (ONLY IF NEEDED) -subject grouping: all tuples with the same subject are grouped (and)
-    # -contrastive sentence grouping: contrastive sentences are formed using the tuples from each cluster
-    sentence = ''
-    tuples_dict = tuples_dict_in.copy()
-    
-    for i in range(0, len(tuples_dict.keys())):
-        tuples_cp = tuples_dict[i].copy()
-        # subject grouping and sentence generation
-        sentence = sentence + tuples_list_to_text_with_aggregation(tuples_cp) + '. \n\n'
-        
-    return sentence
-
-
 
 
 
