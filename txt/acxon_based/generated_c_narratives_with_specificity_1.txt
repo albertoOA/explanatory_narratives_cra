@@ -1,0 +1,5 @@
+
+
+·····C-Narrative for: http://www.iri.upc.edu/groups/perception/OCRA/maps/piling_cloth.owl#plan_0_2023-07-12_10:51:10.363128-UTC and http://www.iri.upc.edu/groups/perception/OCRA/maps/piling_cloth.owl#plan_0_2023-07-12_10:51:38.502404-UTC
+
+plan_0_2023-07-12_10:51:10.363128-UTC is worse plan than and has part plan_0_2023-07-12_10:51:38.502404-UTC. 
