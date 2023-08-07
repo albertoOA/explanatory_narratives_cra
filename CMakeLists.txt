@@ -12,6 +12,8 @@ find_package(catkin REQUIRED COMPONENTS knowrob rosprolog)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
+catkin_python_setup()
+
 # ******************************************************************** 
 #           Add system and labrobotica dependencies here
 # ******************************************************************** 

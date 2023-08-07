@@ -37,7 +37,7 @@ What information could one find useful when using this code?
 """
 
 import re
-from prolog_module import *
+from prolog.prolog_module import *
 from rosprolog_client import PrologException, Prolog
 
 

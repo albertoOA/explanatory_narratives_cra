@@ -13,8 +13,8 @@ import re
 import rospy
 import roslib
 import rospkg
-from axon_module import *
-from prolog_module import *
+from axon.axon_module import *
+from prolog.prolog_module import *
 from rosprolog_client import PrologException, Prolog
 
 
