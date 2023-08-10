@@ -16,6 +16,11 @@ kb_project(instance_of(map_bringing_object:'Flavor_of_MatchaTea', dul:'Quality')
 kb_project(instance_of(map_bringing_object:'Temperature_of_MatchaTea', dul:'Quality')).
 kb_project(instance_of(map_bringing_object:'Location_of_MatchaTea', dul:'Place')).
 
+kb_project(instance_of(map_bringing_object:'UltraProcessedDrink', dul:'Role')).
+kb_project(instance_of(map_bringing_object:'TastyDrink', dul:'Role')).
+kb_project(instance_of(map_bringing_object:'ProcessedDrink', dul:'Role')).
+kb_project(instance_of(map_bringing_object:'HealthyDrink', dul:'Role')).
+
 
 : : : : StretchRobot : : 
 
