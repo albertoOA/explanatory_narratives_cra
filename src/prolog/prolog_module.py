@@ -3,10 +3,17 @@
 """
 What is this code?
   - prolog module for explanatory ontology-based narratives for collaborative robotics and adaptation. 
-  You can expect to find here definitions that are useful to query a prolog knowledge base that 
-  uses the ontology for collaborative robotics and adaptation (OCRA).
+  You can expect to find here definitions that are useful to query and assert knowledge to a prolog knowledge 
+  base that uses the ontology for collaborative robotics and adaptation (OCRA).
 
 What is defined in it?
+  - ManualAssertionOfNEEMs: a class to automatically assert knowledge that has previously been manually
+  written. This class will be used when users want to ensure a curated knowledge base instead of using knolwedge
+  directly asserted by a robot during the execution of its tasks. The code reads a .pl file with manually created
+  NEEMs and asserts them to a knowledge base. Note that the KB (e.g., know_cra) shall be already launched.
+
+
+
   - owl_uri_to_label_dict: it is a dictionary mapping the complete owl uris of the ontologies to 
   the tag labels. 
 
@@ -14,6 +21,40 @@ What is defined in it?
   to explain are formally defined. In our case, it is 'ocra_filling_a_tray'.
 
 """
+
+from rosprolog_client import PrologException, Prolog
+
+
+class ManualAssertionOfNEEMs:
+    def __init__(self):
+        # ROS useful variables
+        self.client_rosprolog = Prolog()
+
+    def read_neems_from_file(self, file_name):
+        neems = list()
+        file1 = open(file_name, 'r')
+        file_lines = file1.readlines()
+        
+        for line in file_lines:
+            if 'kb_project' in line:
+                neems.append(line.strip()) # strip() removes spaces to the left and right of the string
+
+        return neems
+
+    def multiple_assertion_in_kb(self, assertions_list):
+        done = False
+        try:
+          for assertion in assertions_list:
+              query = self.client_rosprolog.query(assertion)
+              ## for solution in query.solutions():
+                  ## print(solution)
+              query.finish()
+          
+          done = True
+        except PrologException:
+            print("Prolog query failed") 
+
+        return done
 
 owl_uri_to_label_dict = {"http://www.iri.upc.edu/groups/perception/OCRA/ont/ocra.owl#": "ocra", \
                          "http://www.iri.upc.edu/groups/perception/OCRA/ont/ocra_common.owl#": "ocra_common", \
