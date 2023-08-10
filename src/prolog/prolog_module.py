@@ -57,6 +57,8 @@ class ManualAssertionOfNEEMs:
         return done
 
 owl_uri_to_label_dict = {"http://www.iri.upc.edu/groups/perception/OCRA/ont/ocra.owl#": "ocra", \
+                         "http://www.iri.upc.edu/groups/perception/OCRA/ont/ocra_home.owl#": "ocra_home", \
+                         "http://www.iri.upc.edu/groups/perception/OCRA/ont/ocra_cloth.owl": "ocra_cloth", \
                          "http://www.iri.upc.edu/groups/perception/OCRA/ont/ocra_common.owl#": "ocra_common", \
                          "http://www.iri.upc.edu/groups/perception/OCRA/ont/ocra_filling_a_tray.owl#": "ocra_filling_a_tray", \
                          "http://www.iri.upc.edu/groups/perception/OCRA/maps/piling_cloth.owl#": "map_piling_cloth", \
