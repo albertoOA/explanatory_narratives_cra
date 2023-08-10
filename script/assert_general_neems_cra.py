@@ -57,6 +57,6 @@ if __name__ == '__main__':
 
     assertions_done = multiple_assertion_in_kb(client_rosprolog, neems_to_assert)
     if assertions_done:
-        print("[assert_neems.py] Neems were properly asserted.")
+        print("[assert_neems.py] NEEMs were properly asserted.")
     else:
-        print("[assert_neems.py] Neems' assertion failed.")
+        print("[assert_neems.py] NEEMs' assertion failed.")

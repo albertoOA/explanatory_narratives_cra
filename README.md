@@ -27,5 +27,5 @@ rosrun explanatory_narratives_cra axon_test.py
 If you have an empty knowledge base running, it is also possible to assert the *validation neem* knowledge before generating the narratives. 
 
 ```
-rosrun explanatory_narratives_cra assert_neems.py
+rosrun explanatory_narratives_cra assert_general_neems_cra.py
 ```
