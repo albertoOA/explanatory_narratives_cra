@@ -1,0 +1,5 @@
+
+
+·····C-Narrative for: http://www.iri.upc.edu/groups/perception/OCRA/maps/bringing_object.owl#SoftDrink_Cola and http://www.iri.upc.edu/groups/perception/OCRA/maps/bringing_object.owl#MatchaTea
+
+SoftDrink_Cola is more processed than and is tastier than and is colder than MatchaTea. 

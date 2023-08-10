@@ -1,0 +1,5 @@
+
+
+·····C-Narrative for: http://www.iri.upc.edu/groups/perception/OCRA/maps/bringing_object.owl#SoftDrink_Cola and http://www.iri.upc.edu/groups/perception/OCRA/maps/bringing_object.owl#MatchaTea
+
+SoftDrink_Cola is more processed than and is tastier than and is colder than MatchaTea. SoftDrink_Cola has role UltraProcessedDrink and TastyDrink; while MatchaTea has role ProcessedDrink and HealthyDrink. SoftDrink_Cola has flavor Flavor_of_SoftDrink_Cola; while MatchaTea has flavor Flavor_of_MatchaTea. SoftDrink_Cola has temperature Temperature_of_SoftDrink_Cola; while MatchaTea has temperature Temperature_of_MatchaTea. SoftDrink_Cola has location Location_of_SoftDrink_Cola; while MatchaTea has location Location_of_MatchaTea. 
