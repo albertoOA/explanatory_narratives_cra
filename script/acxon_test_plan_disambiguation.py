@@ -105,11 +105,11 @@ if __name__ == '__main__':
     
 
       # pairs of plans to c-narrate
-      pairs_of_objects_to_bring = [["dul:'Plan'", "dul:'Plan'"]] # TODO: change name for plans..
+      pairs_of_plans_to_disambiguate = [["dul:'Plan'", "dul:'Plan'"]] 
       constrained_ontological_scope = ["dul:'Quality'", "dul:'Event'"] # classes to constrain the scope of the narrative
       narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_c_narratives_plan_disambiguation_with_specificity_" + str(specificity) + ".txt"
 
-      tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_of_objects_to_bring, t_locality, constrained_ontological_scope, specificity)
+      tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_of_plans_to_disambiguate, t_locality, constrained_ontological_scope, specificity)
 
     for pair_to_compare_id, tuples_of_the_pair in tuples_dict.items():
       pair_of_plans_to_c_narrate_name = list()
