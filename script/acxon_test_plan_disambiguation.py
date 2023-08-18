@@ -142,15 +142,15 @@ if __name__ == '__main__':
 
       # Combine all the narratives
       combined_c_narrative = introductory_text_objects + objects_c_narrative + introductory_text_plans + plans_c_narrative
-      print("\nC-Narrative")
-      print(combined_c_narrative)
+      ## print("\nC-Narrative")
+      ## print(combined_c_narrative)
 
       # Modify the narrative to make it more appealing
       combined_c_narrative_mod = combined_c_narrative.replace(pair_of_plans_to_c_narrate_name[0], "Plan_A")
       combined_c_narrative_mod = combined_c_narrative_mod.replace(pair_of_plans_to_c_narrate_name[1], "Plan_b")
 
-      print("\nC-Narrative modified")
-      print(combined_c_narrative_mod)
+      ## print("\nC-Narrative modified")
+      ## print(combined_c_narrative_mod)
 
       f.write(combined_c_narrative_mod)
 
