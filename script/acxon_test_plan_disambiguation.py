@@ -125,7 +125,7 @@ if __name__ == '__main__':
       introductory_text_plans_pair = ", the robot will execute " + \
         pair_of_plans_to_c_narrate_name[0] \
         + " or " + \
-        pair_of_plans_to_c_narrate_name[0] + ", respectively. \n\n"
+        pair_of_plans_to_c_narrate_name[1] + ", respectively. \n\n"
       
       introductory_text_plans = introductory_text_plans_start + introductory_text_objects_pair + introductory_text_plans_pair
 
