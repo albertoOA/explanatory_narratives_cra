@@ -137,16 +137,19 @@ if __name__ == '__main__':
 
       # TODO : improve the narratives
       # - substitute the name of the plans for something more readable [DONE]
-      # - modify some properties (e.g., far from / near to -> is far from / is close to, etc.) 
-      # - substitute the 'has data value' when it appears 
+      # - modify some properties (e.g., far from / near to -> is far from / is close to, etc.) [DONE - acxon_module.py]
+      # - substitute the 'has data value' when it appears [PARTIALLY DONE - with previous (propperties modficiation)]
 
       # Combine all the narratives
       combined_c_narrative = introductory_text_objects + objects_c_narrative + introductory_text_plans + plans_c_narrative
+      print("\nC-Narrative")
+      print(combined_c_narrative)
 
       # Modify the narrative to make it more appealing
       combined_c_narrative_mod = combined_c_narrative.replace(pair_of_plans_to_c_narrate_name[0], "Plan_A")
       combined_c_narrative_mod = combined_c_narrative_mod.replace(pair_of_plans_to_c_narrate_name[1], "Plan_b")
 
+      print("\nC-Narrative modified")
       print(combined_c_narrative_mod)
 
       f.write(combined_c_narrative_mod)
