@@ -1064,18 +1064,18 @@ def construct_text_from_single_tuple(tuple_in):
         for obj in tuple_[1]:
             if not tuple_relationship:
                 tuple_relationship = extract_individual_from_tuple_element(obj)
+                tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(tuple_relationship)
             else: 
+                additional_tuple_relationship = extract_individual_from_tuple_element(obj)
+                additional_tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(additional_tuple_relationship)
                 if tuple_[5] == "negative":
-                    tuple_relationship = tuple_relationship + ' and (not)' + extract_individual_from_tuple_element(obj)
+                    tuple_relationship = tuple_relationship + ' and (not)' + additional_tuple_relationship
                 else:
-                    tuple_relationship = tuple_relationship + ' and ' + extract_individual_from_tuple_element(obj)        
+                    tuple_relationship = tuple_relationship + ' and ' + additional_tuple_relationship        
     else:
         tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
+        tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(tuple_relationship)
     
-    if tuple_relationship == "type":
-        tuple_relationship = "isATypeOf"
-    else:
-        pass
     tuple_relationship = re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_relationship) # adding space between words
     tuple_relationship = tuple_relationship.lower() # lowercase
     if tuple_[5] == "negative":
@@ -1122,18 +1122,18 @@ def construct_aggregated_text_from_single_tuple(tuple_in):
         for obj in tuple_[1]:
             if not tuple_relationship:
                 tuple_relationship = extract_individual_from_tuple_element(obj)
+                tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(tuple_relationship)
             else: 
+                additional_tuple_relationship = extract_individual_from_tuple_element(obj)
+                additional_tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(additional_tuple_relationship)
                 if tuple_[5] == "negative":
-                    tuple_relationship = tuple_relationship + ' and (not)' + extract_individual_from_tuple_element(obj)
+                    tuple_relationship = tuple_relationship + ' and (not)' + additional_tuple_relationship
                 else:
-                    tuple_relationship = tuple_relationship + ' and ' + extract_individual_from_tuple_element(obj)        
+                    tuple_relationship = tuple_relationship + ' and ' + additional_tuple_relationship        
     else:
         tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
+        tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(tuple_relationship)
     
-    if tuple_relationship == "type":
-        tuple_relationship = "isATypeOf"
-    else:
-        pass
     tuple_relationship = re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_relationship) # adding space between words
     tuple_relationship = tuple_relationship.lower() # lowercase
     if tuple_[5] == "negative":
@@ -1313,6 +1313,19 @@ def tuples_list_to_text_with_aggregation(tuples_in):
 
     return text
 
+def manual_substitution_of_property_label_for_more_readable_narratives(tuple_relationship):
+    if tuple_relationship == "type":
+        tuple_relationship = "isATypeOf"
+    elif tuple_relationship == "nearTo":
+        tuple_relationship = "isCloseTo"
+    elif tuple_relationship == "farFrom":
+        tuple_relationship = "isFarFrom"
+    elif tuple_relationship == "hasDataValue":
+        tuple_relationship = "hasValue"
+    else:
+        pass
+
+    return tuple_relationship
 
 def count_string_words(string_, separator):
     string_cp = str(string_)
