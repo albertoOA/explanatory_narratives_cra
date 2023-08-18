@@ -56,8 +56,8 @@ if __name__ == '__main__':
       objects_c_narrative = construct_narrative(client_rosprolog, pairs_id_to_pairs_to_compare_dict[pair_to_compare_id], \
                                       tuples_of_the_pair)
       
-      print(introductory_text_objects)
-      print(objects_c_narrative)
+      ## print(introductory_text_objects)
+      ## print(objects_c_narrative)
       
       
 
@@ -88,7 +88,7 @@ if __name__ == '__main__':
         rpcra.rosplan_wrapper_.construct_plan_dict()
         rpcra.rosplan_wrapper_.plan_dict_['plan_id'] += '_' + object_ # simple way to link objects and plans
         rpcra.rosplan_wrapper_.plan_dict_['task_grounded_parameters_dict'].clear() # PARTIALLY-UGLY solution  
-        # TODO: modify 'unitary_plan_predicates_to_ontology_relations_dict_' in know_cra.rosprolog_wrapper_for_rosplan
+        # TODO (future): modify 'unitary_plan_predicates_to_ontology_relations_dict_' in know_cra.rosprolog_wrapper_for_rosplan
         ## print(rpcra.rosplan_wrapper_.plan_dict_)
 
         plan_triples_list = rpcra.rosprolog_wrapper_for_rosplan_cra_.plan_dict_to_triples_list(rpcra.rosplan_wrapper_.plan_dict_)
@@ -132,18 +132,24 @@ if __name__ == '__main__':
       plans_c_narrative = construct_narrative(client_rosprolog, pairs_id_to_pairs_to_compare_dict[pair_to_compare_id], \
                                       tuples_of_the_pair)
       
-      print(introductory_text_plans)
-      print(plans_c_narrative) 
+      ## print(introductory_text_plans)
+      ## print(plans_c_narrative) 
 
       # TODO : improve the narratives
-      # - substitute the name of the plans for something more readable 
-      # - modify some properties
+      # - substitute the name of the plans for something more readable [DONE]
+      # - modify some properties (e.g., far from / near to -> is far from / is close to, etc.) 
+      # - substitute the 'has data value' when it appears 
 
-      f.write(introductory_text_objects)
-      f.write(objects_c_narrative)
+      # Combine all the narratives
+      combined_c_narrative = introductory_text_objects + objects_c_narrative + introductory_text_plans + plans_c_narrative
 
-      f.write(introductory_text_plans)
-      f.write(plans_c_narrative)
+      # Modify the narrative to make it more appealing
+      combined_c_narrative_mod = combined_c_narrative.replace(pair_of_plans_to_c_narrate_name[0], "Plan_A")
+      combined_c_narrative_mod = combined_c_narrative_mod.replace(pair_of_plans_to_c_narrate_name[1], "Plan_b")
+
+      print(combined_c_narrative_mod)
+
+      f.write(combined_c_narrative_mod)
 
     f.close()
 
