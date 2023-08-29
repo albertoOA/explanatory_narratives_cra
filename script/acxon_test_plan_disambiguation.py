@@ -104,12 +104,17 @@ if __name__ == '__main__':
         rpcra.rosprolog_wrapper_for_rosplan_cra_.rosprolog_assertion_query(plan_assertion_query_text)
     
 
-      # pairs of plans to c-narrate
-      pairs_of_plans_to_disambiguate = [["dul:'Plan'", "dul:'Plan'"]] 
-      constrained_ontological_scope = ["dul:'Quality'", "dul:'Event'"] # classes to constrain the scope of the narrative
-      narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_c_narratives_plan_disambiguation_with_specificity_" + str(specificity) + ".txt"
+    # run some logic-based rules to assert new comparative relations between the pair with the current ontological knowledge
+    query_string_foo_ = "compare_all_existing_plans_in_pairs()."
+    rpcra.rosprolog_wrapper_for_rosplan_cra_.rosprolog_assertion_query(query_string_foo_)
+    
 
-      tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_of_plans_to_disambiguate, t_locality, constrained_ontological_scope, specificity)
+    # pairs of plans to c-narrate
+    pairs_of_plans_to_disambiguate = [["dul:'Plan'", "dul:'Plan'"]] 
+    constrained_ontological_scope = ["dul:'Quality'", "dul:'Event'"] # classes to constrain the scope of the narrative
+    narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_c_narratives_plan_disambiguation_with_specificity_" + str(specificity) + ".txt"
+
+    tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_of_plans_to_disambiguate, t_locality, constrained_ontological_scope, specificity)
 
     for pair_to_compare_id, tuples_of_the_pair in tuples_dict.items():
       pair_of_plans_to_c_narrate_name = list()
@@ -121,6 +126,7 @@ if __name__ == '__main__':
         else:
           pass
       
+      # narrative construction
       introductory_text_plans_start = "\n\n·····In order to bring you the " 
       introductory_text_plans_pair = ", the robot will execute " + \
         pair_of_plans_to_c_narrate_name[0] \
@@ -156,4 +162,4 @@ if __name__ == '__main__':
 
     f.close()
 
-    #### print("[acxon_test.py] Narratives have been properly generated, check the 'txt'.")
+    print("[acxon_test.py] Narratives have been properly generated, check the 'txt'.")
