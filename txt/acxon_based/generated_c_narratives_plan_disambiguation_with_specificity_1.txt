@@ -1,5 +1,10 @@
 
 
-·····C-Narrative for: http://www.iri.upc.edu/groups/perception/OCRA/maps/bringing_object.owl#SoftDrink_Cola and http://www.iri.upc.edu/groups/perception/OCRA/maps/bringing_object.owl#MatchaTea
+·····The robot could bring you the soft_drink_cola or the matcha_tea
 
-SoftDrink_Cola is more processed than and is tastier than and is colder than MatchaTea. 
+soft_drink_cola is more processed than and is tastier than and is colder than matcha_tea. 
+
+
+·····In order to bring you the soft_drink_cola or the matcha_tea, the robot will execute Plan_A or Plan_b, respectively. 
+
+Plan_A is more expensive plan than and is plan with more tasks than and is slower plan than Plan_b. 

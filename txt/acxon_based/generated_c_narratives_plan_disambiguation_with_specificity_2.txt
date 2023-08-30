@@ -1,5 +1,10 @@
 
 
-·····C-Narrative for: http://www.iri.upc.edu/groups/perception/OCRA/maps/bringing_object.owl#SoftDrink_Cola and http://www.iri.upc.edu/groups/perception/OCRA/maps/bringing_object.owl#MatchaTea
+·····The robot could bring you the soft_drink_cola or the matcha_tea
 
-SoftDrink_Cola is more processed than and is tastier than and is colder than MatchaTea. SoftDrink_Cola has role UltraProcessedDrink and TastyDrink; while MatchaTea has role ProcessedDrink and HealthyDrink. SoftDrink_Cola has flavor Flavor_of_SoftDrink_Cola; while MatchaTea has flavor Flavor_of_MatchaTea. SoftDrink_Cola has temperature Temperature_of_SoftDrink_Cola; while MatchaTea has temperature Temperature_of_MatchaTea. SoftDrink_Cola has location Location_of_SoftDrink_Cola; while MatchaTea has location Location_of_MatchaTea. 
+soft_drink_cola is more processed than and is tastier than and is colder than matcha_tea. soft_drink_cola has role UltraProcessedDrink and TastyDrink; while matcha_tea has role ProcessedDrink and HealthyDrink. soft_drink_cola has flavor Flavor_of_soft_drink_cola; while matcha_tea has flavor Flavor_of_matcha_tea. soft_drink_cola has temperature Temperature_of_soft_drink_cola; while matcha_tea has temperature Temperature_of_matcha_tea. soft_drink_cola has location Location_of_soft_drink_cola; while matcha_tea has location Location_of_matcha_tea. 
+
+
+·····In order to bring you the soft_drink_cola or the matcha_tea, the robot will execute Plan_A or Plan_b, respectively. 
+
+Plan_A is more expensive plan than and is plan with more tasks than and is slower plan than Plan_b. Plan_A has expected makespan Plan_A_makespan, which has worse quality value than Plan_b_makespan; while Plan_b has expected makespan Plan_b_makespan. Plan_A has number of tasks Plan_A_number_of_tasks, which has worse quality value than Plan_b_number_of_tasks; while Plan_b has number of tasks Plan_b_number_of_tasks. Plan_A has cost Plan_A_cost, which has worse quality value than Plan_b_cost; while Plan_b has cost Plan_b_cost. 
