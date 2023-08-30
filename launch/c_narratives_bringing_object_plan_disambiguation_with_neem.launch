@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- Include node for acxon test for plan disambiguation -->
+	<node name="acxon_test_node" pkg="explanatory_narratives_cra" type="acxon_test_plan_disambiguation_with_neem.py" output="screen">
+		<!-- -->  
+    </node>
+
+</launch>
