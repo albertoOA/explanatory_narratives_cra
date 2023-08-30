@@ -31,7 +31,7 @@ if __name__ == '__main__':
     # settings variables
     human_name_planning_domain = 'the_manager'
     t_locality = [1.0, 5.0]
-    specificity = 2 # from 1 to 3
+    specificity = 3 # from 1 to 3
     
     # pairs of objects to c-narrate
     pairs_of_objects_to_bring = [["ocra_home:'Drink'", "ocra_home:'Drink'"]]
@@ -111,9 +111,11 @@ if __name__ == '__main__':
 
       # Modify the narrative to make it more appealing
       combined_c_narrative_mod = combined_c_narrative.replace(pair_of_plans_to_c_narrate_name[0], "Plan_A")
-      combined_c_narrative_mod = combined_c_narrative_mod.replace(pair_of_plans_to_c_narrate_name[1], "Plan_b")
+      combined_c_narrative_mod = combined_c_narrative_mod.replace(pair_of_plans_to_c_narrate_name[1], "Plan_B")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("has worse quality value", "has a lower value")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("has better quality value", "has a larger value")
+      combined_c_narrative_mod = combined_c_narrative_mod.replace("has role", "is classified as")
+      combined_c_narrative_mod = combined_c_narrative_mod.replace("is role of", "classifies")
 
       ## print("\nC-Narrative modified")
       ## print(combined_c_narrative_mod)
