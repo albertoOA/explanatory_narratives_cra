@@ -124,4 +124,4 @@ if __name__ == '__main__':
 
     f.close()
 
-    print("[acxon_test.py] Narratives have been properly generated, check the 'txt'.")
+    print("[acxon_test_plan_disambiguation_with_neem.py] Narratives have been properly generated, check the 'txt'.")
