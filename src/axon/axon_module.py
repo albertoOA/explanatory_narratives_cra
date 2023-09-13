@@ -48,10 +48,10 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_classes, t_locality
 
     for ontological_class in ontological_classes:
         # extract the instances of the target classes
-        class_instances = get_instances_of_target_class(client_rosprolog, ontological_class, t_locality) 
+        class_instances_uri_dict, class_instances_interval_dict = get_instances_of_target_class(client_rosprolog, ontological_class, t_locality) 
 
-        #for assertion_type, instances_list in class_instances.items():
-        for class_instance, instance_time_interval in class_instances.items():
+        #for assertion_type, instances_list in class_instances_interval_dict.items():
+        for class_instance, instance_time_interval in class_instances_interval_dict.items():
             # initialize the dictionary key
             tuples[class_instance] = list()
 
@@ -59,15 +59,15 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_classes, t_locality
                 print("Error while executing retrieve_narrative_tuples, inccorrect specificity value.")
             else:
                 if (specificity >= 1):
-                    retrieve_narrative_tuples_specificity_one(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict)
+                    retrieve_narrative_tuples_specificity_one(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict, class_instances_uri_dict[class_instance])
                 else:
                     pass
                 if (specificity >= 2):
-                    retrieve_narrative_tuples_specificity_two(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict)
+                    retrieve_narrative_tuples_specificity_two(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict, class_instances_uri_dict[class_instance])
                 else:
                     pass
                 if (specificity == 3):
-                    retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict)
+                    retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict, class_instances_uri_dict[class_instance])
                 else:
                     pass
             
@@ -92,17 +92,17 @@ def construct_narrative(client_rosprolog, target_instance, tuples_in):
 
 
 # retrieve narrative tuples functions
-def retrieve_narrative_tuples_specificity_one(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict):
+def retrieve_narrative_tuples_specificity_one(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict, semantic_map_uri):
     # note that the variable tuples is modified within this function
     for r in range(2):
         ##print(r)
         if (r == 0):
-            q_ = "kb_call(triple("+app_ontology_label+":'"+class_instance+"', R, E) during [T1, T2]), "\
+            q_ = "kb_call(triple("+semantic_map_uri+":'"+class_instance+"', R, E) during [T1, T2]), "\
                  "not(dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', R))."
             assertion_type = "affirmative"
         else: 
             q_ = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
-                 "kb_call(triple(D, owl:'sourceIndividual', "+app_ontology_label+":'"+class_instance+"') during [T1, T2]), "\
+                 "kb_call(triple(D, owl:'sourceIndividual', "+semantic_map_uri+":'"+class_instance+"') during [T1, T2]), "\
                  "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2]), "\
                  "not(dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', R))."
             assertion_type = "negative"
@@ -110,7 +110,7 @@ def retrieve_narrative_tuples_specificity_one(client_rosprolog, class_instance, 
         query = client_rosprolog.query(q_)
 
         for solution in query.solutions():
-            class_ont_uri = app_ontology_label
+            class_ont_uri = semantic_map_uri
             tr_ = kb_solution_to_tuple_(assertion_type, class_ont_uri, class_instance, solution) 
             #print(tr_)
             if (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[0]) and extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1]) and tuples[class_instance]):
@@ -132,16 +132,16 @@ def retrieve_narrative_tuples_specificity_one(client_rosprolog, class_instance, 
         query.finish()
 
 
-def retrieve_narrative_tuples_specificity_two(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict):
+def retrieve_narrative_tuples_specificity_two(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict, semantic_map_uri):
     for r in range(2):
         ##print(r)
         if (r == 0):
-            q_ = "kb_call(triple("+app_ontology_label+":'"+class_instance+"', R, E) during [T1, T2]), "\
+            q_ = "kb_call(triple("+semantic_map_uri+":'"+class_instance+"', R, E) during [T1, T2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', R)."
             assertion_type = "affirmative"
         else: 
             q_ = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
-                 "kb_call(triple(D, owl:'sourceIndividual', "+app_ontology_label+":'"+class_instance+"') during [T1, T2]), "\
+                 "kb_call(triple(D, owl:'sourceIndividual', "+semantic_map_uri+":'"+class_instance+"') during [T1, T2]), "\
                  "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', R)."
             assertion_type = "negative"
@@ -149,7 +149,7 @@ def retrieve_narrative_tuples_specificity_two(client_rosprolog, class_instance, 
         query = client_rosprolog.query(q_)
 
         for solution in query.solutions():
-            class_ont_uri = app_ontology_label
+            class_ont_uri = semantic_map_uri
             tr_ = kb_solution_to_tuple_(assertion_type, class_ont_uri, class_instance, solution)
             #print(tr_)
             if (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[0]) and extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1])):
@@ -171,17 +171,17 @@ def retrieve_narrative_tuples_specificity_two(client_rosprolog, class_instance, 
         query.finish()
 
 
-def retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict):
+def retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance, instance_time_interval, tuples, ont_property_inverse_dict, semantic_map_uri):
     for r in range(4):
         ##print(r)
         if (r == 0):
-            q_ = "kb_call(triple("+app_ontology_label+":'"+class_instance+"', Rx, Ex) during [Tx1, Tx2]), "\
+            q_ = "kb_call(triple("+semantic_map_uri+":'"+class_instance+"', Rx, Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), "\
                  "kb_call((triple(Ex, R, E) during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
                  "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2; T2=:=inf)))." # ; TODO: add 'T2=:=inf' (after '=<T2' and before '))).')
             assertion_type = "affirmative"
         elif (r == 1):
-            q_ = "kb_call(triple("+app_ontology_label+":'"+class_instance+"', Rx, Ex) during [Tx1, Tx2]), "\
+            q_ = "kb_call(triple("+semantic_map_uri+":'"+class_instance+"', Rx, Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), " \
                  "kb_call((triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
                  "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2; T2=:=inf))), "\
@@ -190,7 +190,7 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance
             assertion_type = "negative"
         elif (r == 2):
             q_ = "kb_call(triple(Dx, Rdx, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
-                 "kb_call(triple(Dx, owl:'sourceIndividual', "+app_ontology_label+":'"+class_instance+"') during [Tx1, Tx2]), " \
+                 "kb_call(triple(Dx, owl:'sourceIndividual', "+semantic_map_uri+":'"+class_instance+"') during [Tx1, Tx2]), " \
                  "kb_call(triple(Dx, owl:'assertionProperty', Rx) during [Tx1, Tx2]), kb_call(triple(Dx, owl:'targetIndividual', Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), "\
                  "kb_call((triple(Ex, R, E) during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
@@ -198,7 +198,7 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance
             assertion_type = "affirmative"
         else: 
             q_ = "kb_call(triple(Dx, Rdx, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
-                 "kb_call(triple(Dx, owl:'sourceIndividual', "+app_ontology_label+":'"+class_instance+"') during [Tx1, Tx2]), " \
+                 "kb_call(triple(Dx, owl:'sourceIndividual', "+semantic_map_uri+":'"+class_instance+"') during [Tx1, Tx2]), " \
                  "kb_call(triple(Dx, owl:'assertionProperty', Rx) during [Tx1, Tx2]), kb_call(triple(Dx, owl:'targetIndividual', Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), "\
                  "kb_call((triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
@@ -380,7 +380,11 @@ def kb_solution_to_tuple_(assertion_type, class_ont_uri, class_instance, solutio
 
     tuple_.append(class_ont_uri+":"+class_instance)
     tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['R'])] + ':' + extract_individual_from_kb_answer(solution['R']))
-    tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['E'])] + ':' + extract_individual_from_kb_answer(solution['E']))
+    if extract_raw_uri_from_kb_answer(solution['E']):
+        # data asserted by means of dul:'hasDataValue', does not have any URI (data cannot be subject, thus this is only needed here)
+        tuple_.append(owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['E'])] + ":" + extract_individual_from_kb_answer(solution['E']))
+    else:
+        tuple_.append(":" + extract_individual_from_kb_answer(solution['E'])) 
     tuple_.append('start:' + str(solution['T1']))
     tuple_.append('end:' + str(solution['T2']))
     tuple_.append(assertion_type) # whether the triple was asserted as affirtmative or negative (e.g., 'it is not a collaboration')
@@ -389,6 +393,7 @@ def kb_solution_to_tuple_(assertion_type, class_ont_uri, class_instance, solutio
 
 def get_instances_of_target_class(client_rosprolog, ontological_class, t_locality):
     class_instances = dict()
+    class_instances_uri = dict()
 
     # positive instances of the classes
     if t_locality: 
@@ -399,7 +404,8 @@ def get_instances_of_target_class(client_rosprolog, ontological_class, t_localit
         query = client_rosprolog.query("kb_call(triple(I, rdf:type, "+ontological_class+") during[T1, T2]).")
 
     for solution in query.solutions():
-        class_instances[solution['I'].split('#')[-1]] =  [solution['T1'], solution['T2']] # instance without ontology iri
+        class_instances[solution['I'].split('#')[-1]] =  [solution['T1'], solution['T2']] # instance without ontology uri
+        class_instances_uri[solution['I'].split('#')[-1]] = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['I'])]
         #print('Found solution. I = %s, T1 = %s, T2 = %s' % (solution['I'], solution['T1'], solution['T2']))
     query.finish()
 
@@ -418,9 +424,10 @@ def get_instances_of_target_class(client_rosprolog, ontological_class, t_localit
     query = client_rosprolog.query(q_)
     for solution in query.solutions():
         class_instances[solution['S'].split('#')[-1]] =  [solution['T1'], solution['T2']] 
+        class_instances_uri[solution['S'].split('#')[-1]] = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['S'])]
     query.finish()
     
-    return class_instances
+    return class_instances_uri, class_instances
 
 
 def get_ontology_property_and_inverse_dict(client_rosprolog):
@@ -549,7 +556,7 @@ def tuples_list_to_text_with_aggregation(tuples_in):
     
     for tuple_ in tuples:
         tuple_subject = extract_individual_from_tuple_element(tuple_[0])
-        tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
+        ## tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
         
         tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
         if tuple_relationship == "type":
@@ -573,7 +580,7 @@ def tuples_list_to_text_with_aggregation(tuples_in):
         else:
             tuple_object = extract_individual_from_tuple_element(tuple_[2])
 
-        tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
+        ## tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
 
         if (extract_individual_from_tuple_element(tuple_[4]) == 'Infinity'):
             tuple_start = ''

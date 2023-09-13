@@ -68,5 +68,4 @@ owl_uri_to_label_dict = {"http://www.iri.upc.edu/groups/perception/OCRA/ont/ocra
                          "http://www.w3.org/2002/07/owl#": "owl"
 }
 
-app_ontology_label = "ocra_filling_a_tray"
 semantic_map_namespace_cloth = "map_piling_cloth"
