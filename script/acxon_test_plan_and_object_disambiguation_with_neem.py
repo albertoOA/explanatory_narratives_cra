@@ -51,25 +51,63 @@ if __name__ == '__main__':
     
     f = open(narratives_file, "w")
 
+    for pair_to_compare_id, tuples_of_the_pair in tuples_dict.items():
+      introductory_text_objects_start = "\n\n·····The robot could bring you the " 
+      introductory_text_objects_pair = \
+        extract_individual_from_kb_answer(pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][0]) \
+        + " or the " + \
+        extract_individual_from_kb_answer(pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1]) 
+      introductory_text_objects_end = "\n\n"
+      
+      introductory_text_objects = introductory_text_objects_start + introductory_text_objects_pair + introductory_text_objects_end
+
+      objects_c_narrative = construct_narrative(client_rosprolog, pairs_id_to_pairs_to_compare_dict[pair_to_compare_id], \
+                                      tuples_of_the_pair)
+      
+      ## print(introductory_text_objects)
+      ## print(objects_c_narrative)
+
+      # extract names of objects to bring to the user  
+      pair_of_objects_to_bring_with_uri = pairs_id_to_pairs_to_compare_dict[pair_to_compare_id]
+      pair_of_objects_to_bring_name = list()
+      for i in range(0, len(pair_of_objects_to_bring_with_uri)): 
+        object_ = extract_individual_from_kb_answer(pair_of_objects_to_bring_with_uri[i])
+        pair_of_objects_to_bring_name.append(object_)
+
+      triples_count = triples_count + len(tuples_of_the_pair[pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][0]]) + len(tuples_of_the_pair[pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1]])
+      words_count = words_count + len(objects_c_narrative.split())
+
+
     # pairs of plans to c-narrate
-    classes_to_compare = [["dul:'Plan'", "dul:'Plan'"]] 
-    ## constrained_ontological_scope = ["dul:'Quality'", "dul:'Event'"] # classes to constrain the scope of the narrative
-    constrained_ontological_scope = [] # no constrain at all, the narrative will use all the stored knowledge 
+    pairs_of_plans_to_disambiguate = [["dul:'Plan'", "dul:'Plan'"]] 
+    constrained_ontological_scope = ["dul:'Quality'", "dul:'Event'"] # classes to constrain the scope of the narrative
+    ## constrained_ontological_scope = [] # no constrain at all, the narrative will use all the stored knowledge 
     narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_c_narratives_plan_disambiguation_with_specificity_" + str(specificity) + ".txt"
 
-    tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, classes_to_compare, t_locality, constrained_ontological_scope, specificity)
+    tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_of_plans_to_disambiguate, t_locality, constrained_ontological_scope, specificity)
 
     for pair_to_compare_id, tuples_of_the_pair in tuples_dict.items():
       pair_of_plans_to_c_narrate_name = list()
-      
-      pair_of_plans_to_c_narrate_name.append(extract_individual_from_kb_answer(pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][0]))
-      pair_of_plans_to_c_narrate_name.append(extract_individual_from_kb_answer(pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1]))
+      if (pair_of_objects_to_bring_name):
+        for i in range(0, len(pair_of_objects_to_bring_name)):
+          if pair_of_objects_to_bring_name[i] in extract_individual_from_kb_answer(pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][0]):
+            pair_of_plans_to_c_narrate_name.append(extract_individual_from_kb_answer(pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][0]))
+          elif pair_of_objects_to_bring_name[i] in extract_individual_from_kb_answer(pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1]): 
+            pair_of_plans_to_c_narrate_name.append(extract_individual_from_kb_answer(pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1]))
+          else:
+            pass
+      else: 
+        pair_of_plans_to_c_narrate_name.append(extract_individual_from_kb_answer(pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][0]))
+        pair_of_plans_to_c_narrate_name.append(extract_individual_from_kb_answer(pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1]))
 
       # narrative construction
-      introductory_text_plans = "\n\n·····There are two plans to disambiguate: " + \
+      introductory_text_plans_start = "\n\n·····In order to bring you the " 
+      introductory_text_plans_pair = ", the robot will execute " + \
         pair_of_plans_to_c_narrate_name[0] \
-        + " and " + \
-        pair_of_plans_to_c_narrate_name[1] + ". \n\n"
+        + " or " + \
+        pair_of_plans_to_c_narrate_name[1] + ", respectively. \n\n"
+      
+      introductory_text_plans = introductory_text_plans_start + introductory_text_objects_pair + introductory_text_plans_pair
 
       plans_c_narrative = construct_narrative(client_rosprolog, pairs_id_to_pairs_to_compare_dict[pair_to_compare_id], \
                                       tuples_of_the_pair)
@@ -86,7 +124,7 @@ if __name__ == '__main__':
       # - substitute the 'has data value' when it appears [PARTIALLY DONE - with previous (propperties modficiation)]
 
       # Combine all the narratives
-      combined_c_narrative = introductory_text_plans + plans_c_narrative
+      combined_c_narrative = introductory_text_objects + objects_c_narrative + introductory_text_plans + plans_c_narrative
       ## print("\nC-Narrative")
       ## print(combined_c_narrative)
 
@@ -95,10 +133,8 @@ if __name__ == '__main__':
       combined_c_narrative_mod = combined_c_narrative_mod.replace(pair_of_plans_to_c_narrate_name[1], "Plan_B")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("has worse quality value", "has a lower value")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("has better quality value", "has a larger value")
-      combined_c_narrative_mod = combined_c_narrative_mod.replace("has equivalent quality value than", "has the same value as")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("has role", "is classified as")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("is role of", "classifies")
-      combined_c_narrative_mod = combined_c_narrative_mod.replace("defines task", "includes task")
 
       ## print("\nC-Narrative modified")
       ## print(combined_c_narrative_mod)
