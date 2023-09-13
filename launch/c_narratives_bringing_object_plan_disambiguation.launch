@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <launch>
+	<arg name="semantic_map_namespace"	 	default="map_bringing_object" />
+
 	<arg name="domain_path"		default="$(find know_cra)/pddl/domain/apartment_domain.pddl" />
 	<arg name="problem_path"	default="$(find know_cra)/pddl/problem/apartment_problem.pddl" />
 	<arg name="narrator_name"	default="" />
@@ -23,8 +25,8 @@
 	</include>
 
 	<!-- Include node for acxon test for plan disambiguation -->
-	<node name="acxon_test_node" pkg="explanatory_narratives_cra" type="acxon_test_plan_disambiguation.py" output="screen">
-		<!-- -->  
+	<node name="acxon_test_node" pkg="explanatory_narratives_cra" type="acxon_test_plan_and_object_disambiguation.py" output="screen">
+		<param name="semantic_map_namespace" value="$(arg semantic_map_namespace)" />   
     </node>
 
 </launch>
