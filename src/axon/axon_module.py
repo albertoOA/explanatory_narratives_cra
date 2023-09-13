@@ -178,13 +178,13 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance
             q_ = "kb_call(triple("+app_ontology_label+":'"+class_instance+"', Rx, Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), "\
                  "kb_call((triple(Ex, R, E) during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
-                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2)))." # ; TODO: add 'T2=:=inf' (after '=<T2' and before '))).')
+                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2; T2=:=inf)))." # ; TODO: add 'T2=:=inf' (after '=<T2' and before '))).')
             assertion_type = "affirmative"
         elif (r == 1):
             q_ = "kb_call(triple("+app_ontology_label+":'"+class_instance+"', Rx, Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), " \
                  "kb_call((triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
-                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2))), "\
+                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2; T2=:=inf))), "\
                  "kb_call(triple(D, owl:'sourceIndividual', Ex) during [T1, T2]), " \
                  "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2])." # ; TODO: add 'T2=:=inf' (after '=<T2' and before '))),')
             assertion_type = "negative"
@@ -194,7 +194,7 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance
                  "kb_call(triple(Dx, owl:'assertionProperty', Rx) during [Tx1, Tx2]), kb_call(triple(Dx, owl:'targetIndividual', Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), "\
                  "kb_call((triple(Ex, R, E) during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
-                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2)))." # ; TODO: add 'T2=:=inf' (after '=<T2' and before '))).')
+                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2; T2=:=inf)))." # ; TODO: add 'T2=:=inf' (after '=<T2' and before '))).')
             assertion_type = "affirmative"
         else: 
             q_ = "kb_call(triple(Dx, Rdx, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
@@ -202,7 +202,7 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, class_instance
                  "kb_call(triple(Dx, owl:'assertionProperty', Rx) during [Tx1, Tx2]), kb_call(triple(Dx, owl:'targetIndividual', Ex) during [Tx1, Tx2]), "\
                  "dif('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', Rx), "\
                  "kb_call((triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2], (T1>="+str(instance_time_interval[0])+", T1=<"+str(instance_time_interval[1])+"; "\
-                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2))), "\
+                 "T2>="+str(instance_time_interval[0])+", T2=<"+str(instance_time_interval[1])+"; "+str(instance_time_interval[0])+">=T1, "+str(instance_time_interval[1])+"=<T2; T2=:=inf))), "\
                  "kb_call(triple(D, owl:'sourceIndividual', Ex) during [T1, T2]), kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
                  "kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2])." # ; TODO: add 'T2=:=inf' (after '=<T2' and before '))),')
             assertion_type = "negative"
@@ -394,7 +394,7 @@ def get_instances_of_target_class(client_rosprolog, ontological_class, t_localit
     if t_locality: 
         query = client_rosprolog.query("kb_call((triple(I, rdf:type, "+ontological_class+") during[T1, T2], "\
                                     "(T1>="+str(t_locality[0])+", T1=<"+str(t_locality[1])+"; T2>="+str(t_locality[0])+", T2=<"+str(t_locality[1])+"; "\
-                                    +str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2))).") # ; TODO: add 'T2=:=inf' (after '=<T2' and before '))).')
+                                    +str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2; T2=:=inf))).") # ; TODO: add 'T2=:=inf' (after '=<T2' and before '))).')
     else:
         query = client_rosprolog.query("kb_call(triple(I, rdf:type, "+ontological_class+") during[T1, T2]).")
 
@@ -406,7 +406,7 @@ def get_instances_of_target_class(client_rosprolog, ontological_class, t_localit
     # negative instances of the classes
     if t_locality:
         q_ = "kb_call((triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2], (T1>="+str(t_locality[0])+", T1=<"+str(t_locality[1])+"; "\
-            "T2>="+str(t_locality[0])+", T2=<"+str(t_locality[1])+"; "+str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2))), "\
+            "T2>="+str(t_locality[0])+", T2=<"+str(t_locality[1])+"; "+str(t_locality[0])+">=T1, "+str(t_locality[1])+"=<T2; T2=:=inf))), "\
             "kb_call(triple(D, owl:'sourceIndividual', S) during [T1, T2]), kb_call(triple(D, owl:'assertionProperty', rdf:type) during [T1, T2]), "\
             "kb_call(triple(D, owl:'targetIndividual', "+ontological_class+") during [T1, T2])." # ; TODO: add 'T2=:=inf' (after '=<T2' and before '))),')
     else:
