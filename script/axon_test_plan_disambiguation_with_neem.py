@@ -40,7 +40,7 @@ if __name__ == '__main__':
     t_locality = [0.0, 1000.0]
     specificity = 3 # from 1 to 3
     classes_to_query = ["dul:'Plan'"]
-    narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/axon_based/generated_narratives_plan_disambiguation_with_specificity_" + str(specificity) + ".txt"
+    narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/axon_based/generated_narratives_plan_disambiguation_objective_evaluation_with_specificity_" + str(specificity) + ".txt"
 
     triples_dict = retrieve_narrative_tuples_(client_rosprolog, classes_to_query, t_locality, specificity)
 
