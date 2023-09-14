@@ -1,0 +1,22 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_A is a type of Plan and includes task task_0_find_person and task_1_goto_waypoint and task_2_goto_waypoint and task_3_grasp_object and task_4_goto_waypoint and task_5_goto_waypoint and task_6_goto_waypoint and task_7_give_object and is more expensive plan than Plan_B and is plan with more tasks than Plan_B and is slower plan than Plan_B. 
+
+Plan_A_makespan is expected makespan of Plan_A. 
+
+Plan_A_number_of_tasks is number of tasks of Plan_A. 
+
+Plan_A_cost is cost of Plan_A. 
+
+
+Plan_B is a type of Plan and includes task task_0_find_person and task_1_goto_waypoint and task_2_grasp_object and task_3_goto_waypoint and task_4_goto_waypoint and task_5_give_object and is cheaper plan than Plan_A and is plan with less tasks than Plan_A and is faster plan than Plan_A. 
+
+Plan_B_makespan is expected makespan of Plan_B. 
+
+Plan_B_number_of_tasks is number of tasks of Plan_B. 
+
+Plan_B_cost is cost of Plan_B. 
+
+
