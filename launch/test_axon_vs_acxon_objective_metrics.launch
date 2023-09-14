@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <launch>
+	<arg name="specificity_level"	 	default="3" />
 
 	<!-- Include node for acxon test for plan disambiguation -->
 	<node name="axon_test_node" pkg="explanatory_narratives_cra" type="axon_test_plan_disambiguation_with_neem.py" output="screen">
-		<!-- -->  
+		<param name="specificity_level" value="$(arg specificity_level)" />   
     </node>
 
 	<!-- Include node for acxon test for plan disambiguation -->
 	<node name="acxon_test_node" pkg="explanatory_narratives_cra" type="acxon_test_plan_disambiguation_with_neem.py" output="screen">
-		<!-- -->  
+		<param name="specificity_level" value="$(arg specificity_level)" />   
     </node>
 
 </launch>

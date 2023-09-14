@@ -23,14 +23,20 @@ from rosprolog_client import PrologException, Prolog
 from know_cra.rosplan_cra_module import ROSPlanCRA
 
 if __name__ == '__main__': 
+    rospy.init_node('acxon_test_plan_disambiguation_with_neem')
+    roslib.load_manifest('rosprolog')
+
     # TEST variables  
     start = time.time()
     triples_count = 0
     words_count = 0
     test_object = TestClassForExplanatoryNarratives()
 
-    rospy.init_node('acxon_test_plan_disambiguation_with_neem')
-    roslib.load_manifest('rosprolog')
+    if (rospy.has_param('~specificity_level')):
+      specificity = rospy.get_param('~specificity_level')
+    else:
+      rospy.loginfo(rospy.get_name() + ": ROS parameter cannot be read.")
+      specificity = 3
     
     # ROS useful variables
     client_rosprolog = Prolog()
@@ -39,12 +45,12 @@ if __name__ == '__main__':
     # settings variables
     human_name_planning_domain = 'the_manager'
     t_locality = [1.0, 5.0]
-    specificity = 3 # from 1 to 3
+    narratives_file = rospack.get_path('explanatory_narratives_cra') + \
+      "/txt/acxon_based/generated_c_narratives_plan_disambiguation_objective_evaluation_with_specificity_" + str(specificity) + ".txt"
     
     # pairs of objects to c-narrate
     pairs_of_objects_to_bring = [["ocra_home:'Drink'", "ocra_home:'Drink'"]]
     constrained_ontological_scope = ["dul:'Quality'", "dul:'Role'", "dul:'Place'"] # classes to constrain the scope of the narrative
-    narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_c_narratives_plan_disambiguation_objective_evaluation_with_specificity_" + str(specificity) + ".txt"
 
     tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_of_objects_to_bring, t_locality, constrained_ontological_scope, specificity)
 

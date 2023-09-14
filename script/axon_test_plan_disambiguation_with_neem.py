@@ -23,14 +23,20 @@ from rosprolog_client import PrologException, Prolog
 from know_cra.rosplan_cra_module import ROSPlanCRA
 
 if __name__ == '__main__':
+    rospy.init_node('axon_test_plan_disambiguation_with_neem')
+    roslib.load_manifest('rosprolog')
+
     # TEST variables  
     start = time.time()
     triples_count = 0
     words_count = 0
     test_object = TestClassForExplanatoryNarratives()
 
-    rospy.init_node('axon_test_plan_disambiguation_with_neem')
-    roslib.load_manifest('rosprolog')
+    if (rospy.has_param('~specificity_level')):
+      specificity = rospy.get_param('~specificity_level')
+    else:
+      rospy.loginfo(rospy.get_name() + ": ROS parameter cannot be read.")
+      specificity = 3
     
    # ROS useful variables
     client_rosprolog = Prolog()
@@ -38,9 +44,9 @@ if __name__ == '__main__':
 
     # settings variables
     t_locality = [0.0, 1000.0]
-    specificity = 3 # from 1 to 3
     classes_to_query = ["dul:'Plan'"]
-    narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/axon_based/generated_narratives_plan_disambiguation_objective_evaluation_with_specificity_" + str(specificity) + ".txt"
+    narratives_file = rospack.get_path('explanatory_narratives_cra') + \
+      "/txt/axon_based/generated_narratives_plan_disambiguation_objective_evaluation_with_specificity_" + str(specificity) + ".txt"
 
     triples_dict = retrieve_narrative_tuples_(client_rosprolog, classes_to_query, t_locality, specificity)
 
