@@ -818,13 +818,7 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
             tuples_related_to_b = extract_related_tuples(tuples_cp, indices_related_to_b)
 
             # construct text for the two instances to compare 
-            ## if isinstance(tuple_a[2], list):
-            ##     # the tuples's object is a list of previously grouped objects
-            ##     text_a = construct_text_from_single_tuple_with_concatenated_objects(tuple_a, tuples_related_to_a)
-            ## else:
-            text_a = construct_text_from_single_tuple(tuple_a, tuples_related_to_a)
-            
-
+            text_a = construct_text_from_single_tuple(tuple_a, tuples_related_to_a)            
             text_b = construct_text_from_single_tuple(tuple_b, tuples_related_to_b)
 
             # construct the text for a single cluster
