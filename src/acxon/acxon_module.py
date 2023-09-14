@@ -751,6 +751,8 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
         indices_related_to_b = list()
         indices_related_to_instance = list()
         indices_unrelated_to_instance = list()
+        indices_unrelated_to_instance_a = list()
+        indices_unrelated_to_instance_b = list()
 
         for q in range(0, len(tuples_cp)):
             for j in range(0, len(tuples_cp)):
@@ -777,39 +779,47 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
                 ## print(tuples_cp[index_a[0]][2])
                 ## print(tuples_cp[index_b[0]][2])
                 ## print("_-_\n\n")
-                if isinstance(tuples_cp[index_a[0]][2], list):
+                if isinstance(tuples_cp[index_a[0]][2], list) or isinstance(tuples_cp[index_b[0]][2], list):
                     if tuples_cp[q][0] in tuples_cp[index_a[0]][2]:
                         indices_related_to_a.append(q)
                     else:
                         if q == index_a[0] or q == index_b[0]:
                             pass
                         else: 
-                            indices_unrelated_to_instance.append(q)
-                elif isinstance(tuples_cp[index_b[0]][2], list):
+                            indices_unrelated_to_instance_a.append(q)
+
                     if tuples_cp[q][0] in tuples_cp[index_b[0]][2]:
                         indices_related_to_b.append(q)
                     else:
                         if q == index_a[0] or q == index_b[0]:
                             pass
                         else: 
-                            indices_unrelated_to_instance.append(q)
+                            indices_unrelated_to_instance_b.append(q)
                 else:
+                    if tuples_cp[index_a[0]][2] == tuples_cp[q][0]:
+                        indices_related_to_a.append(q)
+                    else:
+                        if q == index_a[0] or q == index_b[0]:
+                            pass
+                        else: 
+                            indices_unrelated_to_instance_a.append(q)
+
                     if tuples_cp[index_b[0]][2] == tuples_cp[q][0]:
-                        indices_related_to_b.append(q)
-                    elif tuples_cp[index_b[0]][2] == tuples_cp[q][0]:
                         indices_related_to_b.append(q)
                     else:
                         if q == index_a[0] or q == index_b[0]:
                             pass
                         else: 
-                            indices_unrelated_to_instance.append(q)
+                            indices_unrelated_to_instance_b.append(q)
+            
+            indices_unrelated_to_instance.extend([value for value in indices_unrelated_to_instance_a if value in indices_unrelated_to_instance_b])
             
             # checking if we are considering all possible tuples
             if indices_unrelated_to_instance:
                 print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
                 print(indices_unrelated_to_instance)
-                ## for i in indices_unrelated_to_instance:
-                ##     print(tuples_cp[i])
+                ## for index_unrelated in indices_unrelated_to_instance:
+                ##     print(tuples_cp[index_unrelated])
             else:
                 ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
                 pass
@@ -1226,7 +1236,7 @@ def construct_text_from_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
                 tuple_object = extract_individual_from_tuple_element(obj)
             else: 
                 if are_there_multiple_related_tuples_for_same_object_:
-                    tuple_object = tuple_object + ', and also ' + tuple_relationship + extract_individual_from_tuple_element(obj)
+                    tuple_object = tuple_object + ', and also ' + tuple_relationship + ' ' + extract_individual_from_tuple_element(obj)
                 else:
                     tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
             
