@@ -44,7 +44,7 @@ if __name__ == '__main__':
     # pairs of objects to c-narrate
     pairs_of_objects_to_bring = [["ocra_home:'Drink'", "ocra_home:'Drink'"]]
     constrained_ontological_scope = ["dul:'Quality'", "dul:'Role'", "dul:'Place'"] # classes to constrain the scope of the narrative
-    narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_c_narratives_plan_disambiguation_with_specificity_" + str(specificity) + ".txt"
+    narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_c_narratives_plan_disambiguation_objective_evaluation_with_specificity_" + str(specificity) + ".txt"
 
     tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_of_objects_to_bring, t_locality, constrained_ontological_scope, specificity)
 
@@ -93,8 +93,8 @@ if __name__ == '__main__':
       # Modify the narrative to make it more appealing
       combined_c_narrative_mod = combined_c_narrative.replace(pair_of_plans_to_c_narrate_name[0], "Plan_A")
       combined_c_narrative_mod = combined_c_narrative_mod.replace(pair_of_plans_to_c_narrate_name[1], "Plan_B")
-      combined_c_narrative_mod = combined_c_narrative_mod.replace("has worse quality value", "has a lower value")
-      combined_c_narrative_mod = combined_c_narrative_mod.replace("has better quality value", "has a larger value")
+      combined_c_narrative_mod = combined_c_narrative_mod.replace("has worse quality value", "has a higher value")
+      combined_c_narrative_mod = combined_c_narrative_mod.replace("has better quality value", "has a lower value")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("has equivalent quality value than", "has the same value as")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("has role", "is classified as")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("is role of", "classifies")

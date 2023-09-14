@@ -64,8 +64,8 @@ if __name__ == '__main__':
     # Modify the narrative to make it more appealing
     combined_narrative_mod = combined_narrative.replace(list(triples_dict.keys())[0], "Plan_A")
     combined_narrative_mod = combined_narrative_mod.replace(list(triples_dict.keys())[1], "Plan_B")
-    combined_narrative_mod = combined_narrative_mod.replace("has worse quality value", "has a lower value")
-    combined_narrative_mod = combined_narrative_mod.replace("has better quality value", "has a larger value")
+    combined_narrative_mod = combined_narrative_mod.replace("has worse quality value", "has a higher value")
+    combined_narrative_mod = combined_narrative_mod.replace("has better quality value", "has a lower value")
     combined_narrative_mod = combined_narrative_mod.replace("has equivalent quality value than", "has the same value as")
     combined_narrative_mod = combined_narrative_mod.replace("has role", "is classified as")
     combined_narrative_mod = combined_narrative_mod.replace("is role of", "classifies")

@@ -131,8 +131,8 @@ if __name__ == '__main__':
       # Modify the narrative to make it more appealing
       combined_c_narrative_mod = combined_c_narrative.replace(pair_of_plans_to_c_narrate_name[0], "Plan_A")
       combined_c_narrative_mod = combined_c_narrative_mod.replace(pair_of_plans_to_c_narrate_name[1], "Plan_B")
-      combined_c_narrative_mod = combined_c_narrative_mod.replace("has worse quality value", "has a lower value")
-      combined_c_narrative_mod = combined_c_narrative_mod.replace("has better quality value", "has a larger value")
+      combined_c_narrative_mod = combined_c_narrative_mod.replace("has worse quality value", "has a higher value")
+      combined_c_narrative_mod = combined_c_narrative_mod.replace("has better quality value", "has a lower value")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("has equivalent quality value than", "has the same value as")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("has role", "is classified as")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("is role of", "classifies")
