@@ -773,20 +773,43 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
             tuple_b = extract_related_tuples(tuples_cp, index_b)[0] # it returns a list of lists (just one in here)
 
             for q in range(0, len(tuples_cp)):
-                if tuples_cp[index_a[0]][2] == tuples_cp[q][0]:
-                    indices_related_to_a.append(q)
-                elif tuples_cp[index_b[0]][2] == tuples_cp[q][0]:
-                    indices_related_to_b.append(q)
+                ## print(tuples_cp[q][0])
+                ## print(tuples_cp[index_a[0]][2])
+                ## print(tuples_cp[index_b[0]][2])
+                ## print("_-_\n\n")
+                if isinstance(tuples_cp[index_a[0]][2], list):
+                    if tuples_cp[q][0] in tuples_cp[index_a[0]][2]:
+                        indices_related_to_a.append(q)
+                    else:
+                        if q == index_a[0] or q == index_b[0]:
+                            pass
+                        else: 
+                            indices_unrelated_to_instance.append(q)
+                elif isinstance(tuples_cp[index_b[0]][2], list):
+                    if tuples_cp[q][0] in tuples_cp[index_b[0]][2]:
+                        indices_related_to_b.append(q)
+                    else:
+                        if q == index_a[0] or q == index_b[0]:
+                            pass
+                        else: 
+                            indices_unrelated_to_instance.append(q)
                 else:
-                    if q == index_a[0] or q == index_b[0]:
-                        pass
-                    else: 
-                        indices_unrelated_to_instance.append(q)
+                    if tuples_cp[index_b[0]][2] == tuples_cp[q][0]:
+                        indices_related_to_b.append(q)
+                    elif tuples_cp[index_b[0]][2] == tuples_cp[q][0]:
+                        indices_related_to_b.append(q)
+                    else:
+                        if q == index_a[0] or q == index_b[0]:
+                            pass
+                        else: 
+                            indices_unrelated_to_instance.append(q)
             
             # checking if we are considering all possible tuples
             if indices_unrelated_to_instance:
                 print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
                 print(indices_unrelated_to_instance)
+                ## for i in indices_unrelated_to_instance:
+                ##     print(tuples_cp[i])
             else:
                 ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
                 pass
@@ -795,17 +818,16 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
             tuples_related_to_b = extract_related_tuples(tuples_cp, indices_related_to_b)
 
             # construct text for the two instances to compare 
-            text_a = construct_text_from_single_tuple(tuple_a)
-            if tuples_related_to_a:
-                text_a = text_a + ", which " + construct_aggregated_text_from_multiple_tuples(tuples_related_to_a)
-            else: 
-                pass
+            print(tuples_related_to_a)
+            print(tuple_a)
+            ## if isinstance(tuple_a[2], list):
+            ##     # the tuples's object is a list of previously grouped objects
+            ##     text_a = construct_text_from_single_tuple_with_concatenated_objects(tuple_a, tuples_related_to_a)
+            ## else:
+            text_a = construct_text_from_single_tuple(tuple_a, tuples_related_to_a)
+            
 
-            text_b = construct_text_from_single_tuple(tuple_b)
-            if tuples_related_to_b:
-                text_b = text_b + ", which " + construct_aggregated_text_from_multiple_tuples(tuples_related_to_b)
-            else: 
-                pass
+            text_b = construct_text_from_single_tuple(tuple_b, tuples_related_to_b)
 
             # construct the text for a single cluster
             text_for_each_cluster_dict[i] = text_a + "; while " + text_b
@@ -836,11 +858,7 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
             tuples_related_to_instance = extract_related_tuples(tuples_cp, indices_related_to_instance)
 
             # construct text for the two instances to compare 
-            text_ = construct_text_from_single_tuple(tuple_)
-            if tuples_related_to_instance:
-                text_ = text_ + ", which " + construct_aggregated_text_from_multiple_tuples(tuples_related_to_instance)
-            else:
-                pass
+            text_ = construct_text_from_single_tuple(tuple_, tuples_related_to_instance)
 
             # construct the text for a single cluster
             text_for_each_cluster_dict[i] = text_
@@ -1176,9 +1194,10 @@ def group_tuples_of_same_predicate(tuples_in): # ont_prop_plural_dict
     return new_tuples
 
 
-def construct_text_from_single_tuple(tuple_in):
+def construct_text_from_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
     text = ''
     tuple_ = tuple_in.copy()
+    tuples_related_to_main_tuple_ = tuples_related_to_main_tuple_in.copy()
     
     tuple_subject = extract_individual_from_tuple_element(tuple_[0])
     ## tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
@@ -1206,16 +1225,41 @@ def construct_text_from_single_tuple(tuple_in):
         tuple_relationship = "(not) " + tuple_relationship
     else:
         pass
-
+    
+    are_there_multiple_related_tuples_for_same_object_ = False
     if type(tuple_[2]) == list:
         tuple_object = ''
         for obj in tuple_[2]:
             if not tuple_object:
                 tuple_object = extract_individual_from_tuple_element(obj)
             else: 
-                tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
+                if are_there_multiple_related_tuples_for_same_object_:
+                    tuple_object = tuple_object + ', and also ' + tuple_relationship + extract_individual_from_tuple_element(obj)
+                else:
+                    tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
+            
+            # aggreate text about related tuples
+            if tuples_related_to_main_tuple_:
+                are_there_multiple_related_tuples_for_same_object_ = False
+                for t_ in tuples_related_to_main_tuple_:
+                    if obj == t_[0]:
+                        if are_there_multiple_related_tuples_for_same_object_:
+                            tuple_object = tuple_object + " and " + construct_aggregated_text_from_single_tuple(t_)
+                        else: 
+                            tuple_object = tuple_object + ", which " + construct_aggregated_text_from_single_tuple(t_)
+                            are_there_multiple_related_tuples_for_same_object_ = True
+                    else:
+                        pass
+            else:
+                pass
     else:
         tuple_object = extract_individual_from_tuple_element(tuple_[2])
+        
+        # aggreate text about related tuples
+        if tuples_related_to_main_tuple_:
+            tuple_object = tuple_object + ", which " + construct_aggregated_text_from_multiple_tuples(tuples_related_to_main_tuple_)
+        else: 
+            pass
 
     ## tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
 
