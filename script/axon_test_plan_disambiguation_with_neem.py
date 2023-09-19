@@ -12,6 +12,7 @@ What is this code?
 """
 
 import re
+import csv
 import time
 import rospy
 import roslib
@@ -38,6 +39,18 @@ if __name__ == '__main__':
       rospy.loginfo(rospy.get_name() + ": ROS parameter cannot be read.")
       specificity = 3
     
+    if (rospy.has_param('~domain_name')):
+      planning_domain = rospy.get_param('~domain_name')
+    else:
+      rospy.loginfo(rospy.get_name() + ": ROS parameter cannot be read.")
+      planning_domain = "unknown"
+    
+    if (rospy.has_param('~problem_name')):
+      planning_problem = rospy.get_param('~problem_name')
+    else:
+      rospy.loginfo(rospy.get_name() + ": ROS parameter cannot be read.")
+      planning_problem = "unknown"
+    
    # ROS useful variables
     client_rosprolog = Prolog()
     rospack = rospkg.RosPack()
@@ -46,7 +59,9 @@ if __name__ == '__main__':
     t_locality = [0.0, 1000.0]
     classes_to_query = ["dul:'Plan'"]
     narratives_file = rospack.get_path('explanatory_narratives_cra') + \
-      "/txt/axon_based/generated_narratives_plan_disambiguation_objective_evaluation_with_specificity_" + str(specificity) + ".txt"
+      "/txt/axon_based/test/"+planning_domain+"/generated_narratives_plan_comparison_with_specificity_" + str(specificity) + "_problem_" + planning_problem + ".txt"
+    evaluation_results_file = rospack.get_path('explanatory_narratives_cra') + \
+      "/csv/axon_based/test/" + planning_domain + "/problem_" + planning_problem + "_with_specificity_" + str(specificity) + ".csv"
 
     triples_dict = retrieve_narrative_tuples_(client_rosprolog, classes_to_query, t_locality, specificity)
 
@@ -88,8 +103,19 @@ if __name__ == '__main__':
 
     end = time.time()
      
-    print("\n ·· TEST ·····\n Elapsed time: ", end - start, " seconds")
-    print(" Memory usage (peak): ", test_object.get_memory_usage()['vmpeak'], " MB") # 'vmpeak' 'vmsize' 'vmlck' 'vmpin' 'vmhwm' 'vmrss' 'vmdata' 'vmstk' 'vmexe' 'vmlib' 'vmpte' 'vmswap'
-    print(" Number of triples: ", triples_count)
-    print(" Narrative number of words (aprox.): ", words_count)
+    # results dictionary
+    results_dict = {"Domain": planning_domain, "Problem" : planning_problem, "Specificity" : specificity, "Time" : (end - start), "Memory" : test_object.get_memory_usage()['vmpeak'], "Triples" : triples_count, "Words": words_count}
+    
+
+    with open(evaluation_results_file, 'w', newline='') as g:
+      fieldnames = list(results_dict.keys())
+      writer = csv.DictWriter(g, fieldnames=fieldnames)
+
+      writer.writeheader()
+      writer.writerow(results_dict)
+    
+    print("\n ·· TEST ·····\n Elapsed time: ", results_dict["Time"], " seconds")
+    print(" Memory usage (peak): ", results_dict["Memory"], " MB") # 'vmpeak' 'vmsize' 'vmlck' 'vmpin' 'vmhwm' 'vmrss' 'vmdata' 'vmstk' 'vmexe' 'vmlib' 'vmpte' 'vmswap'
+    print(" Number of triples: ", results_dict["Triples"]) 
+    print(" Narrative number of words (aprox.): ", results_dict["Words"]) 
     print("\n")
