@@ -1,0 +1,5 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_A is cheaper plan than and is plan with less tasks than and is faster plan than Plan_B. Plan_A includes task task_29_light_match and task_30_mend_fuse, which directly precedes task_31_mend_fuse; while Plan_B includes task task_29_mend_fuse, which directly precedes task_31_mend_fuse, and also includes task task_30_light_match and task_32_mend_fuse. Plan_A has expected makespan Plan_A_makespan, which has a lower value than Plan_B_makespan and has value 42.02; while Plan_B has expected makespan Plan_B_makespan, which has value 44.02. Plan_A has number of tasks Plan_A_number_of_tasks, which has a lower value than Plan_B_number_of_tasks and has value 32.0; while Plan_B has number of tasks Plan_B_number_of_tasks, which has value 33.0. Plan_A has cost Plan_A_cost, which has a lower value than Plan_B_cost and has value 42.02; while Plan_B has cost Plan_B_cost, which has value 44.02. 

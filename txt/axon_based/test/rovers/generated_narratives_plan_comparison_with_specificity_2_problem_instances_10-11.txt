@@ -1,0 +1,22 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_A is a type of Plan and includes task task_0_navigate and task_1_sample_soil and task_2_sample_rock and task_3_calibrate and task_4_calibrate and task_5_calibrate and task_6_navigate and task_7_take_image and task_8_take_image and task_9_take_image and task_10_sample_soil and task_11_navigate and task_12_calibrate and task_13_navigate and task_14_communicate_soil_data and task_15_sample_rock and task_16_navigate and task_17_drop and task_18_navigate and task_19_communicate_rock_data and task_20_sample_soil and task_21_navigate and task_22_communicate_image_data and task_23_drop and task_24_sample_rock and task_25_navigate and task_26_drop and task_27_sample_rock and task_28_communicate_image_data and task_29_navigate and task_30_drop and task_31_navigate and task_32_communicate_image_data and task_33_sample_soil and task_34_navigate and task_35_communicate_soil_data and task_36_communicate_soil_data and task_37_communicate_soil_data and task_38_communicate_rock_data and task_39_communicate_rock_data and task_40_communicate_rock_data and is more expensive plan than Plan_B and is plan with more tasks than Plan_B and is slower plan than Plan_B. 
+
+Plan_A_makespan is expected makespan of Plan_A. 
+
+Plan_A_number_of_tasks is number of tasks of Plan_A. 
+
+Plan_A_cost is cost of Plan_A. 
+
+
+Plan_B is a type of Plan and includes task task_0_navigate and task_1_sample_soil and task_2_navigate and task_3_sample_soil and task_4_calibrate and task_5_sample_rock and task_6_navigate and task_7_drop and task_8_take_image and task_9_navigate and task_10_drop and task_11_communicate_image_data and task_12_sample_soil and task_13_navigate and task_14_drop and task_15_communicate_soil_data and task_16_sample_rock and task_17_drop and task_18_communicate_soil_data and task_19_navigate and task_20_sample_soil and task_21_communicate_soil_data and task_22_navigate and task_23_communicate_rock_data and task_24_communicate_soil_data and task_25_communicate_rock_data and task_26_navigate and task_27_sample_rock and task_28_navigate and task_29_drop and task_30_communicate_rock_data and task_31_sample_rock and task_32_communicate_rock_data and is cheaper plan than Plan_A and is plan with less tasks than Plan_A and is faster plan than Plan_A. 
+
+Plan_B_makespan is expected makespan of Plan_B. 
+
+Plan_B_number_of_tasks is number of tasks of Plan_B. 
+
+Plan_B_cost is cost of Plan_B. 
+
+

@@ -1,0 +1,30 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_A is plan with equal cost than and is plan with less tasks than and is plan with equal expected makespan than Plan_B. Plan_A has number of tasks Plan_A_number_of_tasks, which has a lower value than Plan_B_number_of_tasks and has value 12.0; while Plan_B has number of tasks Plan_B_number_of_tasks, which has value 20.0. Plan_A has expected makespan Plan_A_makespan, which has the same value as Plan_B_makespan; while Plan_B has expected makespan Plan_B_makespan. Plan_A has cost Plan_A_cost; while Plan_B has cost Plan_B_cost, which has the same value as Plan_A_cost. 
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_A is cheaper plan than and is plan with less tasks than and is faster plan than Plan_B. Plan_A has expected makespan Plan_A_makespan, which has a lower value than Plan_B_makespan and has value 796.01 and has the same value as plan_0_2023-09-19_13:15:34.756918-UTC_makespan; while Plan_B has expected makespan Plan_B_makespan, which has value 1276.02. Plan_A has number of tasks Plan_A_number_of_tasks, which has a lower value than Plan_B_number_of_tasks and plan_0_2023-09-19_13:15:34.756918-UTC_number_of_tasks and has value 12.0; while Plan_B has number of tasks Plan_B_number_of_tasks, which has value 43.0. Plan_A has cost Plan_A_cost, which has a lower value than Plan_B_cost and has value 1440.0; while Plan_B has cost Plan_B_cost, which has value 1875.02. 
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_A is cheaper plan than and is plan with less tasks than and is faster plan than Plan_B. Plan_A has expected makespan Plan_A_makespan, which has a lower value than Plan_B_makespan and plan_0_2023-09-19_13:30:42.271718-UTC_makespan and has value 796.01 and has the same value as plan_0_2023-09-19_13:15:34.756918-UTC_makespan; while Plan_B has expected makespan Plan_B_makespan, which has value 1636.02. Plan_A has number of tasks Plan_A_number_of_tasks, which has a lower value than Plan_B_number_of_tasks and plan_0_2023-09-19_13:15:34.756918-UTC_number_of_tasks and plan_0_2023-09-19_13:30:42.271718-UTC_number_of_tasks and has value 12.0; while Plan_B has number of tasks Plan_B_number_of_tasks, which has value 47.0. Plan_A has cost Plan_A_cost, which has a lower value than Plan_B_cost and plan_0_2023-09-19_13:30:42.271718-UTC_cost and has value 1440.0; while Plan_B has cost Plan_B_cost, which has value 2235.02. 
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_A is cheaper plan than and is plan with less tasks than and is faster plan than Plan_B. Plan_A has expected makespan Plan_A_makespan, which has a lower value than Plan_B_makespan and has value 796.01 and has the same value as plan_0_2023-09-19_13:15:09.855661-UTC_makespan; while Plan_B has expected makespan Plan_B_makespan, which has value 1276.02. Plan_A has number of tasks Plan_A_number_of_tasks, which has a lower value than Plan_B_number_of_tasks and has value 20.0; while Plan_B has number of tasks Plan_B_number_of_tasks, which has value 43.0. Plan_A has cost Plan_A_cost, which has a lower value than Plan_B_cost and has value 1440.0; while Plan_B has cost Plan_B_cost, which has value 1875.02. 
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_A is cheaper plan than and is plan with less tasks than and is faster plan than Plan_B. Plan_A has expected makespan Plan_A_makespan, which has a lower value than Plan_B_makespan and plan_0_2023-09-19_13:30:42.271718-UTC_makespan and has value 796.01 and has the same value as plan_0_2023-09-19_13:15:09.855661-UTC_makespan; while Plan_B has expected makespan Plan_B_makespan, which has value 1636.02. Plan_A has number of tasks Plan_A_number_of_tasks, which has a lower value than Plan_B_number_of_tasks and plan_0_2023-09-19_13:30:42.271718-UTC_number_of_tasks and has value 20.0; while Plan_B has number of tasks Plan_B_number_of_tasks, which has value 47.0. Plan_A has cost Plan_A_cost, which has a lower value than Plan_B_cost and plan_0_2023-09-19_13:30:42.271718-UTC_cost and has value 1440.0; while Plan_B has cost Plan_B_cost, which has value 2235.02. 
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_A is cheaper plan than and is plan with less tasks than and is faster plan than Plan_B. Plan_A has expected makespan Plan_A_makespan, which has a lower value than Plan_B_makespan and has value 1276.02; while Plan_B has expected makespan Plan_B_makespan, which has value 1636.02. Plan_A has number of tasks Plan_A_number_of_tasks, which has a lower value than Plan_B_number_of_tasks and has value 43.0; while Plan_B has number of tasks Plan_B_number_of_tasks, which has value 47.0. Plan_A has cost Plan_A_cost, which has a lower value than Plan_B_cost and has value 1875.02; while Plan_B has cost Plan_B_cost, which has value 2235.02. 

@@ -1,0 +1,210 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_A is a type of Plan and includes task task_0_navigate and task_1_sample_soil and task_2_sample_rock and task_3_calibrate and task_4_calibrate and task_5_calibrate and task_6_navigate and task_7_take_image and task_8_take_image and task_9_take_image and task_10_sample_soil and task_11_navigate and task_12_calibrate and task_13_navigate and task_14_communicate_soil_data and task_15_sample_rock and task_16_navigate and task_17_drop and task_18_navigate and task_19_communicate_rock_data and task_20_sample_soil and task_21_navigate and task_22_communicate_image_data and task_23_drop and task_24_sample_rock and task_25_navigate and task_26_drop and task_27_sample_rock and task_28_communicate_image_data and task_29_navigate and task_30_drop and task_31_navigate and task_32_communicate_image_data and task_33_sample_soil and task_34_navigate and task_35_communicate_soil_data and task_36_communicate_soil_data and task_37_communicate_soil_data and task_38_communicate_rock_data and task_39_communicate_rock_data and task_40_communicate_rock_data and is more expensive plan than Plan_B and is plan with more tasks than Plan_B and is slower plan than Plan_B. 
+
+Plan_A_makespan is a type of Quality and is expected makespan of Plan_A and has data value 137.01 and has a higher value than Plan_B_makespan. 
+
+Plan_A_number_of_tasks is a type of Quality and is number of tasks of Plan_A and has data value 41.0 and has a higher value than Plan_B_number_of_tasks. 
+
+Plan_A_cost is a type of Quality and is cost of Plan_A and has data value 137.01 and has a higher value than Plan_B_cost. 
+
+Plan_B is a type of Plan and includes task task_0_navigate and task_1_sample_soil and task_4_calibrate and task_6_navigate and task_8_take_image and task_13_navigate and task_17_drop and task_20_sample_soil and task_27_sample_rock and task_2_navigate and task_3_sample_soil and task_5_sample_rock and task_7_drop and task_9_navigate and task_10_drop and task_11_communicate_image_data and task_12_sample_soil and task_14_drop and task_15_communicate_soil_data and task_16_sample_rock and task_18_communicate_soil_data and task_19_navigate and task_21_communicate_soil_data and task_22_navigate and task_23_communicate_rock_data and task_24_communicate_soil_data and task_25_communicate_rock_data and task_26_navigate and task_28_navigate and task_29_drop and task_30_communicate_rock_data and task_31_sample_rock and task_32_communicate_rock_data. 
+
+task_0_navigate is a type of Task and directly precedes task_7_take_image and task_8_take_image and task_9_take_image and task_10_sample_soil and task_11_navigate and task_3_sample_soil and task_4_calibrate and task_5_sample_rock. 
+
+task_4_calibrate is a type of Task and directly precedes task_7_take_image and task_9_take_image and task_10_sample_soil and task_11_navigate and task_6_navigate and task_7_drop and task_8_take_image. 
+
+task_1_sample_soil is a type of Task and directly precedes task_14_communicate_soil_data and task_15_sample_rock and task_6_navigate and task_7_drop and task_8_take_image. 
+
+task_3_calibrate is a type of Task and directly precedes task_7_take_image and task_8_take_image and task_9_take_image and task_10_sample_soil and task_11_navigate. 
+
+task_5_calibrate is a type of Task and directly precedes task_7_take_image and task_8_take_image and task_9_take_image and task_10_sample_soil and task_11_navigate. 
+
+task_6_navigate is a type of Task and directly precedes task_7_take_image and task_8_take_image and task_9_take_image and task_10_sample_soil and task_11_navigate. 
+
+task_27_sample_rock is a type of Task and directly precedes task_29_navigate and task_30_drop and task_28_navigate and task_29_drop. 
+
+task_20_sample_soil is a type of Task and directly precedes task_22_communicate_image_data and task_23_drop and task_22_navigate. 
+
+task_10_sample_soil is a type of Task and directly precedes task_16_navigate and task_17_drop. 
+
+task_11_navigate is a type of Task and directly precedes task_14_communicate_soil_data and task_15_sample_rock. 
+
+task_14_communicate_soil_data is a type of Task and directly precedes task_19_communicate_rock_data and task_20_sample_soil. 
+
+task_16_navigate is a type of Task and directly precedes task_19_communicate_rock_data and task_20_sample_soil. 
+
+task_17_drop is a type of Task and directly precedes task_18_communicate_soil_data and task_19_navigate. 
+
+task_19_communicate_rock_data is a type of Task and directly precedes task_22_communicate_image_data and task_23_drop. 
+
+task_24_sample_rock is a type of Task and directly precedes task_25_navigate and task_26_drop. 
+
+task_2_sample_rock is a type of Task and directly precedes task_13_navigate. 
+
+task_8_take_image is a type of Task and directly precedes task_11_communicate_image_data. 
+
+task_13_navigate is a type of Task and directly precedes task_16_sample_rock. 
+
+task_15_sample_rock is a type of Task and directly precedes task_18_navigate. 
+
+task_18_navigate is a type of Task and directly precedes task_21_navigate. 
+
+task_22_communicate_image_data is a type of Task and directly precedes task_28_communicate_image_data. 
+
+task_23_drop is a type of Task and directly precedes task_24_sample_rock. 
+
+task_25_navigate is a type of Task and directly precedes task_27_sample_rock. 
+
+task_28_communicate_image_data is a type of Task and directly precedes task_32_communicate_image_data. 
+
+task_29_navigate is a type of Task and directly precedes task_31_navigate. 
+
+task_31_navigate is a type of Task and directly precedes task_33_sample_soil. 
+
+task_33_sample_soil is a type of Task and directly precedes task_34_navigate. 
+
+task_34_navigate is a type of Task and directly precedes task_35_communicate_soil_data. 
+
+task_35_communicate_soil_data is a type of Task and directly precedes task_36_communicate_soil_data. 
+
+task_36_communicate_soil_data is a type of Task and directly precedes task_37_communicate_soil_data. 
+
+task_37_communicate_soil_data is a type of Task and directly precedes task_38_communicate_rock_data. 
+
+task_38_communicate_rock_data is a type of Task and directly precedes task_39_communicate_rock_data. 
+
+task_39_communicate_rock_data is a type of Task and directly precedes task_40_communicate_rock_data. 
+
+task_2_navigate directly precedes task_4_calibrate. 
+
+task_7_take_image is a type of Task. 
+
+task_9_take_image is a type of Task. 
+
+task_12_calibrate is a type of Task. 
+
+task_12_sample_soil directly precedes task_13_navigate. 
+
+task_16_sample_rock directly precedes task_17_drop. 
+
+task_19_navigate directly precedes task_20_sample_soil. 
+
+task_21_navigate is a type of Task. 
+
+task_26_drop is a type of Task. 
+
+task_26_navigate directly precedes task_27_sample_rock. 
+
+task_30_drop is a type of Task. 
+
+task_32_communicate_image_data is a type of Task. 
+
+task_40_communicate_rock_data is a type of Task. 
+
+Plan_B_makespan is expected makespan of Plan_B. 
+
+Plan_B_number_of_tasks is number of tasks of Plan_B. 
+
+Plan_B_cost is cost of Plan_B. 
+
+
+Plan_B is a type of Plan and includes task task_0_navigate and task_1_sample_soil and task_2_navigate and task_3_sample_soil and task_4_calibrate and task_5_sample_rock and task_6_navigate and task_7_drop and task_8_take_image and task_9_navigate and task_10_drop and task_11_communicate_image_data and task_12_sample_soil and task_13_navigate and task_14_drop and task_15_communicate_soil_data and task_16_sample_rock and task_17_drop and task_18_communicate_soil_data and task_19_navigate and task_20_sample_soil and task_21_communicate_soil_data and task_22_navigate and task_23_communicate_rock_data and task_24_communicate_soil_data and task_25_communicate_rock_data and task_26_navigate and task_27_sample_rock and task_28_navigate and task_29_drop and task_30_communicate_rock_data and task_31_sample_rock and task_32_communicate_rock_data and is cheaper plan than Plan_A and is plan with less tasks than Plan_A and is faster plan than Plan_A. 
+
+Plan_B_makespan is a type of Quality and is expected makespan of Plan_B and has data value 130.01 and has a lower value than Plan_A_makespan. 
+
+Plan_B_number_of_tasks is a type of Quality and is number of tasks of Plan_B and has data value 33.0 and has a lower value than Plan_A_number_of_tasks. 
+
+Plan_B_cost is a type of Quality and is cost of Plan_B and has data value 130.01 and has a lower value than Plan_A_cost. 
+
+Plan_A is a type of Plan and includes task task_0_navigate and task_1_sample_soil and task_4_calibrate and task_6_navigate and task_8_take_image and task_13_navigate and task_17_drop and task_20_sample_soil and task_27_sample_rock and task_2_sample_rock and task_3_calibrate and task_5_calibrate and task_7_take_image and task_9_take_image and task_10_sample_soil and task_11_navigate and task_12_calibrate and task_14_communicate_soil_data and task_15_sample_rock and task_16_navigate and task_18_navigate and task_19_communicate_rock_data and task_21_navigate and task_22_communicate_image_data and task_23_drop and task_24_sample_rock and task_25_navigate and task_26_drop and task_28_communicate_image_data and task_29_navigate and task_30_drop and task_31_navigate and task_32_communicate_image_data and task_33_sample_soil and task_34_navigate and task_35_communicate_soil_data and task_36_communicate_soil_data and task_37_communicate_soil_data and task_38_communicate_rock_data and task_39_communicate_rock_data and task_40_communicate_rock_data. 
+
+task_0_navigate is a type of Task and directly precedes task_7_take_image and task_8_take_image and task_9_take_image and task_10_sample_soil and task_11_navigate and task_3_sample_soil and task_4_calibrate and task_5_sample_rock. 
+
+task_4_calibrate is a type of Task and directly precedes task_7_take_image and task_9_take_image and task_10_sample_soil and task_11_navigate and task_6_navigate and task_7_drop and task_8_take_image. 
+
+task_1_sample_soil is a type of Task and directly precedes task_14_communicate_soil_data and task_15_sample_rock and task_6_navigate and task_7_drop and task_8_take_image. 
+
+task_6_navigate is a type of Task and directly precedes task_7_take_image and task_8_take_image and task_9_take_image and task_10_sample_soil and task_11_navigate. 
+
+task_27_sample_rock is a type of Task and directly precedes task_29_navigate and task_30_drop and task_28_navigate and task_29_drop. 
+
+task_2_navigate is a type of Task and directly precedes task_3_sample_soil and task_4_calibrate and task_5_sample_rock. 
+
+task_20_sample_soil is a type of Task and directly precedes task_22_communicate_image_data and task_23_drop and task_22_navigate. 
+
+task_5_sample_rock is a type of Task and directly precedes task_9_navigate and task_10_drop. 
+
+task_12_sample_soil is a type of Task and directly precedes task_13_navigate and task_14_drop. 
+
+task_15_communicate_soil_data is a type of Task and directly precedes task_18_communicate_soil_data and task_19_navigate. 
+
+task_17_drop is a type of Task and directly precedes task_18_communicate_soil_data and task_19_navigate. 
+
+task_28_navigate is a type of Task and directly precedes task_30_communicate_rock_data and task_31_sample_rock. 
+
+task_8_take_image is a type of Task and directly precedes task_11_communicate_image_data. 
+
+task_9_navigate is a type of Task and directly precedes task_12_sample_soil. 
+
+task_11_communicate_image_data is a type of Task and directly precedes task_15_communicate_soil_data. 
+
+task_13_navigate is a type of Task and directly precedes task_16_sample_rock. 
+
+task_16_sample_rock is a type of Task and directly precedes task_17_drop. 
+
+task_18_communicate_soil_data is a type of Task and directly precedes task_21_communicate_soil_data. 
+
+task_19_navigate is a type of Task and directly precedes task_20_sample_soil. 
+
+task_21_communicate_soil_data is a type of Task and directly precedes task_23_communicate_rock_data. 
+
+task_22_navigate is a type of Task and directly precedes task_23_communicate_rock_data. 
+
+task_23_communicate_rock_data is a type of Task and directly precedes task_24_communicate_soil_data. 
+
+task_24_communicate_soil_data is a type of Task and directly precedes task_25_communicate_rock_data. 
+
+task_25_communicate_rock_data is a type of Task and directly precedes task_26_navigate. 
+
+task_26_navigate is a type of Task and directly precedes task_27_sample_rock. 
+
+task_30_communicate_rock_data is a type of Task and directly precedes task_32_communicate_rock_data. 
+
+task_3_sample_soil is a type of Task. 
+
+task_7_drop is a type of Task. 
+
+task_3_calibrate directly precedes task_8_take_image. 
+
+task_5_calibrate directly precedes task_8_take_image. 
+
+task_10_drop is a type of Task. 
+
+task_2_sample_rock directly precedes task_13_navigate. 
+
+task_14_drop is a type of Task. 
+
+task_10_sample_soil directly precedes task_17_drop. 
+
+task_14_communicate_soil_data directly precedes task_20_sample_soil. 
+
+task_16_navigate directly precedes task_20_sample_soil. 
+
+task_25_navigate directly precedes task_27_sample_rock. 
+
+task_29_drop is a type of Task. 
+
+task_31_sample_rock is a type of Task. 
+
+task_32_communicate_rock_data is a type of Task. 
+
+Plan_A_makespan is expected makespan of Plan_A. 
+
+Plan_A_number_of_tasks is number of tasks of Plan_A. 
+
+Plan_A_cost is cost of Plan_A. 
+
+
