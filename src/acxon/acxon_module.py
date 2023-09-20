@@ -38,11 +38,13 @@ What information could one find useful when using this code?
 
 import re
 import ast
+import time
 from prolog.prolog_module import *
 from rosprolog_client import PrologException, Prolog
 
 
 def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_locality, constrained_ontological_scope, specificity):
+    start = time.time()
     tuples = dict() # k: pair_id, v: list of tuples
     pairs_id_to_pairs_to_compare_dict = dict() # k: pair_id, v: pairs
 
@@ -70,20 +72,24 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
             else:
                 if (specificity >= 1):
                     retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], tuples, ont_property_inverse_dict)
+                    ## print("\n\n After retrieving level 1: ", time.time()- start)
                 else:
                     pass            
                 if (specificity >= 2):
                     retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], constrained_ontological_scope, tuples, ont_property_inverse_dict)
+                    print("\n\n After retrieving level 2: ", time.time()- start)
                 else:
                     pass
                 if (specificity == 3):
                     retrieve_narrative_tuples_specificity_three(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], constrained_ontological_scope, tuples, ont_property_inverse_dict)
+                    print("\n\n After retrieving level 3: ", time.time()- start)
                 else:
                     pass
-
+            
+            print("\n\n Before pruning: ", time.time()- start)
             tuples[pair_id][pairs_list[i][0]], tuples[pair_id][pairs_list[i][1]] = \
                 prune_tuples(tuples[pair_id][pairs_list[i][0]], tuples[pair_id][pairs_list[i][1]])
-
+            print("\n\n After pruning: ", time.time()- start)
         ## print(tuples)
 
     return tuples, pairs_id_to_pairs_to_compare_dict
@@ -260,10 +266,10 @@ def retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pair_of
 
     for object_a in objects_related_to_instance_a:
         for object_b in objects_related_to_instance_b:
-            q_1 = "dif(Oa, E), kb_call(triple("+object_a+", R, "+object_b+") during [T1, T2])"
+            q_1 = "dif("+object_a+", "+object_b+"), kb_call(triple("+object_a+", R, "+object_b+") during [T1, T2])"
             assertion_type_1 = "affirmative"
 
-            q_2 = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+            q_2 = "dif("+object_a+", "+object_b+"), kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
                 "kb_call(triple(D, owl:'sourceIndividual', "+object_a+") during [T1, T2]), "\
                 "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
                 "kb_call(triple(D, owl:'targetIndividual', "+object_b+") during [T1, T2])."
