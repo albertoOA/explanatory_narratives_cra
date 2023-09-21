@@ -1,0 +1,5 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_A is cheaper plan than and is plan with less tasks than and is faster plan than Plan_B. Plan_A has expected makespan Plan_A_makespan, which has value 27.0 and has a lower value than Plan_B_makespan; while Plan_B has expected makespan Plan_B_makespan, which has value 59.0. Plan_A has number of tasks Plan_A_number_of_tasks, which has value 6.0 and has a lower value than Plan_B_number_of_tasks; while Plan_B has number of tasks Plan_B_number_of_tasks, which has value 8.0. Plan_A has cost Plan_A_cost, which has value 27.0 and has a lower value than Plan_B_cost; while Plan_B has cost Plan_B_cost, which has value 59.0. 
