@@ -63,11 +63,6 @@ if __name__ == '__main__':
     evaluation_results_file = rospack.get_path('explanatory_narratives_cra') + \
       "/csv/acxon_based/test/" + planning_domain + "/problem_" + planning_problem + "_with_specificity_" + str(specificity) + ".csv"
     
-    # pairs of objects to c-narrate
-    pairs_of_objects_to_bring = [["ocra_home:'Drink'", "ocra_home:'Drink'"]]
-    constrained_ontological_scope = ["dul:'Quality'", "dul:'Role'", "dul:'Place'"] # classes to constrain the scope of the narrative
-
-    tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, pairs_of_objects_to_bring, t_locality, constrained_ontological_scope, specificity)
 
     
     f = open(narratives_file, "w")
