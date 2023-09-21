@@ -44,7 +44,7 @@ from rosprolog_client import PrologException, Prolog
 
 
 def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_locality, constrained_ontological_scope, specificity):
-    start = time.time()
+    ## start = time.time()
     tuples = dict() # k: pair_id, v: list of tuples
     pairs_id_to_pairs_to_compare_dict = dict() # k: pair_id, v: pairs
 
@@ -77,19 +77,19 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
                     pass            
                 if (specificity >= 2):
                     retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], constrained_ontological_scope, tuples, ont_property_inverse_dict)
-                    print("\n\n After retrieving level 2: ", time.time()- start)
+                    ## print("\n\n After retrieving level 2: ", time.time()- start)
                 else:
                     pass
                 if (specificity == 3):
                     retrieve_narrative_tuples_specificity_three(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], constrained_ontological_scope, tuples, ont_property_inverse_dict)
-                    print("\n\n After retrieving level 3: ", time.time()- start)
+                    ## print("\n\n After retrieving level 3: ", time.time()- start)
                 else:
                     pass
             
-            print("\n\n Before pruning: ", time.time()- start)
+            ## print("\n\n Before pruning: ", time.time()- start)
             tuples[pair_id][pairs_list[i][0]], tuples[pair_id][pairs_list[i][1]] = \
                 prune_tuples(tuples[pair_id][pairs_list[i][0]], tuples[pair_id][pairs_list[i][1]])
-            print("\n\n After pruning: ", time.time()- start)
+            ## print("\n\n After pruning: ", time.time()- start)
         ## print(tuples)
 
     return tuples, pairs_id_to_pairs_to_compare_dict
