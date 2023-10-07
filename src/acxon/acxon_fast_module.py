@@ -965,7 +965,7 @@ def order_c_tuples(tuples_dict_in):
         cont += 1
         
     # internal ordering
-    """
+    
     for key, value in ordered_tuples_ext.items():
         new_value = list()
         
@@ -978,8 +978,8 @@ def order_c_tuples(tuples_dict_in):
         ordered_tuples_int[key] = new_value
         
     ordered_tuples = ordered_tuples_int.copy()
-    """
-    ordered_tuples = ordered_tuples_ext.copy()
+    
+    #ordered_tuples = ordered_tuples_ext.copy()
 
     return ordered_tuples
 
@@ -1100,8 +1100,8 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
             if indices_unrelated_to_instance:
                 print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
                 print(indices_unrelated_to_instance)
-                ## for index_unrelated in indices_unrelated_to_instance:
-                ##     print(tuples_cp[index_unrelated])
+                for index_unrelated in indices_unrelated_to_instance:
+                    print(tuples_cp[index_unrelated])
             else:
                 ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
                 pass
@@ -1123,18 +1123,31 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
             tuple_ = extract_related_tuples(tuples_cp, index_)[0] # it returns a list of lists (just one in here)
             
             for q in range(0, len(tuples_cp)):
-                if tuples_cp[index_[0]][2] == tuples_cp[q][0]:
-                    indices_related_to_instance.append(q)
+                if isinstance(tuples_cp[index_[0]][2], list):
+                    if tuples_cp[q][0] in tuples_cp[index_[0]][2]:
+                        indices_related_to_instance.append(q)
+                    else:
+                        if q == index_[0]:
+                            pass
+                        else: 
+                            indices_unrelated_to_instance.append(q)
                 else:
-                    if q == index_[0]:
-                        pass
-                    else: 
-                        indices_unrelated_to_instance.append(q)
+                    if tuples_cp[index_[0]][2] == tuples_cp[q][0]:
+                        indices_related_to_instance.append(q)
+                    else:
+                        if q == index_[0]:
+                            pass
+                        else: 
+                            indices_unrelated_to_instance.append(q)
             
             # checking if we are considering all possible tuples
             if indices_unrelated_to_instance:
                 print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
                 print(indices_unrelated_to_instance)
+                print(index_)
+                print(tuples_cp[index_[0]])
+                for index_unrelated in indices_unrelated_to_instance:
+                    print(tuples_cp[index_unrelated])
             else:
                 ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
                 pass
@@ -1484,6 +1497,7 @@ def construct_text_from_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
     tuples_related_to_main_tuple_ = tuples_related_to_main_tuple_in.copy()
     
     tuple_subject = extract_individual_from_tuple_element(tuple_[0])
+    tuple_subject = "'" + tuple_subject + "'"
     ## tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
 
     if type(tuple_[1]) == list:
@@ -1516,11 +1530,12 @@ def construct_text_from_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
         for obj in tuple_[2]:
             if not tuple_object:
                 tuple_object = extract_individual_from_tuple_element(obj)
+                tuple_object = "'" + tuple_object + "'"
             else: 
                 if are_there_multiple_related_tuples_for_same_object_:
-                    tuple_object = tuple_object + ', and also ' + tuple_relationship + ' ' + extract_individual_from_tuple_element(obj)
+                    tuple_object = tuple_object + ', and also ' + tuple_relationship + ' ' + "'" + extract_individual_from_tuple_element(obj) + "'"
                 else:
-                    tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
+                    tuple_object = tuple_object + ' and ' + "'" + extract_individual_from_tuple_element(obj) + "'"
             
             # aggreate text about related tuples
             if tuples_related_to_main_tuple_:
@@ -1538,6 +1553,7 @@ def construct_text_from_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
                 pass
     else:
         tuple_object = extract_individual_from_tuple_element(tuple_[2])
+        tuple_object = "'" + tuple_object + "'"
         
         # aggreate text about related tuples
         if tuples_related_to_main_tuple_:
@@ -1598,10 +1614,12 @@ def construct_aggregated_text_from_single_tuple(tuple_in):
         for obj in tuple_[2]:
             if not tuple_object:
                 tuple_object = extract_individual_from_tuple_element(obj)
+                tuple_object = "'" + tuple_object + "'"
             else: 
-                tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
+                tuple_object = tuple_object + ' and ' + "'" + extract_individual_from_tuple_element(obj) + "'"
     else:
         tuple_object = extract_individual_from_tuple_element(tuple_[2])
+        tuple_object = "'" + tuple_object + "'"
 
     ## tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
 
@@ -1629,139 +1647,6 @@ def construct_aggregated_text_from_multiple_tuples(tuples_in):
             text = text + construct_aggregated_text_from_single_tuple(tuple_)
         else:
             text = text + " and " + construct_aggregated_text_from_single_tuple(tuple_)
-
-    return text
-
-def tuples_list_to_text_with_c_aggregation(pair_of_instances, tuples_in):
-    text = ''
-    tuples = tuples_in.copy()
-    
-    for tuple_ in tuples:
-        tuple_subject = extract_individual_from_tuple_element(tuple_[0])
-        tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
-        
-        if type(tuple_[1]) == list:
-            tuple_relationship = ''
-            for obj in tuple_[1]:
-                if not tuple_relationship:
-                    tuple_relationship = extract_individual_from_tuple_element(obj)
-                else: 
-                    if tuple_[5] == "negative":
-                        tuple_relationship = tuple_relationship + ' and (not)' + extract_individual_from_tuple_element(obj)
-                    else:
-                        tuple_relationship = tuple_relationship + ' and ' + extract_individual_from_tuple_element(obj)        
-        else:
-            tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
-        
-        if tuple_relationship == "type":
-            tuple_relationship = "isATypeOf"
-        else:
-            pass
-        tuple_relationship = re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_relationship) # adding space between words
-        tuple_relationship = tuple_relationship.lower() # lowercase
-        if tuple_[5] == "negative":
-            tuple_relationship = "(not) " + tuple_relationship
-        else:
-            pass
-
-        if type(tuple_[2]) == list:
-            tuple_object = ''
-            for obj in tuple_[2]:
-                if not tuple_object:
-                    tuple_object = extract_individual_from_tuple_element(obj)
-                else: 
-                    tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
-        else:
-            tuple_object = extract_individual_from_tuple_element(tuple_[2])
-
-        tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
-
-        if (extract_individual_from_tuple_element(tuple_[4]) == 'Infinity'):
-            tuple_start = ''
-            tuple_end = ''
-        else:
-            tuple_start = extract_individual_from_tuple_element(tuple_[3])
-            tuple_end = extract_individual_from_tuple_element(tuple_[4])
-
-        if not text: 
-            # empty text
-            if (tuple_start and tuple_end):
-                text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
-            else:
-                text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object 
-        else:
-            # non-empty text
-            if (tuple_start and tuple_end):
-                text = text + ' and ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
-            else:
-                text = text + ' and ' + tuple_relationship + ' ' + tuple_object 
-
-    return text
-
-
-def tuples_list_to_text_with_aggregation(tuples_in):
-    text = ''
-    tuples = tuples_in.copy()
-    
-    for tuple_ in tuples:
-        tuple_subject = extract_individual_from_tuple_element(tuple_[0])
-        tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
-        
-        if type(tuple_[1]) == list:
-            tuple_relationship = ''
-            for obj in tuple_[1]:
-                if not tuple_relationship:
-                    tuple_relationship = extract_individual_from_tuple_element(obj)
-                else: 
-                    if tuple_[5] == "negative":
-                        tuple_relationship = tuple_relationship + ' and (not)' + extract_individual_from_tuple_element(obj)
-                    else:
-                        tuple_relationship = tuple_relationship + ' and ' + extract_individual_from_tuple_element(obj)        
-        else:
-            tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
-        
-        if tuple_relationship == "type":
-            tuple_relationship = "isATypeOf"
-        else:
-            pass
-        tuple_relationship = re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_relationship) # adding space between words
-        tuple_relationship = tuple_relationship.lower() # lowercase
-        if tuple_[5] == "negative":
-            tuple_relationship = "(not) " + tuple_relationship
-        else:
-            pass
-
-        if type(tuple_[2]) == list:
-            tuple_object = ''
-            for obj in tuple_[2]:
-                if not tuple_object:
-                    tuple_object = extract_individual_from_tuple_element(obj)
-                else: 
-                    tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
-        else:
-            tuple_object = extract_individual_from_tuple_element(tuple_[2])
-
-        tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
-
-        if (extract_individual_from_tuple_element(tuple_[4]) == 'Infinity'):
-            tuple_start = ''
-            tuple_end = ''
-        else:
-            tuple_start = extract_individual_from_tuple_element(tuple_[3])
-            tuple_end = extract_individual_from_tuple_element(tuple_[4])
-
-        if not text: 
-            # empty text
-            if (tuple_start and tuple_end):
-                text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
-            else:
-                text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object 
-        else:
-            # non-empty text
-            if (tuple_start and tuple_end):
-                text = text + ' and ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
-            else:
-                text = text + ' and ' + tuple_relationship + ' ' + tuple_object 
 
     return text
 
