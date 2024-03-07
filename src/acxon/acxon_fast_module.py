@@ -3,13 +3,10 @@
 """
 What is this code?
   - acxon module for ontology-based explanations. 
-  You can expect to find here all the implemented methods that are used in the ontology-based explanations algorithm (OX).
-  For the time being, only the methods to get the tuples from the knowledge based are implemented in this code. We will 
-  include the rest of the methods about constructing the textual explanation using the tuples. 
+  You can expect to find here all the implemented methods that are used in ACXON. 
 
 What is defined in it?
-  - Two main routines of the OX algorithm: 'retrieve_narrative_tuples' and 'construct_narrative'. Other methods are also
-  defined and used to build the two main ones. 
+  - Two main routines of the ACXON algorithm, other methods are also defined and used to build the two main ones. 
 
 
 What information could one find useful when using this code?
@@ -24,7 +21,7 @@ What information could one find useful when using this code?
   starting character in uppercase (e.g., 'PlanAdapatation', 'hasParticiant'). In order to enhance the readability of the 
   explanations, we split those names using the uppercase characters, and we replace the upper cases in the relatiohnships. 
 
-  - Note that we use query the knowledge base using time intervals, which adds some complexity to the process. When the
+  - Note that we query the knowledge base using time intervals, which adds some complexity to the process. When the
   interval is bound (you write a value), the query will only return true if both intervals are the ones you provided. 
   Hence, most of the queries would return false. That is why we have added some logic to our queries to get all the 
   answers that either are included in the bound interval or include the bound interval: 
@@ -136,9 +133,6 @@ def construct_narrative(client_rosprolog, target_pair_of_instances, tuples_of_th
     sentence = sentence + '\n'
 
     return sentence
-
-
-
 
 
 # retrieve narrative tuples functions
@@ -824,6 +818,7 @@ def prune_tuples(tuples_instance_a, tuples_instance_b):
     tuples_instance_a_cp = tuples_instance_a.copy() # list()
     tuples_instance_b_cp = tuples_instance_b.copy() # list()
 
+    # Find non-divergent tuples <Pa, p, o, ti, tf, sign> AND <Pb, p, o, ti, tf, sign>
     tp_to_delete = list()
     while tuples_instance_a_cp:
         tp_ = tuples_instance_a_cp.pop(0)
@@ -836,9 +831,19 @@ def prune_tuples(tuples_instance_a, tuples_instance_b):
             else:
                 pass
     
+    # Delete non-divergent tuples <Pa, p, o, ti, tf, sign> AND <Pb, p, o, ti, tf, sign>
+    pruned_tuples_instance_a_initial = list()
+    pruned_tuples_instance_a_initial = [i for i in tuples_instance_a if i not in tp_to_delete]
+    # Delete tuples connected to the deleted non-divergent tuples (pruning the whole branch) <o, q, ox, ti, tf, sign>
     pruned_tuples_instance_a = list()
-    pruned_tuples_instance_a = [i for i in tuples_instance_a if i not in tp_to_delete]
+    unique_elements_set = set()
+    for sublist in tp_to_delete:
+        unique_elements_set.add(sublist[2]) # Identify objects (o) from non-divergent tuples
+    # Create a new list without the tuples dependent on non-divergent tuples
+    pruned_tuples_instance_a = [sublist for sublist in pruned_tuples_instance_a_initial if sublist[0] not in unique_elements_set]
 
+
+    # Find non-divergent tuples <Pb, p, o, ti, tf, sign> AND <Pa, p, o, ti, tf, sign>
     tp_to_delete = list()
     while tuples_instance_b_cp:
         tp_ = tuples_instance_b_cp.pop(0)
@@ -850,9 +855,17 @@ def prune_tuples(tuples_instance_a, tuples_instance_b):
                     pass
             else:
                 pass
-    
+    # Delete non-divergent tuples <Pa, p, o, ti, tf, sign> AND <Pb, p, o, ti, tf, sign>
+    pruned_tuples_instance_b_initial = list()
+    pruned_tuples_instance_b_initial = [i for i in tuples_instance_b if i not in tp_to_delete]
+    # Delete tuples connected to the deleted non-divergent tuples (pruning the whole branch) <o, q, ox, ti, tf, sign>
     pruned_tuples_instance_b = list()
-    pruned_tuples_instance_b = [i for i in tuples_instance_b if i not in tp_to_delete]
+    unique_elements_set = set()
+    for sublist in tp_to_delete:
+        unique_elements_set.add(sublist[2]) # Identify objects (o) from non-divergent tuples
+    # Create a new list without the tuples dependent on non-divergent tuples
+    pruned_tuples_instance_b = [sublist for sublist in pruned_tuples_instance_b_initial if sublist[0] not in unique_elements_set]
+
 
     return pruned_tuples_instance_a, pruned_tuples_instance_b
 
@@ -903,12 +916,28 @@ def cast_c_tuples(pair_of_instances, tuples_of_the_pair_in, ont_prop_dict):
 
 def cluster_c_tuples(pair_of_instances, tuples_in):
     # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
-    # -tuples about direct relationship between the two instances are clustered together 
-    # -tuples about a single instance are clustered together by predicate (using the remaining tuples)
+    # -tuples about direct relationship between the two instances are clustered together (specificity level one)
+    # -tuples are clustered together by predicate using the remaining tuples 
+    #       - tuples about entities directly related to the pair of instances (including horizontal relations) (specificity level two)
+    #       - tuples about entities indirectly related to the pair of instances (third level tuples of entities that are related to each other at the second)
+    #       - tuples about entities no related to the pair of instances (third level tuples of entities that are only found in one of the pair's instances (e.g. only related to A))
     clustered_tuples_dict = dict()
     tuples = tuples_in.copy()
     
     tuples_cp = tuples.copy()
+    
+    """
+    # Next tuples are useful to test some aspects of the clustering at the level three of specificity 
+    tuples_cp.append(["map_bringing_object:'task_27_mend_fuse'", "dul:'isExecutedIn'", "map_bringing_object:'ACTION_27'", '', '', 'affirmative']) 
+    tuples_cp.append(["map_bringing_object:'task_27_mend_fuse'", "dul:'directlyPrecedes'", "map_bringing_object:'task_26_mend_fuse'", '', '', 'affirmative'])
+    tuples_cp.append(["map_bringing_object:'ACTION_27'", "dul:'isPreconditionOf'", "map_bringing_object:'ACTION_28_a'", '', '', 'affirmative'])
+    tuples_cp.append(["map_bringing_object:'ACTION_28_a'", "dul:'isPreconditionOf'", "map_bringing_object:'ACTION_28_b'", '', '', 'affirmative'])
+    tuples_cp.append(["map_bringing_object:'ACTION_IX'", "dul:'hasPrecondition'", "map_bringing_object:'ACTION_X'", '', '', 'affirmative'])
+    print("\n\n --> Length tuples before cluster")
+    print(len(tuples_cp))
+    """
+
+    tuples_cp_permanent = tuples_cp.copy() # a copy of the original initial tuples that will NOT be modified
 
     # cluster tuples that relate the two instances to each other
     indices = find_indices_of_tuples_including_the_pair(pair_of_instances, tuples_cp)
@@ -920,66 +949,159 @@ def cluster_c_tuples(pair_of_instances, tuples_in):
     tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
 
     # cluster the remaining tuples by predicate
-    ## cont = 0
     while tuples_cp:
-        indices = find_indices_of_related_tuples(pair_of_instances, tuples_cp[0], tuples_cp) 
-        related_tuples = extract_related_tuples(tuples_cp, indices)
-        ## clustered_tuples_dict[cont] = related_tuples # alternative to the next line
-        clustered_tuples_dict[tuples_cp[0][1]] = related_tuples # alternative to the previous line
-        indices_to_remove = indices.copy()
-        indices_to_remove.append(0)
-        tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
-        ## cont += 1
-    
+        # level two of specificity (including horizontal relations), thus entities directly related to the pair of instances
+        indices = find_indices_of_directly_related_tuples(pair_of_instances, tuples_cp[0], tuples_cp) 
+        related_tuples_d = extract_related_tuples(tuples_cp, indices) 
+        indices_to_remove_d = indices.copy()
+
+        # level three of specificity that comes from entities horizontally connected at the second level (e.g. cost A and cost B), thus indireclty related to the pair
+        indices = find_indices_of_indirectly_related_tuples(pair_of_instances, tuples_cp[0], tuples_cp, tuples_cp_permanent) 
+        related_tuples_i = extract_related_tuples(tuples_cp, indices) 
+        indices_to_remove_i = indices.copy()
+
+        # level three of specificity in which there is no connection of parent nodes between the two instances (this includes the case of tasks included in one plan 
+        # and not in the other plan)
+        indices = find_indices_of_non_related_tuples(pair_of_instances, tuples_cp[0], tuples_cp, tuples_cp_permanent)
+        related_tuples_n = extract_related_tuples(tuples_cp, indices)
+        indices_to_remove_n = indices.copy()
+
+        if indices_to_remove_d:
+            clustered_tuples_dict["<tuples_specificity_two_direct>"+tuples_cp[0][1]] = related_tuples_d
+            tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove_d] 
+        elif indices_to_remove_i:
+            # important to put this before the next case, since this case is included in the next one (sometimes, both lists of indices exist)
+            clustered_tuples_dict["<tuples_specificity_three_indirect>"+tuples_cp[0][1]+"_"+tuples_cp[0][0]] = related_tuples_i
+            tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove_i] 
+        elif indices_to_remove_n:
+            clustered_tuples_dict["<tuples_specificity_three_unrelated>"+tuples_cp[0][1]] = related_tuples_n
+            tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove_n]
+
+        """
+        print("indices")
+        print(indices_to_remove_d)
+        print(indices_to_remove_i)
+        print(indices_to_remove_n)
+        """
+
+
+        
+    """ 
+    for key, value in clustered_tuples_dict.items():
+        print("\n\n --> Length tuples for each cluster")
+        print(key)
+        print(len(value))
+        print(value)
+        print("--\n")
+    """
+        
     return clustered_tuples_dict
 
 
 def order_c_tuples(tuples_dict_in):
     # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
-    # -(between sentences) external ordering: tuples relating the two instances go first
-    # -(between sentences) external ordering: much info > less info (remaining tuples)
+    # -(between sentences) external ordering: clusters go in order of specificity (from 1 to 3) 
+    # -(between sentences) external ordering: within each specificity, clusters are ordered like: more info > less info (remaining tuples)
     # -(within a sentence) internal ordering: superclass > attributes
+    handy_dict = dict()
     ordered_tuples = dict()
     ordered_tuples_ext = dict()
     ordered_tuples_int = dict()
     tuples_dict = tuples_dict_in.copy()
-    cont = 0
-    
-    # external ordering
     tuples_dict_cp = tuples_dict.copy()
 
-    ordered_tuples_ext[cont] = tuples_dict_cp["tuples_specificity_one"]
+    level_two_direct_tuples_dict = dict()
+    level_three_indirect_tuples_dict = dict()
+    level_three_unrelated_tuples_dict = dict()
+    for key, value in tuples_dict_cp.items():
+        if '<tuples_specificity_two_direct>' in key:
+            level_two_direct_tuples_dict[key] = value
+        elif '<tuples_specificity_three_indirect>' in key:
+            level_three_indirect_tuples_dict[key] = value
+        elif '<tuples_specificity_three_unrelated>' in key:
+            level_three_unrelated_tuples_dict[key] = value
+        else:
+            pass
+
+    # · EXTERNAL ordering
+    cont = 0
+    # specificity one
+    ## ordered_tuples_ext[cont] = tuples_dict_cp["tuples_specificity_one"]
+    handy_dict["tuples_specificity_one"] = tuples_dict_cp["tuples_specificity_one"]
+    ordered_tuples_ext[cont] = handy_dict.copy() # a dictionary of dictionaries (thus the semantic key is kept)
     tuples_dict_cp.pop("tuples_specificity_one")
+
     cont += 1
-    
-    while (tuples_dict_cp):
-        key_with_max_info = list(tuples_dict_cp.keys())[0]
-        for key, value in tuples_dict_cp.items():
-            if len(tuples_dict_cp[key_with_max_info]) < len(value):
+    # specificity two
+    while (level_two_direct_tuples_dict):
+        key_with_max_info = list(level_two_direct_tuples_dict.keys())[0]
+        for key, value in level_two_direct_tuples_dict.items():
+            if len(level_two_direct_tuples_dict[key_with_max_info]) < len(value):
                     key_with_max_info = key
             else:
                 pass
         
-        ordered_tuples_ext[cont] = tuples_dict_cp[key_with_max_info]
-        tuples_dict_cp.pop(key_with_max_info)
-        cont += 1
-        
-    # internal ordering
-    
-    for key, value in ordered_tuples_ext.items():
-        new_value = list()
-        
-        for v in value:
-            if 'type' in v[1]:
-                new_value.insert(0, v)
+        handy_dict.clear()
+        handy_dict[key_with_max_info] = level_two_direct_tuples_dict[key_with_max_info]
+        ordered_tuples_ext[cont] = handy_dict.copy()
+        level_two_direct_tuples_dict.pop(key_with_max_info)
+        cont += 1 
+    # specificity three indirect
+    while (level_three_indirect_tuples_dict):
+        key_with_max_info = list(level_three_indirect_tuples_dict.keys())[0]
+        for key, value in level_three_indirect_tuples_dict.items():
+            if len(level_three_indirect_tuples_dict[key_with_max_info]) < len(value):
+                    key_with_max_info = key
             else:
-                new_value.append(v)
+                pass
         
-        ordered_tuples_int[key] = new_value
+        handy_dict.clear()
+        handy_dict[key_with_max_info] = level_three_indirect_tuples_dict[key_with_max_info]
+        ordered_tuples_ext[cont] = handy_dict.copy()
+        level_three_indirect_tuples_dict.pop(key_with_max_info)
+        cont += 1
+    # specificity three unrelated
+    while (level_three_unrelated_tuples_dict):
+        key_with_max_info = list(level_three_unrelated_tuples_dict.keys())[0]
+        for key, value in level_three_unrelated_tuples_dict.items():
+            if len(level_three_unrelated_tuples_dict[key_with_max_info]) < len(value):
+                    key_with_max_info = key
+            else:
+                pass
         
-    ordered_tuples = ordered_tuples_int.copy()
+        handy_dict.clear()
+        handy_dict[key_with_max_info] = level_three_unrelated_tuples_dict[key_with_max_info]
+        ordered_tuples_ext[cont] = handy_dict.copy()
+        level_three_unrelated_tuples_dict.pop(key_with_max_info)
+        cont += 1
+
+    # · INTERNAL ordering
+    
+    for number_key, dict_ in ordered_tuples_ext.items():
+        for key, value in dict_.items():
+            new_value = list()
+            
+            for v in value:
+                if 'type' in v[1]:
+                    new_value.insert(0, v)
+                else:
+                    new_value.append(v)
+            
+        handy_dict.clear()
+        handy_dict[key] = new_value
+        ordered_tuples_int[number_key] = handy_dict.copy()
+        
+    ordered_tuples = ordered_tuples_int.copy() # it is a dictionary of dictionaries {0: {'tuples_specificity_one': [tuples..]}, 1: {"<tuples_specificity_two_direct>": [tuples..]}, ..}
     
     #ordered_tuples = ordered_tuples_ext.copy()
+
+    """ 
+    print("\n\n --> Ordered clusters")
+    for key, value in ordered_tuples.items():
+        print(key)
+        print(value)
+        print("--\n")
+    """
 
     return ordered_tuples
 
@@ -990,19 +1112,30 @@ def group_c_tuples(tuples_dict_in): # ont_prop_plural_dict
     # -object grouping: objects that share subject and property are grouped (and)
     # -predicate grouping: predicates that relate the same subject and object are grouped (and)
     grouped_tuples = dict()
-    tuples_dict = tuples_dict_in.copy()
+    handy_dict = dict()
+    tuples_dict = tuples_dict_in.copy() # it is a dictionary of dictionaries {0: {'tuples_specificity_one': [tuples..]}, 1: {"<tuples_specificity_two_direct>": [tuples..]}, ..}
     
     for i in range(0, len(tuples_dict.keys())):
-        # object grouping
-        grouped_tuples_by_object = group_tuples_of_same_object_type(tuples_dict[i]) 
+        for key in tuples_dict[i].keys():
+            # object grouping
+            grouped_tuples_by_object = group_tuples_of_same_object_type(tuples_dict[i][key]) 
 
-        # predicate grouping
-        grouped_tuples_by_predicate = group_tuples_of_same_predicate(grouped_tuples_by_object) 
+            # predicate grouping
+            grouped_tuples_by_predicate = group_tuples_of_same_predicate(grouped_tuples_by_object) 
 
-        ## print(grouped_tuples_by_predicate)
-        ## print("·· _ ··\n")
+            ## print(grouped_tuples_by_predicate)
+            ## print("·· _ ··\n")
+            handy_dict.clear()
+            handy_dict[key] = grouped_tuples_by_predicate
 
-        grouped_tuples[i] = grouped_tuples_by_predicate
+        grouped_tuples[i] = handy_dict.copy()
+
+    #for key, value in grouped_tuples.items():
+    #    print("\n\n --> Length tuples for each cluster AFTER INITIAL GROUPING")
+    #    print(key)
+    #    print(len(value))
+    #    print(value)
+    #    print("--\n")
  
     return grouped_tuples
 
@@ -1016,6 +1149,7 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
     tuples_dict = tuples_dict_in.copy()
     pair_of_instances_with_uri_label = list()
     text_for_each_cluster_dict = dict()
+    handy_dict = dict()
     tuple_a = list()
     tuple_b = list()
 
@@ -1025,146 +1159,160 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
         from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
     
     for i in range(0, len(tuples_dict.keys())):
-        tuples_cp = tuples_dict[i].copy()
-        index_a = None
-        index_b = None
-        index_ = None
-        indices_related_to_a = list()
-        indices_related_to_b = list()
-        indices_related_to_instance = list()
-        indices_unrelated_to_instance = list()
-        indices_unrelated_to_instance_a = list()
-        indices_unrelated_to_instance_b = list()
-
-        for q in range(0, len(tuples_cp)):
-            for j in range(0, len(tuples_cp)):
-                if tuples_cp[q][0] == pair_of_instances_with_uri_label[0] and \
-                  tuples_cp[j][0] == pair_of_instances_with_uri_label[1] \
-                  and tuples_cp[q][1] == tuples_cp[j][1]:
-                    index_a = [q]  # index must be in a list format to use 'extract_related_tuples'
-                    index_b = [j]
-                    break
-                elif tuples_cp[q][0] == pair_of_instances_with_uri_label[0]:
-                    index_ = [q]
-                elif tuples_cp[j][0] == pair_of_instances_with_uri_label[1]:
-                    index_ = [j]
-                else:
-                    continue
-        
-        # extracting the tuples related to the main ones (horizontal relations from level 2 and level 3)
-        if index_a and index_b:  
-            tuple_a = extract_related_tuples(tuples_cp, index_a)[0] # it returns a list of lists (just one in here)
-            tuple_b = extract_related_tuples(tuples_cp, index_b)[0] # it returns a list of lists (just one in here)
+        for key in tuples_dict[i].keys():
+            tuples_cp = tuples_dict[i][key].copy()
+            index_a = None
+            index_b = None
+            index_ = None
+            indices_related_to_a = list()
+            indices_related_to_b = list()
+            indices_related_to_instance = list()
+            indices_related_to_deep_tuple_instance = list()
+            indices_unrelated_to_instance = list()
+            indices_unrelated_to_deep_tuple_instance = list()
+            indices_unrelated_to_instance_a = list()
+            indices_unrelated_to_instance_b = list()
 
             for q in range(0, len(tuples_cp)):
-                ## print(tuples_cp[q][0])
-                ## print(tuples_cp[index_a[0]][2])
-                ## print(tuples_cp[index_b[0]][2])
-                ## print("_-_\n\n")
-                if isinstance(tuples_cp[index_a[0]][2], list) or isinstance(tuples_cp[index_b[0]][2], list):
-                    if tuples_cp[q][0] in tuples_cp[index_a[0]][2]:
-                        indices_related_to_a.append(q)
+                for j in range(0, len(tuples_cp)):
+                    if tuples_cp[q][0] == pair_of_instances_with_uri_label[0] and \
+                      tuples_cp[j][0] == pair_of_instances_with_uri_label[1] \
+                      and tuples_cp[q][1] == tuples_cp[j][1]:
+                        index_a = [q]  # index must be in a list format to use 'extract_related_tuples'
+                        index_b = [j]
+                        break
+                    elif tuples_cp[q][0] == pair_of_instances_with_uri_label[0]:
+                        index_ = [q]
+                    elif tuples_cp[j][0] == pair_of_instances_with_uri_label[1]:
+                        index_ = [j]
                     else:
-                        if q == index_a[0] or q == index_b[0]:
-                            pass
-                        else: 
-                            indices_unrelated_to_instance_a.append(q)
+                        ## print(tuples_cp[q])
+                        index_deep_tuple = [0]
+                        #continue
+            
+            # extracting the tuples related to the main ones (horizontal relations from level 2 and level 3)
+            if index_a and index_b:  
+                tuple_a = extract_related_tuples(tuples_cp, index_a)[0] # it returns a list of lists (just one in here)
+                tuple_b = extract_related_tuples(tuples_cp, index_b)[0] # it returns a list of lists (just one in here)
 
-                    if tuples_cp[q][0] in tuples_cp[index_b[0]][2]:
-                        indices_related_to_b.append(q)
+                for q in range(0, len(tuples_cp)):
+                    ## print(tuples_cp[q][0])
+                    ## print(tuples_cp[index_a[0]][2])
+                    ## print(tuples_cp[index_b[0]][2])
+                    ## print("_-_\n\n")
+                    if isinstance(tuples_cp[index_a[0]][2], list) or isinstance(tuples_cp[index_b[0]][2], list):
+                        if tuples_cp[q][0] in tuples_cp[index_a[0]][2]:
+                            indices_related_to_a.append(q)
+                        else:
+                            if q == index_a[0] or q == index_b[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance_a.append(q)
+
+                        if tuples_cp[q][0] in tuples_cp[index_b[0]][2]:
+                            indices_related_to_b.append(q)
+                        else:
+                            if q == index_a[0] or q == index_b[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance_b.append(q)
                     else:
-                        if q == index_a[0] or q == index_b[0]:
-                            pass
-                        else: 
-                            indices_unrelated_to_instance_b.append(q)
+                        if tuples_cp[index_a[0]][2] == tuples_cp[q][0]:
+                            indices_related_to_a.append(q)
+                        else:
+                            if q == index_a[0] or q == index_b[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance_a.append(q)
+
+                        if tuples_cp[index_b[0]][2] == tuples_cp[q][0]:
+                            indices_related_to_b.append(q)
+                        else:
+                            if q == index_a[0] or q == index_b[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance_b.append(q)
+                
+                indices_unrelated_to_instance.extend([value for value in indices_unrelated_to_instance_a if value in indices_unrelated_to_instance_b])
+                
+                # checking if we are considering all possible tuples
+                if indices_unrelated_to_instance:
+                    print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
+                    print(indices_unrelated_to_instance)
+                    for index_unrelated in indices_unrelated_to_instance:
+                        print(tuples_cp[index_unrelated])
                 else:
-                    if tuples_cp[index_a[0]][2] == tuples_cp[q][0]:
-                        indices_related_to_a.append(q)
+                    ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
+                    pass
+
+                tuples_related_to_a = extract_related_tuples(tuples_cp, indices_related_to_a)
+                tuples_related_to_b = extract_related_tuples(tuples_cp, indices_related_to_b)
+
+                # construct text for the two instances to compare 
+                text_a = construct_text_about_single_tuple(tuple_a, tuples_related_to_a)            
+                text_b = construct_text_about_single_tuple(tuple_b, tuples_related_to_b)
+
+                # construct the text for a single cluster
+                text_for_each_cluster_dict[i] = text_a + "; while " + text_b
+
+                ## print(text_a + "; while " + text_b + ". ")
+                ## print("|Ix2|\n")
+                continue
+            elif index_: 
+                tuple_ = extract_related_tuples(tuples_cp, index_)[0] # it returns a list of lists (just one in here)
+                
+                for q in range(0, len(tuples_cp)):
+                    if isinstance(tuples_cp[index_[0]][2], list):
+                        if tuples_cp[q][0] in tuples_cp[index_[0]][2]:
+                            indices_related_to_instance.append(q)
+                        else:
+                            if q == index_[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance.append(q)
                     else:
-                        if q == index_a[0] or q == index_b[0]:
-                            pass
-                        else: 
-                            indices_unrelated_to_instance_a.append(q)
-
-                    if tuples_cp[index_b[0]][2] == tuples_cp[q][0]:
-                        indices_related_to_b.append(q)
-                    else:
-                        if q == index_a[0] or q == index_b[0]:
-                            pass
-                        else: 
-                            indices_unrelated_to_instance_b.append(q)
-            
-            indices_unrelated_to_instance.extend([value for value in indices_unrelated_to_instance_a if value in indices_unrelated_to_instance_b])
-            
-            # checking if we are considering all possible tuples
-            if indices_unrelated_to_instance:
-                print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
-                print(indices_unrelated_to_instance)
-                for index_unrelated in indices_unrelated_to_instance:
-                    print(tuples_cp[index_unrelated])
-            else:
-                ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
-                pass
-
-            tuples_related_to_a = extract_related_tuples(tuples_cp, indices_related_to_a)
-            tuples_related_to_b = extract_related_tuples(tuples_cp, indices_related_to_b)
-
-            # construct text for the two instances to compare 
-            text_a = construct_text_from_single_tuple(tuple_a, tuples_related_to_a)            
-            text_b = construct_text_from_single_tuple(tuple_b, tuples_related_to_b)
-
-            # construct the text for a single cluster
-            text_for_each_cluster_dict[i] = text_a + "; while " + text_b
-
-            ## print(text_a + "; while " + text_b + ". ")
-            ## print("|Ix2|\n")
-            continue
-        elif index_: 
-            tuple_ = extract_related_tuples(tuples_cp, index_)[0] # it returns a list of lists (just one in here)
-            
-            for q in range(0, len(tuples_cp)):
-                if isinstance(tuples_cp[index_[0]][2], list):
-                    if tuples_cp[q][0] in tuples_cp[index_[0]][2]:
-                        indices_related_to_instance.append(q)
-                    else:
-                        if q == index_[0]:
-                            pass
-                        else: 
-                            indices_unrelated_to_instance.append(q)
+                        if tuples_cp[index_[0]][2] == tuples_cp[q][0]:
+                            indices_related_to_instance.append(q)
+                        else:
+                            if q == index_[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance.append(q)
+                
+                # checking if we are considering all possible tuples
+                if indices_unrelated_to_instance:
+                    print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
+                    print(indices_unrelated_to_instance)
+                    print(index_)
+                    print(tuples_cp[index_[0]])
+                    for index_unrelated in indices_unrelated_to_instance:
+                        print(tuples_cp[index_unrelated])
                 else:
-                    if tuples_cp[index_[0]][2] == tuples_cp[q][0]:
-                        indices_related_to_instance.append(q)
-                    else:
-                        if q == index_[0]:
-                            pass
-                        else: 
-                            indices_unrelated_to_instance.append(q)
-            
-            # checking if we are considering all possible tuples
-            if indices_unrelated_to_instance:
-                print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
-                print(indices_unrelated_to_instance)
-                print(index_)
-                print(tuples_cp[index_[0]])
-                for index_unrelated in indices_unrelated_to_instance:
-                    print(tuples_cp[index_unrelated])
+                    ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
+                    pass
+
+                tuples_related_to_instance = extract_related_tuples(tuples_cp, indices_related_to_instance)
+
+                # construct text for the two instances to compare 
+                text_ = construct_text_about_single_tuple(tuple_, tuples_related_to_instance)
+
+                # construct the text for a single cluster
+                text_for_each_cluster_dict[i] = text_
+
+                ## print(text_ + ". ")
+                ## print("|I|\n")
+                continue        
             else:
-                ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
-                pass
+                # construct text about multiple tuples related to each other  
+                text_ = construct_text_about_multiple_tuples(tuples_cp, key)
 
-            tuples_related_to_instance = extract_related_tuples(tuples_cp, indices_related_to_instance)
+                # construct the text for a single cluster
+                text_for_each_cluster_dict[i] = text_
 
-            # construct text for the two instances to compare 
-            text_ = construct_text_from_single_tuple(tuple_, tuples_related_to_instance)
-
-            # construct the text for a single cluster
-            text_for_each_cluster_dict[i] = text_
-
-            ## print(text_ + ". ")
-            ## print("|I|\n")
-            continue
-        else:
-            pass
+                ## print(text_ + ". ")
+                ## print("|I|\n")
+                continue
+                #pass
 
     for text_ in text_for_each_cluster_dict.values():
         sentence = sentence + text_ + ". "
@@ -1352,7 +1500,7 @@ def from_uri_based_ontology_entity_to_uri_label_based(entity):
     return mod_entity
 
 
-def find_indices_of_related_tuples(pair_of_instances, tuple_in, tuples_in):
+def find_indices_of_directly_related_tuples(pair_of_instances, tuple_in, tuples_in):
     indices = []
     tuple_ = tuple_in.copy()
     tuples = tuples_in.copy()
@@ -1364,20 +1512,117 @@ def find_indices_of_related_tuples(pair_of_instances, tuple_in, tuples_in):
         from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
     
     for i in range (0, len(tuples)):
+        # The following code captures the vertical relations at level 2 (e.g. has cost, defines task, etc.)
         if pair_of_instances_with_uri_label[0] == tuples[i][0] or pair_of_instances_with_uri_label[1] == tuples[i][0]:
             if tuple_[1] == tuples[i][1]:
-                indices.append(i)
+                if i not in indices:
+                    indices.append(i)
+                else:
+                    pass
+
+                # The following code captures the horizontal relations at level 2 (e.g. has worse quality value)
                 for j in range (0, len(tuples)):
-                    if tuples[i][2] == tuples[j][0]:
-                        # This also captures the horizontal relations (e.g. has worse quality value) at level 2, 
-                        # for the level 3 it is not needed to capture them, since they will be narrated in a
-                        # different sentence, otherwise, the sentences would be too long. Hence, they will be 
-                        # clustered in another cluster
-                        indices.append(j) 
+                    if tuple_[2] == tuples[j][0] and tuples[i][2] == tuples[j][2] or \
+                     tuple_[2] == tuples[j][2] and tuples[i][2] == tuples[j][0]: 
+                        if j not in indices:
+                            indices.append(j)
+                        else:
+                            pass
                     else:
                         pass
             else:
                 pass
+        else: 
+            pass
+
+    return indices
+
+def find_indices_of_indirectly_related_tuples(pair_of_instances, tuple_in, tuples_in, tuples_original_in):
+    indices = []
+    tuple_ = tuple_in.copy()
+    tuples = tuples_in.copy()
+    tuples_original = tuples_original_in.copy()
+
+    pair_of_instances_with_uri_label = list()
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[0]))
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
+    
+    for i in range (0, len(tuples)):
+        # The following code captures the vertical relations at level 3 (e.g. has data value, etc.)
+        if pair_of_instances_with_uri_label[0] != tuples[i][0] and pair_of_instances_with_uri_label[1] != tuples[i][0] and \
+         pair_of_instances_with_uri_label[1] != tuples[i][0] and pair_of_instances_with_uri_label[0] != tuples[i][0]:
+            if tuple_[1] == tuples[i][1]:
+                if i not in indices:
+                    for y in range (0, len(tuples_original)):
+                        if tuple_[0] == tuples_original[y][0] and tuples[i][0] == tuples_original[y][2] or \
+                        tuple_[0] == tuples_original[y][2] and tuples[i][0] == tuples_original[y][0]:
+                            indices.append(i)
+
+                            if 0 not in indices:
+                                indices.append(0)
+                            else:
+                                pass
+
+                            # The following code captures the horizontal relations at level 3 
+                            for j in range (0, len(tuples)):
+                                if tuple_[2] == tuples[j][0] and tuples[i][2] == tuples[j][2] or \
+                                 tuple_[2] == tuples[j][2] and tuples[i][2] == tuples[j][0]: 
+                                    if j not in indices:
+                                        indices.append(j)
+                                    else:
+                                        pass
+                                else:
+                                    pass
+                        else:
+                            pass
+                else:
+                    pass
+            else:
+                pass
+        else:
+            pass
+
+
+    return indices
+
+def find_indices_of_non_related_tuples(pair_of_instances, tuple_in, tuples_in, tuples_original_in):
+    indices = []
+    tuple_ = tuple_in.copy()
+    tuples = tuples_in.copy()
+    tuples_original = tuples_original_in.copy()
+
+    pair_of_instances_with_uri_label = list()
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[0]))
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
+    
+    for i in range (0, len(tuples)):
+        # The following code captures the vertical relations at level 3 (e.g. has data value, etc.)
+        if pair_of_instances_with_uri_label[0] != tuples[i][0] and pair_of_instances_with_uri_label[1] != tuples[i][0] and \
+         pair_of_instances_with_uri_label[1] != tuples[i][0] and pair_of_instances_with_uri_label[0] != tuples[i][0]:
+            if tuple_[1] == tuples[i][1]:
+                if i not in indices:
+                    indices.append(i)
+
+                    # The following code captures the horizontal relations at level 3 
+                    for j in range (0, len(tuples)):
+                        if tuple_[2] == tuples[j][0] and tuples[i][2] == tuples[j][2] or \
+                         tuple_[2] == tuples[j][2] and tuples[i][2] == tuples[j][0]: 
+                            if j not in indices:
+                                indices.append(j)
+                            else:
+                                pass
+                        else:
+                            pass
+                else:
+                    pass
+            else:
+                pass
+        else:
+            pass
 
     return indices
 
@@ -1491,7 +1736,7 @@ def group_tuples_of_same_predicate(tuples_in): # ont_prop_plural_dict
     return new_tuples
 
 
-def construct_text_from_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
+def construct_text_about_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
     text = ''
     tuple_ = tuple_in.copy()
     tuples_related_to_main_tuple_ = tuples_related_to_main_tuple_in.copy()
@@ -1558,6 +1803,94 @@ def construct_text_from_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
         # aggreate text about related tuples
         if tuples_related_to_main_tuple_:
             tuple_object = tuple_object + ", which " + construct_aggregated_text_from_multiple_tuples(tuples_related_to_main_tuple_)
+        else: 
+            pass
+
+    ## tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
+
+    if (extract_individual_from_tuple_element(tuple_[4]) == 'Infinity'):
+        tuple_start = ''
+        tuple_end = ''
+    else:
+        tuple_start = extract_individual_from_tuple_element(tuple_[3])
+        tuple_end = extract_individual_from_tuple_element(tuple_[4])
+
+    if (tuple_start and tuple_end):
+        text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
+    else:
+        text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object 
+
+    return text
+
+
+def construct_text_about_multiple_tuples(tuples_in, cluster_semantic_id):
+    # Note that there is no need for using the connector 'which', since in this case all the tuples share the same relation
+    text = ''
+    tuples_cp = tuples_in.copy()
+
+    tuple_ = tuples_cp.pop(0) # then the function can be recursively called
+    
+    tuple_subject = extract_individual_from_tuple_element(tuple_[0])
+    tuple_subject = "'" + tuple_subject + "'"
+    ## tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
+
+    if type(tuple_[1]) == list:
+        tuple_relationship = ''
+        for obj in tuple_[1]:
+            if not tuple_relationship:
+                tuple_relationship = extract_individual_from_tuple_element(obj)
+                tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(tuple_relationship)
+            else: 
+                additional_tuple_relationship = extract_individual_from_tuple_element(obj)
+                additional_tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(additional_tuple_relationship)
+                if tuple_[5] == "negative":
+                    tuple_relationship = tuple_relationship + ' and (not)' + additional_tuple_relationship
+                else:
+                    tuple_relationship = tuple_relationship + ' and ' + additional_tuple_relationship        
+    else:
+        tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
+        tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(tuple_relationship)
+    
+    tuple_relationship = re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_relationship) # adding space between words
+    tuple_relationship = tuple_relationship.lower() # lowercase
+    if tuple_[5] == "negative":
+        tuple_relationship = "(not) " + tuple_relationship
+    else:
+        pass
+    
+    are_there_multiple_related_tuples_for_same_object_ = False
+    if type(tuple_[2]) == list:
+        tuple_object = ''
+        for obj in tuple_[2]:
+            if not tuple_object:
+                tuple_object = extract_individual_from_tuple_element(obj)
+                tuple_object = "'" + tuple_object + "'"
+            else: 
+                if are_there_multiple_related_tuples_for_same_object_:
+                    tuple_object = tuple_object + ', and also ' + tuple_relationship + ' ' + "'" + extract_individual_from_tuple_element(obj) + "'"
+                else:
+                    tuple_object = tuple_object + ' and ' + "'" + extract_individual_from_tuple_element(obj) + "'"
+            
+        # aggreate text about related tuples 
+        if tuples_cp:
+            text_to_add = construct_text_about_multiple_tuples(tuples_cp, cluster_semantic_id)
+            if '<tuples_specificity_three_indirect>' in cluster_semantic_id:
+                tuple_object = tuple_object + ", while " + text_to_add # then it is worthy comparing them (e.g. the value of the cost of two different plans)
+            else:
+                tuple_object = tuple_object + ", and " + text_to_add # better just to put them together (e.g. relations between tasks of the same plan)
+        else: 
+            pass
+    else:
+        tuple_object = extract_individual_from_tuple_element(tuple_[2])
+        tuple_object = "'" + tuple_object + "'"
+        
+        # aggreate text about related tuples
+        if tuples_cp:
+            text_to_add = construct_text_about_multiple_tuples(tuples_cp, cluster_semantic_id)
+            if '<tuples_specificity_three_indirect>' in cluster_semantic_id:
+                tuple_object = tuple_object + ", while " + text_to_add # then it is worthy comparing them (e.g. the value of the cost of two different plans)
+            else:
+                tuple_object = tuple_object + ", and " + text_to_add # better just to put them together (e.g. relations between tasks of the same plan)
         else: 
             pass
 
