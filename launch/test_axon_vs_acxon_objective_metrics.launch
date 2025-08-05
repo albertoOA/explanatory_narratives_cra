@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <launch>
-	<arg name="specificity_level"	 	default="3" />
+	<arg name="specificity_level"	 	default="1" />
 	<arg name="domain_name" default="match_cellar" />
-	<arg name="problem_name" default="instances_10-11" /> <!-- usually a pair of problems -->
+	<arg name="problem_name" default="instances_19-9" /> <!-- usually a pair of problems -->
 
-	<!-- Include node for acxon test for plan disambiguation -->
+	<!-- Include node for axon test for plan disambiguation -->
 	<node name="axon_test_node" pkg="explanatory_narratives_cra" type="axon_test_plan_disambiguation_with_neem.py" output="screen">
 		<param name="specificity_level" value="$(arg specificity_level)" />   
 		<param name="domain_name" value="$(arg domain_name)" /> 
