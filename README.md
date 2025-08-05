@@ -31,17 +31,17 @@ rosrun explanatory_narratives_cra assert_general_neems_cra.py
 ```
 
 
-### Generating c explanatory narratives: an example task *'bringing an object'*
+### Generating contrastive explanatory narratives: an example task *'bringing an object'*
 
-################################TODO - do the same as in the previous, prepare a case with the complete validation neem, so that the knowledge base does not change when generating the narratives, as it does when you add new plans now eecuting the launch.. then, allow people to run the one in which the knolwedge is asserted (using the launch files already provided below)
+This example deals with a use case in which a robot receives a command: 'bring a drink', which is ambiguous, since there are several drinks in the scene. Hence, the robot would generate using symbolic planning as many plans as drinks there are in the environment, and then it would compare the plans and generate an explanation of which plan is better according to its internal ontological criteria. 
 
-In order to generate the c explanatory narratives, it is essential a running knowledge base, which might contain part of the knowledge to be narrated. Hence, make sure that you have launched [know_cra](https://github.com/albertoOA/know_cra/) with the validation neem for *'bringing an object'* or your own episodic memories. In this case, you might want to launch: 
+In order to generate the contrastive explanatory narratives, it is essential a running knowledge base, which might contain part of the knowledge to be narrated. Hence, make sure that you have launched [know_cra](https://github.com/albertoOA/know_cra/) with the validation neem for *'bringing an object'* or your own episodic memories. In this case, you might want to launch: 
 
 ```
 roslaunch know_cra map_cra_cs_bringing_object_neem_manual_assertion.launch
 ```
 
-The previous command would open a simple knowledge base and it will assert some facts about the objects in the environment. Hence, you can run the test to first generate the plans to bring all the different objects in the map, assert the knowedge about those plans, and generate the final contrastive narrative comparing in pairs the different objects and then the different plans:
+The previous command would open a simple knowledge base and it will assert some facts about the objects in the environment (e.g. their qualities, such as which drinks are healthier, colder, farther away, etc.). In order to have different plans (i.e. to bring each drink), it is necessary to open a planning problem in which the goal is to bring a drink, generate the plan, and then change the goal and generate a new plan for each drink. The following launch file first generates the plans to bring all the different drinks in the map (there are two, tea and cola), asserts the knowedge about those plans (e.g. their qualities), and generates the final contrastive narrative comparing in pairs the different drinks and then the different plans:
 
 ```
 roslaunch explanatory_narratives_cra c_narratives_bringing_object_plan_disambiguation.launch
