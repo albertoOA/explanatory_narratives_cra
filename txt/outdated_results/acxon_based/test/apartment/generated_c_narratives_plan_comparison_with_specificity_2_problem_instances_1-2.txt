@@ -1,0 +1,5 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+Plan_B is plan with more tasks than Plan_A, which is cheaper plan than and is plan with less tasks than and is faster plan than and is better plan than Plan_B. Plan_A includes task task_2_grasp_object and task_3_goto_waypoint and task_5_give_object; while Plan_B includes task task_2_goto_waypoint and task_3_grasp_object, which directly precedes task_4_goto_waypoint, and also includes task task_5_goto_waypoint and task_6_goto_waypoint and task_7_give_object. Plan_A has expected makespan Plan_A_makespan, which has a lower value than Plan_B_makespan; while Plan_B has expected makespan Plan_B_makespan. Plan_A has number of tasks Plan_A_number_of_tasks, which has a lower value than Plan_B_number_of_tasks; while Plan_B has number of tasks Plan_B_number_of_tasks. Plan_A has cost Plan_A_cost, which has a lower value than Plan_B_cost; while Plan_B has cost Plan_B_cost. 

@@ -1,0 +1,18 @@
+'Plan A' is a type of 'Plan' and includes task 'task 0 find person' and 'task 1 goto waypoint' and 'task 2 grasp object' and 'task 3 goto waypoint' and 'task 4 goto waypoint' and 'task 5 give object' and is cheaper plan than 'Plan B' and is plan with less tasks than 'Plan B' and is faster plan than 'Plan B' and is better plan than 'Plan B'. 
+
+'Plan A makespan' is expected makespan of 'Plan A'. 
+
+'Plan A number of tasks' is number of tasks of 'Plan A'. 
+
+'Plan A cost' is cost of 'Plan A'. 
+
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 find person' and 'task 1 goto waypoint' and 'task 2 goto waypoint' and 'task 3 grasp object' and 'task 4 goto waypoint' and 'task 5 goto waypoint' and 'task 6 goto waypoint' and 'task 7 give object' and is more expensive plan than 'Plan A' and is plan with more tasks than 'Plan A' and is slower plan than 'Plan A' and is worse plan than 'Plan A'. 
+
+'Plan B makespan' is expected makespan of 'Plan B'. 
+
+'Plan B number of tasks' is number of tasks of 'Plan B'. 
+
+'Plan B cost' is cost of 'Plan B'. 
+
+

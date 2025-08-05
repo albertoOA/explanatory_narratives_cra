@@ -1,0 +1,90 @@
+'Plan A' is a type of 'Plan' and includes task 'task 0 calibrate' and 'task 1 sample soil' and 'task 2 take image' and 'task 3 drop' and 'task 4 sample rock' and 'task 5 communicate image data' and 'task 6 communicate soil data' and 'task 7 communicate rock data' and is cheaper plan than 'Plan B' and is shorter plan than 'Plan B' and is faster plan than 'Plan B' and is better plan than 'Plan B'. 
+
+'Plan A makespan' is a type of 'Quality' and is expected makespan of 'Plan A' and has data value '47.0' and has a lower value than 'Plan B makespan'. 
+
+'Plan A number of tasks' is a type of 'Quality' and is number of tasks of 'Plan A' and has data value '8.0' and has a lower value than 'Plan B number of tasks'. 
+
+'Plan A cost' is a type of 'Quality' and is cost of 'Plan A' and has data value '47.0' and has a lower value than 'Plan B cost'. 
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 sample rock' and 'task 1 calibrate' and 'task 2 sample rock' and 'task 3 sample rock' and 'task 4 take image' and 'task 5 navigate' and 'task 6 drop' and 'task 7 sample soil' and 'task 8 navigate' and 'task 9 communicate rock data' and 'task 10 navigate' and 'task 11 drop' and 'task 12 communicate rock data' and 'task 13 navigate' and 'task 14 sample soil' and 'task 15 communicate image data' and 'task 16 navigate' and 'task 17 communicate soil data' and 'task 18 communicate soil data' and 'task 19 communicate rock data'. 
+
+'task 0 calibrate' is a type of 'Task' and directly precedes 'task 2 take image'. 
+
+'task 1 sample soil' is a type of 'Task' and directly precedes 'task 3 drop'. 
+
+'task 2 take image' is a type of 'Task' and directly precedes 'task 5 communicate image data'. 
+
+'task 3 drop' is a type of 'Task' and directly precedes 'task 4 sample rock'. 
+
+'task 5 communicate image data' is a type of 'Task' and directly precedes 'task 6 communicate soil data'. 
+
+'task 6 communicate soil data' is a type of 'Task' and directly precedes 'task 7 communicate rock data'. 
+
+'task 4 sample rock' is a type of 'Task'. 
+
+'task 7 communicate rock data' is a type of 'Task'. 
+
+'Plan B makespan' is expected makespan of 'Plan B'. 
+
+'Plan B number of tasks' is number of tasks of 'Plan B'. 
+
+'Plan B cost' is cost of 'Plan B'. 
+
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 sample rock' and 'task 1 calibrate' and 'task 2 sample rock' and 'task 3 sample rock' and 'task 4 take image' and 'task 5 navigate' and 'task 6 drop' and 'task 7 sample soil' and 'task 8 navigate' and 'task 9 communicate rock data' and 'task 10 navigate' and 'task 11 drop' and 'task 12 communicate rock data' and 'task 13 navigate' and 'task 14 sample soil' and 'task 15 communicate image data' and 'task 16 navigate' and 'task 17 communicate soil data' and 'task 18 communicate soil data' and 'task 19 communicate rock data' and is more expensive plan than 'Plan A' and is longer plan than 'Plan A' and is slower plan than 'Plan A' and is worse plan than 'Plan A'. 
+
+'Plan B makespan' is a type of 'Quality' and is expected makespan of 'Plan B' and has data value '78.0' and has a higher value than 'Plan A makespan'. 
+
+'Plan B number of tasks' is a type of 'Quality' and is number of tasks of 'Plan B' and has data value '20.0' and has a higher value than 'Plan A number of tasks'. 
+
+'Plan B cost' is a type of 'Quality' and is cost of 'Plan B' and has data value '78.0' and has a higher value than 'Plan A cost'. 
+
+'Plan A' is a type of 'Plan' and includes task 'task 0 calibrate' and 'task 1 sample soil' and 'task 2 take image' and 'task 3 drop' and 'task 4 sample rock' and 'task 5 communicate image data' and 'task 6 communicate soil data' and 'task 7 communicate rock data'. 
+
+'task 0 sample rock' is a type of 'Task' and directly precedes 'task 5 navigate' and 'task 6 drop'. 
+
+'task 2 sample rock' is a type of 'Task' and directly precedes 'task 5 navigate' and 'task 6 drop'. 
+
+'task 3 sample rock' is a type of 'Task' and directly precedes 'task 5 navigate' and 'task 6 drop'. 
+
+'task 7 sample soil' is a type of 'Task' and directly precedes 'task 10 navigate' and 'task 11 drop'. 
+
+'task 1 calibrate' is a type of 'Task' and directly precedes 'task 4 take image'. 
+
+'task 4 take image' is a type of 'Task' and directly precedes 'task 8 navigate'. 
+
+'task 5 navigate' is a type of 'Task' and directly precedes 'task 9 communicate rock data'. 
+
+'task 6 drop' is a type of 'Task' and directly precedes 'task 7 sample soil'. 
+
+'task 9 communicate rock data' is a type of 'Task' and directly precedes 'task 12 communicate rock data'. 
+
+'task 10 navigate' is a type of 'Task' and directly precedes 'task 13 navigate'. 
+
+'task 12 communicate rock data' is a type of 'Task' and directly precedes 'task 15 communicate image data'. 
+
+'task 13 navigate' is a type of 'Task' and directly precedes 'task 14 sample soil'. 
+
+'task 14 sample soil' is a type of 'Task' and directly precedes 'task 16 navigate'. 
+
+'task 15 communicate image data' is a type of 'Task' and directly precedes 'task 17 communicate soil data'. 
+
+'task 17 communicate soil data' is a type of 'Task' and directly precedes 'task 18 communicate soil data'. 
+
+'task 18 communicate soil data' is a type of 'Task' and directly precedes 'task 19 communicate rock data'. 
+
+'task 8 navigate' is a type of 'Task'. 
+
+'task 11 drop' is a type of 'Task'. 
+
+'task 16 navigate' is a type of 'Task'. 
+
+'task 19 communicate rock data' is a type of 'Task'. 
+
+'Plan A makespan' is expected makespan of 'Plan A'. 
+
+'Plan A number of tasks' is number of tasks of 'Plan A'. 
+
+'Plan A cost' is cost of 'Plan A'. 
+
+

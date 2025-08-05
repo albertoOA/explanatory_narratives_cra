@@ -1,0 +1,5 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+'Plan A' is more expensive plan than and is shorter plan than and is slower plan than 'Plan B'. 

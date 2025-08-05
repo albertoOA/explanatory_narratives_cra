@@ -1,0 +1,5 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+'Plan A' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Plan B'. 'Plan A' includes task 'task 2 grasp object' and 'task 3 goto waypoint' and 'task 5 give object'; while 'Plan B' includes task 'task 2 goto waypoint' and 'task 3 grasp object' and 'task 5 goto waypoint' and 'task 6 goto waypoint' and 'task 7 give object'. 'Plan A' has expected makespan 'Plan A makespan'; while 'Plan B' has expected makespan 'Plan B makespan'. 'Plan A' has number of tasks 'Plan A number of tasks'; while 'Plan B' has number of tasks 'Plan B number of tasks'. 'Plan A' has cost 'Plan A cost'; while 'Plan B' has cost 'Plan B cost'. 

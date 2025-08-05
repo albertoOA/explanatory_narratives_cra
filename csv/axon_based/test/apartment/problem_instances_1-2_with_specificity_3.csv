@@ -1,2 +1,2 @@
-Domain,Problem,Specificity,Time,Memory,Triples,Words
-apartment,instances_1-2,3,1.698838710784912,1920.5625,98,458
+Domain,Problem,Specificity,Time,Memory,Triples,Words,Readability score
+apartment,instances_1-2,3,1.7653939723968506,1988.93359375,100,706,5.59

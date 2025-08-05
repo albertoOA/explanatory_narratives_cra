@@ -1,0 +1,18 @@
+'Plan A' is a type of 'Plan' and includes task 'task 0 calibrate' and 'task 1 navigate' and 'task 2 navigate' and 'task 3 sample soil' and 'task 4 take image' and 'task 5 calibrate' and 'task 6 navigate' and 'task 7 drop' and 'task 8 communicate image data' and 'task 9 navigate' and 'task 10 take image' and 'task 11 calibrate' and 'task 12 navigate' and 'task 13 take image' and 'task 14 sample rock' and 'task 15 communicate image data' and 'task 16 drop' and 'task 17 communicate image data' and 'task 18 communicate rock data' and 'task 19 communicate soil data' and 'task 20 navigate' and 'task 21 sample rock' and 'task 22 navigate' and 'task 23 navigate' and 'task 24 drop' and 'task 25 navigate' and 'task 26 communicate rock data' and 'task 27 navigate' and 'task 28 navigate' and 'task 29 navigate' and 'task 30 sample soil' and 'task 31 sample rock' and 'task 32 communicate soil data' and 'task 33 drop' and 'task 34 navigate' and 'task 35 communicate rock data' and 'task 36 navigate' and 'task 37 sample soil' and 'task 38 navigate' and 'task 39 drop' and 'task 40 communicate soil data' and 'task 41 sample soil' and 'task 42 communicate soil data' and is more expensive plan than 'Plan B' and is longer plan than 'Plan B' and is slower plan than 'Plan B' and is worse plan than 'Plan B'. 
+
+'Plan A makespan' is expected makespan of 'Plan A'. 
+
+'Plan A number of tasks' is number of tasks of 'Plan A'. 
+
+'Plan A cost' is cost of 'Plan A'. 
+
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 calibrate' and 'task 1 sample soil' and 'task 2 navigate' and 'task 3 take image' and 'task 4 communicate soil data' and 'task 5 sample rock' and 'task 6 communicate rock data' and 'task 7 communicate image data' and is cheaper plan than 'Plan A' and is shorter plan than 'Plan A' and is faster plan than 'Plan A' and is better plan than 'Plan A'. 
+
+'Plan B makespan' is expected makespan of 'Plan B'. 
+
+'Plan B number of tasks' is number of tasks of 'Plan B'. 
+
+'Plan B cost' is cost of 'Plan B'. 
+
+

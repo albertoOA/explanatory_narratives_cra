@@ -1,0 +1,18 @@
+'Plan A' is a type of 'Plan' and includes task 'task 0 conduct payload activity' and 'task 1 post sleep' and 'task 2 initialize day' and 'task 3 conduct payload activity' and 'task 4 conduct payload activity' and 'task 5 report payload activity at deadline' and 'task 6 report payload activity at deadline' and 'task 7 report payload activity at deadline' and 'task 8 have meal' and 'task 9 exercise' and 'task 10 medical conference' and 'task 11 conduct payload activity' and 'task 12 report payload activity at deadline' and 'task 13 conduct payload activity' and 'task 14 conduct payload activity' and 'task 15 conduct payload activity' and 'task 16 conduct payload activity' and 'task 17 conduct payload activity' and 'task 18 conduct payload activity' and 'task 19 sleep' and 'task 20 post sleep' and 'task 21 initialize day' and 'task 22 report payload activity at deadline' and 'task 23 report payload activity at deadline' and 'task 24 report payload activity at deadline' and 'task 25 report payload activity at deadline' and 'task 26 report payload activity at deadline' and 'task 27 report payload activity at deadline' and 'task 28 have meal' and 'task 29 exercise' and 'task 30 change filter' and 'task 31 sleep' and is more expensive plan than 'Plan B' and is plan with more tasks than 'Plan B' and is slower plan than 'Plan B' and is worse plan than 'Plan B'. 
+
+'Plan A makespan' is expected makespan of 'Plan A'. 
+
+'Plan A number of tasks' is number of tasks of 'Plan A'. 
+
+'Plan A cost' is cost of 'Plan A'. 
+
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 conduct payload activity' and 'task 1 conduct payload activity' and 'task 2 post sleep' and 'task 3 post sleep' and 'task 4 initialize day' and 'task 5 conduct payload activity' and 'task 6 conduct payload activity' and 'task 7 conduct payload activity' and 'task 8 conduct payload activity' and 'task 9 report payload activity at deadline' and 'task 10 report payload activity at deadline' and 'task 11 report payload activity at deadline' and 'task 12 report payload activity at deadline' and 'task 13 report payload activity at deadline' and 'task 14 report payload activity at deadline' and 'task 15 have meal' and 'task 16 have meal' and 'task 17 exercise' and 'task 18 medical conference' and 'task 19 exercise' and 'task 20 conduct payload activity' and 'task 21 report payload activity at deadline' and 'task 22 conduct payload activity' and 'task 23 conduct payload activity' and 'task 24 report payload activity at deadline' and 'task 25 report payload activity at deadline' and 'task 26 sleep' and 'task 27 sleep' and is cheaper plan than 'Plan A' and is plan with less tasks than 'Plan A' and is faster plan than 'Plan A' and is better plan than 'Plan A'. 
+
+'Plan B makespan' is expected makespan of 'Plan B'. 
+
+'Plan B number of tasks' is number of tasks of 'Plan B'. 
+
+'Plan B cost' is cost of 'Plan B'. 
+
+

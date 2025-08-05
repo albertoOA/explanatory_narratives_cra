@@ -1,0 +1,6 @@
+'Plan A' is a type of 'Plan'. 
+
+
+'Plan B' is a type of 'Plan'. 
+
+

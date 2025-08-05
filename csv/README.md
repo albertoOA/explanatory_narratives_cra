@@ -4,6 +4,7 @@ Move to either axon or acxon based folders
 
 
 $     cat ./test/rovers/problem_instances_1-2_with_specificity_1.csv | head -n1 > merged.csv
+(note that 1-2 is just an example, adapt to the actual cases)
 
 $     for f in ./test/*/*.csv; do cat "`pwd`/$f" | tail -n +2 >> merged.csv; done 
 

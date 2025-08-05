@@ -1,0 +1,5 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+'Plan A' is plan with same cost as and is shorter plan than and is plan with same expected makespan as 'Plan B'. 

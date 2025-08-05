@@ -1,0 +1,18 @@
+'Plan A' is a type of 'Plan' and includes task 'task 0 conduct payload activity' and 'task 1 conduct payload activity' and 'task 2 post sleep' and 'task 3 post sleep' and 'task 4 initialize day' and 'task 5 conduct payload activity' and 'task 6 conduct payload activity' and 'task 7 conduct payload activity' and 'task 8 conduct payload activity' and 'task 9 report payload activity at deadline' and 'task 10 report payload activity at deadline' and 'task 11 report payload activity at deadline' and 'task 12 report payload activity at deadline' and 'task 13 report payload activity at deadline' and 'task 14 report payload activity at deadline' and 'task 15 have meal' and 'task 16 have meal' and 'task 17 exercise' and 'task 18 medical conference' and 'task 19 exercise' and 'task 20 conduct payload activity' and 'task 21 report payload activity at deadline' and 'task 22 conduct payload activity' and 'task 23 conduct payload activity' and 'task 24 report payload activity at deadline' and 'task 25 report payload activity at deadline' and 'task 26 sleep' and 'task 27 sleep' and is plan with same cost as 'Plan B' and is longer plan than 'Plan B' and is slower plan than 'Plan B'. 
+
+'Plan A makespan' is expected makespan of 'Plan A'. 
+
+'Plan A number of tasks' is number of tasks of 'Plan A'. 
+
+'Plan A cost' is cost of 'Plan A'. 
+
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 initialize day' and 'task 1 post sleep' and 'task 2 have meal' and 'task 3 exercise' and 'task 4 medical conference' and 'task 5 conduct payload activity' and 'task 6 conduct payload activity' and 'task 7 report payload activity at deadline' and 'task 8 conduct payload activity' and 'task 9 report payload activity at deadline' and 'task 10 conduct payload activity' and 'task 11 report payload activity at deadline' and 'task 12 sleep' and 'task 13 report payload activity at deadline' and is plan with same cost as 'Plan A' and is shorter plan than 'Plan A' and is faster plan than 'Plan A'. 
+
+'Plan B makespan' is expected makespan of 'Plan B'. 
+
+'Plan B number of tasks' is number of tasks of 'Plan B'. 
+
+'Plan B cost' is cost of 'Plan B'. 
+
+

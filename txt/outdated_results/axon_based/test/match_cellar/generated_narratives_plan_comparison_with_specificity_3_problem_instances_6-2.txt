@@ -1,0 +1,166 @@
+'Plan A' is a type of 'Plan' and includes task 'task 0 light match' and 'task 1 mend fuse' and 'task 2 mend fuse' and 'task 3 light match' and 'task 4 mend fuse' and 'task 5 mend fuse' and 'task 6 light match' and 'task 7 mend fuse' and 'task 8 mend fuse' and 'task 9 light match' and 'task 10 mend fuse' and 'task 11 mend fuse' and 'task 12 light match' and 'task 13 mend fuse' and 'task 14 mend fuse' and 'task 15 light match' and 'task 16 mend fuse' and 'task 17 mend fuse' and 'task 18 light match' and 'task 19 mend fuse' and 'task 20 mend fuse' and 'task 21 light match' and 'task 22 mend fuse' and 'task 23 mend fuse' and 'task 24 light match' and 'task 25 mend fuse' and 'task 26 mend fuse' and 'task 27 light match' and 'task 28 mend fuse' and 'task 29 mend fuse' and 'task 30 light match' and 'task 31 mend fuse' and 'task 32 mend fuse' and 'task 33 light match' and 'task 34 mend fuse' and 'task 35 mend fuse' and is more expensive plan than 'Plan B' and is plan with more tasks than 'Plan B' and is slower plan than 'Plan B' and is worse plan than 'Plan B'. 
+
+'Plan A makespan' is a type of 'Quality' and is expected makespan of 'Plan A' and has data value '48.02' and has a higher value than 'Plan B makespan'. 
+
+'Plan A number of tasks' is a type of 'Quality' and is number of tasks of 'Plan A' and has data value '36.0' and has a higher value than 'Plan B number of tasks'. 
+
+'Plan A cost' is a type of 'Quality' and is cost of 'Plan A' and has data value '48.02' and has a higher value than 'Plan B cost'. 
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 light match' and 'task 1 mend fuse' and 'task 2 mend fuse' and 'task 3 light match' and 'task 4 mend fuse' and 'task 5 mend fuse' and 'task 6 light match' and 'task 7 mend fuse' and 'task 8 mend fuse' and 'task 9 light match' and 'task 10 mend fuse' and 'task 11 mend fuse' and 'task 12 light match' and 'task 13 mend fuse' and 'task 14 mend fuse' and 'task 15 light match' and 'task 16 mend fuse' and 'task 17 mend fuse' and 'task 18 light match' and 'task 19 mend fuse' and 'task 20 mend fuse' and 'task 21 light match' and 'task 22 mend fuse' and 'task 23 mend fuse' and 'task 24 light match' and 'task 25 mend fuse' and 'task 26 mend fuse' and 'task 27 light match' and 'task 28 mend fuse' and 'task 29 mend fuse' and is plan with less tasks than 'Plan A'. 
+
+'task 1 mend fuse' is a type of 'Task' and directly precedes 'task 2 mend fuse'. 
+
+'task 2 mend fuse' is a type of 'Task' and directly precedes 'task 4 mend fuse'. 
+
+'task 3 light match' is a type of 'Task' and directly precedes 'task 7 mend fuse'. 
+
+'task 4 mend fuse' is a type of 'Task' and directly precedes 'task 5 mend fuse'. 
+
+'task 5 mend fuse' is a type of 'Task' and directly precedes 'task 7 mend fuse'. 
+
+'task 6 light match' is a type of 'Task' and directly precedes 'task 10 mend fuse'. 
+
+'task 7 mend fuse' is a type of 'Task' and directly precedes 'task 8 mend fuse'. 
+
+'task 8 mend fuse' is a type of 'Task' and directly precedes 'task 10 mend fuse'. 
+
+'task 9 light match' is a type of 'Task' and directly precedes 'task 13 mend fuse'. 
+
+'task 10 mend fuse' is a type of 'Task' and directly precedes 'task 11 mend fuse'. 
+
+'task 11 mend fuse' is a type of 'Task' and directly precedes 'task 13 mend fuse'. 
+
+'task 12 light match' is a type of 'Task' and directly precedes 'task 16 mend fuse'. 
+
+'task 13 mend fuse' is a type of 'Task' and directly precedes 'task 14 mend fuse'. 
+
+'task 14 mend fuse' is a type of 'Task' and directly precedes 'task 16 mend fuse'. 
+
+'task 15 light match' is a type of 'Task' and directly precedes 'task 19 mend fuse'. 
+
+'task 16 mend fuse' is a type of 'Task' and directly precedes 'task 17 mend fuse'. 
+
+'task 17 mend fuse' is a type of 'Task' and directly precedes 'task 19 mend fuse'. 
+
+'task 18 light match' is a type of 'Task' and directly precedes 'task 22 mend fuse'. 
+
+'task 19 mend fuse' is a type of 'Task' and directly precedes 'task 20 mend fuse'. 
+
+'task 20 mend fuse' is a type of 'Task' and directly precedes 'task 22 mend fuse'. 
+
+'task 21 light match' is a type of 'Task' and directly precedes 'task 25 mend fuse'. 
+
+'task 22 mend fuse' is a type of 'Task' and directly precedes 'task 23 mend fuse'. 
+
+'task 23 mend fuse' is a type of 'Task' and directly precedes 'task 25 mend fuse'. 
+
+'task 24 light match' is a type of 'Task' and directly precedes 'task 28 mend fuse'. 
+
+'task 25 mend fuse' is a type of 'Task' and directly precedes 'task 26 mend fuse'. 
+
+'task 26 mend fuse' is a type of 'Task' and directly precedes 'task 28 mend fuse'. 
+
+'task 27 light match' is a type of 'Task' and directly precedes 'task 31 mend fuse'. 
+
+'task 28 mend fuse' is a type of 'Task' and directly precedes 'task 29 mend fuse'. 
+
+'task 29 mend fuse' is a type of 'Task' and directly precedes 'task 31 mend fuse'. 
+
+'task 30 light match' is a type of 'Task' and directly precedes 'task 34 mend fuse'. 
+
+'task 31 mend fuse' is a type of 'Task' and directly precedes 'task 32 mend fuse'. 
+
+'task 32 mend fuse' is a type of 'Task' and directly precedes 'task 34 mend fuse'. 
+
+'task 34 mend fuse' is a type of 'Task' and directly precedes 'task 35 mend fuse'. 
+
+'task 0 light match' is a type of 'Task'. 
+
+'task 33 light match' is a type of 'Task'. 
+
+'task 35 mend fuse' is a type of 'Task'. 
+
+'Plan B makespan' is expected makespan of 'Plan B'. 
+
+'Plan B number of tasks' is number of tasks of 'Plan B'. 
+
+'Plan B cost' is cost of 'Plan B'. 
+
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 light match' and 'task 1 mend fuse' and 'task 2 mend fuse' and 'task 3 light match' and 'task 4 mend fuse' and 'task 5 mend fuse' and 'task 6 light match' and 'task 7 mend fuse' and 'task 8 mend fuse' and 'task 9 light match' and 'task 10 mend fuse' and 'task 11 mend fuse' and 'task 12 light match' and 'task 13 mend fuse' and 'task 14 mend fuse' and 'task 15 light match' and 'task 16 mend fuse' and 'task 17 mend fuse' and 'task 18 light match' and 'task 19 mend fuse' and 'task 20 mend fuse' and 'task 21 light match' and 'task 22 mend fuse' and 'task 23 mend fuse' and 'task 24 light match' and 'task 25 mend fuse' and 'task 26 mend fuse' and 'task 27 light match' and 'task 28 mend fuse' and 'task 29 mend fuse' and is cheaper plan than 'Plan A' and is plan with less tasks than 'Plan A' and is faster plan than 'Plan A' and is better plan than 'Plan A'. 
+
+'Plan B makespan' is a type of 'Quality' and is expected makespan of 'Plan B' and has data value '40.02' and has a lower value than 'Plan A makespan'. 
+
+'Plan B number of tasks' is a type of 'Quality' and is number of tasks of 'Plan B' and has data value '30.0' and has a lower value than 'Plan A number of tasks'. 
+
+'Plan B cost' is a type of 'Quality' and is cost of 'Plan B' and has data value '40.02' and has a lower value than 'Plan A cost'. 
+
+'Plan A' is a type of 'Plan' and includes task 'task 0 light match' and 'task 1 mend fuse' and 'task 2 mend fuse' and 'task 3 light match' and 'task 4 mend fuse' and 'task 5 mend fuse' and 'task 6 light match' and 'task 7 mend fuse' and 'task 8 mend fuse' and 'task 9 light match' and 'task 10 mend fuse' and 'task 11 mend fuse' and 'task 12 light match' and 'task 13 mend fuse' and 'task 14 mend fuse' and 'task 15 light match' and 'task 16 mend fuse' and 'task 17 mend fuse' and 'task 18 light match' and 'task 19 mend fuse' and 'task 20 mend fuse' and 'task 21 light match' and 'task 22 mend fuse' and 'task 23 mend fuse' and 'task 24 light match' and 'task 25 mend fuse' and 'task 26 mend fuse' and 'task 27 light match' and 'task 28 mend fuse' and 'task 29 mend fuse' and 'task 30 light match' and 'task 31 mend fuse' and 'task 32 mend fuse' and 'task 33 light match' and 'task 34 mend fuse' and 'task 35 mend fuse' and is plan with more tasks than 'Plan B'. 
+
+'task 1 mend fuse' is a type of 'Task' and directly precedes 'task 2 mend fuse'. 
+
+'task 2 mend fuse' is a type of 'Task' and directly precedes 'task 4 mend fuse'. 
+
+'task 3 light match' is a type of 'Task' and directly precedes 'task 7 mend fuse'. 
+
+'task 4 mend fuse' is a type of 'Task' and directly precedes 'task 5 mend fuse'. 
+
+'task 5 mend fuse' is a type of 'Task' and directly precedes 'task 7 mend fuse'. 
+
+'task 6 light match' is a type of 'Task' and directly precedes 'task 10 mend fuse'. 
+
+'task 7 mend fuse' is a type of 'Task' and directly precedes 'task 8 mend fuse'. 
+
+'task 8 mend fuse' is a type of 'Task' and directly precedes 'task 10 mend fuse'. 
+
+'task 9 light match' is a type of 'Task' and directly precedes 'task 13 mend fuse'. 
+
+'task 10 mend fuse' is a type of 'Task' and directly precedes 'task 11 mend fuse'. 
+
+'task 11 mend fuse' is a type of 'Task' and directly precedes 'task 13 mend fuse'. 
+
+'task 12 light match' is a type of 'Task' and directly precedes 'task 16 mend fuse'. 
+
+'task 13 mend fuse' is a type of 'Task' and directly precedes 'task 14 mend fuse'. 
+
+'task 14 mend fuse' is a type of 'Task' and directly precedes 'task 16 mend fuse'. 
+
+'task 15 light match' is a type of 'Task' and directly precedes 'task 19 mend fuse'. 
+
+'task 16 mend fuse' is a type of 'Task' and directly precedes 'task 17 mend fuse'. 
+
+'task 17 mend fuse' is a type of 'Task' and directly precedes 'task 19 mend fuse'. 
+
+'task 18 light match' is a type of 'Task' and directly precedes 'task 22 mend fuse'. 
+
+'task 19 mend fuse' is a type of 'Task' and directly precedes 'task 20 mend fuse'. 
+
+'task 20 mend fuse' is a type of 'Task' and directly precedes 'task 22 mend fuse'. 
+
+'task 21 light match' is a type of 'Task' and directly precedes 'task 25 mend fuse'. 
+
+'task 22 mend fuse' is a type of 'Task' and directly precedes 'task 23 mend fuse'. 
+
+'task 23 mend fuse' is a type of 'Task' and directly precedes 'task 25 mend fuse'. 
+
+'task 24 light match' is a type of 'Task' and directly precedes 'task 28 mend fuse'. 
+
+'task 25 mend fuse' is a type of 'Task' and directly precedes 'task 26 mend fuse'. 
+
+'task 26 mend fuse' is a type of 'Task' and directly precedes 'task 28 mend fuse'. 
+
+'task 27 light match' is a type of 'Task' and directly precedes 'task 31 mend fuse'. 
+
+'task 28 mend fuse' is a type of 'Task' and directly precedes 'task 29 mend fuse'. 
+
+'task 29 mend fuse' is a type of 'Task' and directly precedes 'task 31 mend fuse'. 
+
+'task 0 light match' is a type of 'Task'. 
+
+'Plan A makespan' is expected makespan of 'Plan A'. 
+
+'Plan A number of tasks' is number of tasks of 'Plan A'. 
+
+'Plan A cost' is cost of 'Plan A'. 
+
+

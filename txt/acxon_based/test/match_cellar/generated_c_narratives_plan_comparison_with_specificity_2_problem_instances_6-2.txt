@@ -1,0 +1,5 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+'Plan A' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'Plan B'. 'Plan A' includes task 'task 30 light match' and 'task 31 mend fuse' and 'task 32 mend fuse' and 'task 33 light match' and 'task 34 mend fuse' and 'task 35 mend fuse'. 'Plan A' has expected makespan 'Plan A makespan'; while 'Plan B' has expected makespan 'Plan B makespan'. 'Plan A' has number of tasks 'Plan A number of tasks'; while 'Plan B' has number of tasks 'Plan B number of tasks'. 'Plan A' has cost 'Plan A cost'; while 'Plan B' has cost 'Plan B cost'. 

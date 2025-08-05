@@ -1,0 +1,18 @@
+'Plan A' is a type of 'Plan' and includes task 'task 0 navigate' and 'task 1 navigate' and 'task 2 calibrate' and 'task 3 calibrate' and 'task 4 sample soil' and 'task 5 take image' and 'task 6 take image' and 'task 7 calibrate' and 'task 8 calibrate' and 'task 9 take image' and 'task 10 navigate' and 'task 11 navigate' and 'task 12 navigate' and 'task 13 drop' and 'task 14 communicate image data' and 'task 15 sample rock' and 'task 16 sample soil' and 'task 17 navigate' and 'task 18 drop' and 'task 19 navigate' and 'task 20 navigate' and 'task 21 navigate' and 'task 22 communicate soil data' and 'task 23 sample soil' and 'task 24 communicate soil data' and 'task 25 navigate' and 'task 26 communicate image data' and 'task 27 communicate soil data' and 'task 28 communicate rock data' and 'task 29 navigate' and 'task 30 sample rock' and 'task 31 navigate' and 'task 32 drop' and 'task 33 communicate rock data' and 'task 34 navigate' and 'task 35 navigate' and 'task 36 sample rock' and 'task 37 communicate rock data' and is more expensive plan than 'Plan B' and is plan with equal number of tasks than 'Plan B' and is slower plan than 'Plan B'. 
+
+'Plan A makespan' is expected makespan of 'Plan A'. 
+
+'Plan A number of tasks' is number of tasks of 'Plan A'. 
+
+'Plan A cost' is cost of 'Plan A'. 
+
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 sample soil' and 'task 1 calibrate' and 'task 2 navigate' and 'task 3 navigate' and 'task 4 take image' and 'task 5 navigate' and 'task 6 sample rock' and 'task 7 calibrate' and 'task 8 navigate' and 'task 9 drop' and 'task 10 sample soil' and 'task 11 navigate' and 'task 12 navigate' and 'task 13 communicate soil data' and 'task 14 navigate' and 'task 15 navigate' and 'task 16 drop' and 'task 17 take image' and 'task 18 calibrate' and 'task 19 communicate image data' and 'task 20 navigate' and 'task 21 take image' and 'task 22 navigate' and 'task 23 sample soil' and 'task 24 communicate image data' and 'task 25 navigate' and 'task 26 navigate' and 'task 27 communicate image data' and 'task 28 navigate' and 'task 29 communicate soil data' and 'task 30 navigate' and 'task 31 navigate' and 'task 32 communicate soil data' and 'task 33 navigate' and 'task 34 sample rock' and 'task 35 communicate rock data' and 'task 36 navigate' and 'task 37 communicate rock data' and is cheaper plan than 'Plan A' and is plan with equal number of tasks than 'Plan A' and is faster plan than 'Plan A'. 
+
+'Plan B makespan' is expected makespan of 'Plan B'. 
+
+'Plan B number of tasks' is number of tasks of 'Plan B'. 
+
+'Plan B cost' is cost of 'Plan B'. 
+
+

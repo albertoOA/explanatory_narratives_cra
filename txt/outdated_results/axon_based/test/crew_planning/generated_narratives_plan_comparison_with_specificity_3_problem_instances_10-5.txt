@@ -1,0 +1,164 @@
+'Plan A' is a type of 'Plan' and includes task 'task 0 initialize day' and 'task 1 post sleep' and 'task 2 post sleep' and 'task 3 post sleep' and 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal' and 'task 7 exercise' and 'task 8 exercise' and 'task 9 exercise' and 'task 10 sleep' and 'task 11 sleep' and 'task 12 medical conference' and 'task 13 medical conference' and 'task 14 conduct payload activity' and 'task 15 conduct payload activity' and 'task 16 report payload activity at deadline' and 'task 17 conduct payload activity' and 'task 18 report payload activity at deadline' and 'task 19 conduct payload activity' and 'task 20 report payload activity at deadline' and 'task 21 conduct payload activity' and 'task 22 report payload activity at deadline' and 'task 23 conduct payload activity' and 'task 24 report payload activity at deadline' and 'task 25 conduct payload activity' and 'task 26 report payload activity at deadline' and 'task 27 conduct payload activity' and 'task 28 report payload activity at deadline' and 'task 29 conduct payload activity' and 'task 30 report payload activity at deadline' and 'task 31 conduct payload activity' and 'task 32 report payload activity at deadline' and 'task 33 conduct payload activity' and 'task 34 report payload activity at deadline' and 'task 35 conduct payload activity' and 'task 36 report payload activity at deadline' and 'task 37 conduct payload activity' and 'task 38 report payload activity at deadline' and 'task 39 conduct payload activity' and 'task 40 report payload activity at deadline' and 'task 41 sleep' and 'task 42 report payload activity at deadline' and is more expensive plan than 'Plan B' and is plan with more tasks than 'Plan B' and is slower plan than 'Plan B' and is worse plan than 'Plan B'. 
+
+'Plan A makespan' is a type of 'Quality' and is expected makespan of 'Plan A' and has data value '1276.02' and has a higher value than 'Plan B makespan'. 
+
+'Plan A number of tasks' is a type of 'Quality' and is number of tasks of 'Plan A' and has data value '43.0' and has a higher value than 'Plan B number of tasks'. 
+
+'Plan A cost' is a type of 'Quality' and is cost of 'Plan A' and has data value '1875.02' and has a higher value than 'Plan B cost'. 
+
+'Plan B' is a type of 'Plan' and includes task 'task 2 post sleep' and 'task 3 post sleep' and 'task 0 conduct payload activity' and 'task 1 conduct payload activity' and 'task 4 initialize day' and 'task 5 conduct payload activity' and 'task 6 conduct payload activity' and 'task 7 conduct payload activity' and 'task 8 conduct payload activity' and 'task 9 report payload activity at deadline' and 'task 10 report payload activity at deadline' and 'task 11 report payload activity at deadline' and 'task 12 report payload activity at deadline' and 'task 13 report payload activity at deadline' and 'task 14 report payload activity at deadline' and 'task 15 have meal' and 'task 16 have meal' and 'task 17 exercise' and 'task 18 medical conference' and 'task 19 exercise' and 'task 20 sleep' and 'task 21 sleep' and is plan with less tasks than 'Plan A'. 
+
+'task 2 post sleep' is a type of 'Task' and directly precedes 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal' and 'task 9 report payload activity at deadline' and 'task 10 report payload activity at deadline' and 'task 11 report payload activity at deadline' and 'task 12 report payload activity at deadline' and 'task 13 report payload activity at deadline' and 'task 14 report payload activity at deadline' and 'task 15 have meal' and 'task 16 have meal'. 
+
+'task 3 post sleep' is a type of 'Task' and directly precedes 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal' and 'task 9 report payload activity at deadline' and 'task 10 report payload activity at deadline' and 'task 11 report payload activity at deadline' and 'task 12 report payload activity at deadline' and 'task 13 report payload activity at deadline' and 'task 14 report payload activity at deadline' and 'task 15 have meal' and 'task 16 have meal'. 
+
+'task 1 post sleep' is a type of 'Task' and directly precedes 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal'. 
+
+'task 4 have meal' is a type of 'Task' and directly precedes 'task 7 exercise' and 'task 8 exercise' and 'task 9 exercise'. 
+
+'task 5 have meal' is a type of 'Task' and directly precedes 'task 7 exercise' and 'task 8 exercise' and 'task 9 exercise'. 
+
+'task 6 have meal' is a type of 'Task' and directly precedes 'task 7 exercise' and 'task 8 exercise' and 'task 9 exercise'. 
+
+'task 7 exercise' is a type of 'Task' and directly precedes 'task 10 sleep' and 'task 11 sleep' and 'task 12 medical conference'. 
+
+'task 8 exercise' is a type of 'Task' and directly precedes 'task 10 sleep' and 'task 11 sleep' and 'task 12 medical conference'. 
+
+'task 9 exercise' is a type of 'Task' and directly precedes 'task 10 sleep' and 'task 11 sleep' and 'task 12 medical conference'. 
+
+'task 14 conduct payload activity' is a type of 'Task' and directly precedes 'task 15 conduct payload activity' and 'task 16 report payload activity at deadline'. 
+
+'task 15 conduct payload activity' is a type of 'Task' and directly precedes 'task 17 conduct payload activity' and 'task 18 report payload activity at deadline'. 
+
+'task 17 conduct payload activity' is a type of 'Task' and directly precedes 'task 19 conduct payload activity' and 'task 20 report payload activity at deadline'. 
+
+'task 19 conduct payload activity' is a type of 'Task' and directly precedes 'task 21 conduct payload activity' and 'task 22 report payload activity at deadline'. 
+
+'task 21 conduct payload activity' is a type of 'Task' and directly precedes 'task 23 conduct payload activity' and 'task 24 report payload activity at deadline'. 
+
+'task 23 conduct payload activity' is a type of 'Task' and directly precedes 'task 25 conduct payload activity' and 'task 26 report payload activity at deadline'. 
+
+'task 25 conduct payload activity' is a type of 'Task' and directly precedes 'task 27 conduct payload activity' and 'task 28 report payload activity at deadline'. 
+
+'task 27 conduct payload activity' is a type of 'Task' and directly precedes 'task 29 conduct payload activity' and 'task 30 report payload activity at deadline'. 
+
+'task 29 conduct payload activity' is a type of 'Task' and directly precedes 'task 31 conduct payload activity' and 'task 32 report payload activity at deadline'. 
+
+'task 31 conduct payload activity' is a type of 'Task' and directly precedes 'task 33 conduct payload activity' and 'task 34 report payload activity at deadline'. 
+
+'task 33 conduct payload activity' is a type of 'Task' and directly precedes 'task 35 conduct payload activity' and 'task 36 report payload activity at deadline'. 
+
+'task 35 conduct payload activity' is a type of 'Task' and directly precedes 'task 37 conduct payload activity' and 'task 38 report payload activity at deadline'. 
+
+'task 37 conduct payload activity' is a type of 'Task' and directly precedes 'task 39 conduct payload activity' and 'task 40 report payload activity at deadline'. 
+
+'task 39 conduct payload activity' is a type of 'Task' and directly precedes 'task 41 sleep' and 'task 42 report payload activity at deadline'. 
+
+'task 12 medical conference' is a type of 'Task' and directly precedes 'task 13 medical conference'. 
+
+'task 13 medical conference' is a type of 'Task' and directly precedes 'task 14 conduct payload activity'. 
+
+'task 0 initialize day' is a type of 'Task'. 
+
+'task 10 sleep' is a type of 'Task'. 
+
+'task 11 sleep' is a type of 'Task'. 
+
+'task 16 report payload activity at deadline' is a type of 'Task'. 
+
+'task 18 report payload activity at deadline' is a type of 'Task'. 
+
+'task 20 report payload activity at deadline' is a type of 'Task'. 
+
+'task 22 report payload activity at deadline' is a type of 'Task'. 
+
+'task 24 report payload activity at deadline' is a type of 'Task'. 
+
+'task 26 report payload activity at deadline' is a type of 'Task'. 
+
+'task 28 report payload activity at deadline' is a type of 'Task'. 
+
+'task 30 report payload activity at deadline' is a type of 'Task'. 
+
+'task 32 report payload activity at deadline' is a type of 'Task'. 
+
+'task 34 report payload activity at deadline' is a type of 'Task'. 
+
+'task 36 report payload activity at deadline' is a type of 'Task'. 
+
+'task 38 report payload activity at deadline' is a type of 'Task'. 
+
+'task 40 report payload activity at deadline' is a type of 'Task'. 
+
+'task 41 sleep' is a type of 'Task'. 
+
+'task 42 report payload activity at deadline' is a type of 'Task'. 
+
+'Plan B makespan' is expected makespan of 'Plan B'. 
+
+'Plan B number of tasks' is number of tasks of 'Plan B'. 
+
+'Plan B cost' is cost of 'Plan B'. 
+
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 conduct payload activity' and 'task 1 conduct payload activity' and 'task 2 post sleep' and 'task 3 post sleep' and 'task 4 initialize day' and 'task 5 conduct payload activity' and 'task 6 conduct payload activity' and 'task 7 conduct payload activity' and 'task 8 conduct payload activity' and 'task 9 report payload activity at deadline' and 'task 10 report payload activity at deadline' and 'task 11 report payload activity at deadline' and 'task 12 report payload activity at deadline' and 'task 13 report payload activity at deadline' and 'task 14 report payload activity at deadline' and 'task 15 have meal' and 'task 16 have meal' and 'task 17 exercise' and 'task 18 medical conference' and 'task 19 exercise' and 'task 20 sleep' and 'task 21 sleep' and is cheaper plan than 'Plan A' and is plan with less tasks than 'Plan A' and is faster plan than 'Plan A' and is better plan than 'Plan A'. 
+
+'Plan B makespan' is a type of 'Quality' and is expected makespan of 'Plan B' and has data value '975.0' and has a lower value than 'Plan A makespan'. 
+
+'Plan B number of tasks' is a type of 'Quality' and is number of tasks of 'Plan B' and has data value '22.0' and has a lower value than 'Plan A number of tasks'. 
+
+'Plan B cost' is a type of 'Quality' and is cost of 'Plan B' and has data value '1440.0' and has a lower value than 'Plan A cost'. 
+
+'Plan A' is a type of 'Plan' and includes task 'task 2 post sleep' and 'task 3 post sleep' and 'task 0 initialize day' and 'task 1 post sleep' and 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal' and 'task 7 exercise' and 'task 8 exercise' and 'task 9 exercise' and 'task 10 sleep' and 'task 11 sleep' and 'task 12 medical conference' and 'task 13 medical conference' and 'task 14 conduct payload activity' and 'task 15 conduct payload activity' and 'task 16 report payload activity at deadline' and 'task 17 conduct payload activity' and 'task 18 report payload activity at deadline' and 'task 19 conduct payload activity' and 'task 20 report payload activity at deadline' and 'task 21 conduct payload activity' and 'task 22 report payload activity at deadline' and 'task 23 conduct payload activity' and 'task 24 report payload activity at deadline' and 'task 25 conduct payload activity' and 'task 26 report payload activity at deadline' and 'task 27 conduct payload activity' and 'task 28 report payload activity at deadline' and 'task 29 conduct payload activity' and 'task 30 report payload activity at deadline' and 'task 31 conduct payload activity' and 'task 32 report payload activity at deadline' and 'task 33 conduct payload activity' and 'task 34 report payload activity at deadline' and 'task 35 conduct payload activity' and 'task 36 report payload activity at deadline' and 'task 37 conduct payload activity' and 'task 38 report payload activity at deadline' and 'task 39 conduct payload activity' and 'task 40 report payload activity at deadline' and 'task 41 sleep' and 'task 42 report payload activity at deadline' and is plan with more tasks than 'Plan B'. 
+
+'task 2 post sleep' is a type of 'Task' and directly precedes 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal' and 'task 9 report payload activity at deadline' and 'task 10 report payload activity at deadline' and 'task 11 report payload activity at deadline' and 'task 12 report payload activity at deadline' and 'task 13 report payload activity at deadline' and 'task 14 report payload activity at deadline' and 'task 15 have meal' and 'task 16 have meal'. 
+
+'task 3 post sleep' is a type of 'Task' and directly precedes 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal' and 'task 9 report payload activity at deadline' and 'task 10 report payload activity at deadline' and 'task 11 report payload activity at deadline' and 'task 12 report payload activity at deadline' and 'task 13 report payload activity at deadline' and 'task 14 report payload activity at deadline' and 'task 15 have meal' and 'task 16 have meal'. 
+
+'task 0 conduct payload activity' is a type of 'Task' and directly precedes 'task 5 conduct payload activity' and 'task 6 conduct payload activity'. 
+
+'task 1 conduct payload activity' is a type of 'Task' and directly precedes 'task 5 conduct payload activity' and 'task 6 conduct payload activity'. 
+
+'task 5 conduct payload activity' is a type of 'Task' and directly precedes 'task 7 conduct payload activity' and 'task 8 conduct payload activity'. 
+
+'task 6 conduct payload activity' is a type of 'Task' and directly precedes 'task 7 conduct payload activity' and 'task 8 conduct payload activity'. 
+
+'task 15 have meal' is a type of 'Task' and directly precedes 'task 17 exercise' and 'task 18 medical conference'. 
+
+'task 16 have meal' is a type of 'Task' and directly precedes 'task 17 exercise' and 'task 18 medical conference'. 
+
+'task 17 exercise' is a type of 'Task' and directly precedes 'task 19 exercise' and 'task 20 sleep'. 
+
+'task 18 medical conference' is a type of 'Task' and directly precedes 'task 19 exercise' and 'task 20 sleep'. 
+
+'task 19 exercise' is a type of 'Task' and directly precedes 'task 21 sleep'. 
+
+'task 4 initialize day' is a type of 'Task'. 
+
+'task 7 conduct payload activity' is a type of 'Task'. 
+
+'task 8 conduct payload activity' is a type of 'Task'. 
+
+'task 9 report payload activity at deadline' is a type of 'Task'. 
+
+'task 10 report payload activity at deadline' is a type of 'Task'. 
+
+'task 11 report payload activity at deadline' is a type of 'Task'. 
+
+'task 12 report payload activity at deadline' is a type of 'Task'. 
+
+'task 13 report payload activity at deadline' is a type of 'Task'. 
+
+'task 14 report payload activity at deadline' is a type of 'Task'. 
+
+'task 20 sleep' is a type of 'Task'. 
+
+'task 21 sleep' is a type of 'Task'. 
+
+'Plan A makespan' is expected makespan of 'Plan A'. 
+
+'Plan A number of tasks' is number of tasks of 'Plan A'. 
+
+'Plan A cost' is cost of 'Plan A'. 
+
+

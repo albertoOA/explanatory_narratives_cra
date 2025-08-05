@@ -1,68 +1,64 @@
+'Plan A' is a type of 'Plan' and includes task 'task 0 find person' and 'task 1 goto waypoint' and 'task 2 grasp object' and 'task 3 goto waypoint' and 'task 4 goto waypoint' and 'task 5 give object' and is cheaper plan than 'Plan B' and is shorter plan than 'Plan B' and is faster plan than 'Plan B' and is better plan than 'Plan B'. 
+
+'Plan A makespan' is a type of 'Quality' and is expected makespan of 'Plan A' and has data value '27.0' and has a lower value than 'Plan B makespan'. 
+
+'Plan A number of tasks' is a type of 'Quality' and is number of tasks of 'Plan A' and has data value '6.0' and has a lower value than 'Plan B number of tasks'. 
+
+'Plan A cost' is a type of 'Quality' and is cost of 'Plan A' and has data value '27.0' and has a lower value than 'Plan B cost'. 
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 find person' and 'task 1 goto waypoint' and 'task 4 goto waypoint' and 'task 2 goto waypoint' and 'task 3 grasp object' and 'task 5 goto waypoint' and 'task 6 goto waypoint' and 'task 7 give object'. 
+
+'task 0 find person' is a type of 'Task' and directly precedes 'task 4 goto waypoint' and 'task 2 goto waypoint'. 
+
+'task 1 goto waypoint' is a type of 'Task' and directly precedes 'task 2 grasp object' and 'task 3 grasp object'. 
+
+'task 2 grasp object' is a type of 'Task' and directly precedes 'task 3 goto waypoint'. 
+
+'task 3 goto waypoint' is a type of 'Task' and directly precedes 'task 5 give object'. 
+
+'task 4 goto waypoint' is a type of 'Task' and directly precedes 'task 6 goto waypoint'. 
+
+'task 3 grasp object' directly precedes 'task 4 goto waypoint'. 
+
+'task 5 give object' is a type of 'Task'. 
+
+'Plan B makespan' is expected makespan of 'Plan B'. 
+
+'Plan B number of tasks' is number of tasks of 'Plan B'. 
+
+'Plan B cost' is cost of 'Plan B'. 
 
 
-·····There are two plans to disambiguate: Plan_A and Plan_B. 
+'Plan B' is a type of 'Plan' and includes task 'task 0 find person' and 'task 1 goto waypoint' and 'task 2 goto waypoint' and 'task 3 grasp object' and 'task 4 goto waypoint' and 'task 5 goto waypoint' and 'task 6 goto waypoint' and 'task 7 give object' and is more expensive plan than 'Plan A' and is longer plan than 'Plan A' and is slower plan than 'Plan A' and is worse plan than 'Plan A'. 
 
-Plan_A is a type of Plan and includes task task_0_find_person and task_1_goto_waypoint and task_2_grasp_object and task_3_goto_waypoint and task_4_goto_waypoint and task_5_give_object and is cheaper plan than Plan_B and is plan with less tasks than Plan_B and is faster plan than Plan_B. 
+'Plan B makespan' is a type of 'Quality' and is expected makespan of 'Plan B' and has data value '59.0' and has a higher value than 'Plan A makespan'. 
 
-Plan_A_makespan is a type of Quality and is expected makespan of Plan_A and has data value 27.0 and has a lower value than Plan_B_makespan. 
+'Plan B number of tasks' is a type of 'Quality' and is number of tasks of 'Plan B' and has data value '8.0' and has a higher value than 'Plan A number of tasks'. 
 
-Plan_A_number_of_tasks is a type of Quality and is number of tasks of Plan_A and has data value 6.0 and has a lower value than Plan_B_number_of_tasks. 
+'Plan B cost' is a type of 'Quality' and is cost of 'Plan B' and has data value '59.0' and has a higher value than 'Plan A cost'. 
 
-Plan_A_cost is a type of Quality and is cost of Plan_A and has data value 27.0 and has a lower value than Plan_B_cost. 
+'Plan A' is a type of 'Plan' and includes task 'task 0 find person' and 'task 1 goto waypoint' and 'task 4 goto waypoint' and 'task 2 grasp object' and 'task 3 goto waypoint' and 'task 5 give object'. 
 
-Plan_B is a type of Plan and includes task task_0_find_person and task_1_goto_waypoint and task_4_goto_waypoint and task_2_goto_waypoint and task_3_grasp_object and task_5_goto_waypoint and task_6_goto_waypoint and task_7_give_object. 
+'task 0 find person' is a type of 'Task' and directly precedes 'task 4 goto waypoint' and 'task 2 goto waypoint'. 
 
-task_0_find_person is a type of Task and directly precedes task_4_goto_waypoint and task_2_goto_waypoint. 
+'task 1 goto waypoint' is a type of 'Task' and directly precedes 'task 2 grasp object' and 'task 3 grasp object'. 
 
-task_1_goto_waypoint is a type of Task and directly precedes task_2_grasp_object and task_3_grasp_object. 
+'task 2 goto waypoint' is a type of 'Task' and directly precedes 'task 5 goto waypoint'. 
 
-task_2_grasp_object is a type of Task and directly precedes task_3_goto_waypoint. 
+'task 3 grasp object' is a type of 'Task' and directly precedes 'task 4 goto waypoint'. 
 
-task_3_goto_waypoint is a type of Task and directly precedes task_5_give_object. 
+'task 4 goto waypoint' is a type of 'Task' and directly precedes 'task 6 goto waypoint'. 
 
-task_4_goto_waypoint is a type of Task and directly precedes task_6_goto_waypoint. 
+'task 6 goto waypoint' is a type of 'Task' and directly precedes 'task 7 give object'. 
 
-task_3_grasp_object directly precedes task_4_goto_waypoint. 
+'task 5 goto waypoint' is a type of 'Task'. 
 
-task_5_give_object is a type of Task. 
+'task 7 give object' is a type of 'Task'. 
 
-Plan_B_makespan is expected makespan of Plan_B. 
+'Plan A makespan' is expected makespan of 'Plan A'. 
 
-Plan_B_number_of_tasks is number of tasks of Plan_B. 
+'Plan A number of tasks' is number of tasks of 'Plan A'. 
 
-Plan_B_cost is cost of Plan_B. 
-
-
-Plan_B is a type of Plan and includes task task_0_find_person and task_1_goto_waypoint and task_2_goto_waypoint and task_3_grasp_object and task_4_goto_waypoint and task_5_goto_waypoint and task_6_goto_waypoint and task_7_give_object and is more expensive plan than Plan_A and is plan with more tasks than Plan_A and is slower plan than Plan_A. 
-
-Plan_B_makespan is a type of Quality and is expected makespan of Plan_B and has data value 59.0 and has a higher value than Plan_A_makespan. 
-
-Plan_B_number_of_tasks is a type of Quality and is number of tasks of Plan_B and has data value 8.0 and has a higher value than Plan_A_number_of_tasks. 
-
-Plan_B_cost is a type of Quality and is cost of Plan_B and has data value 59.0 and has a higher value than Plan_A_cost. 
-
-Plan_A is a type of Plan and includes task task_0_find_person and task_1_goto_waypoint and task_4_goto_waypoint and task_2_grasp_object and task_3_goto_waypoint and task_5_give_object. 
-
-task_0_find_person is a type of Task and directly precedes task_4_goto_waypoint and task_2_goto_waypoint. 
-
-task_1_goto_waypoint is a type of Task and directly precedes task_2_grasp_object and task_3_grasp_object. 
-
-task_2_goto_waypoint is a type of Task and directly precedes task_5_goto_waypoint. 
-
-task_3_grasp_object is a type of Task and directly precedes task_4_goto_waypoint. 
-
-task_4_goto_waypoint is a type of Task and directly precedes task_6_goto_waypoint. 
-
-task_6_goto_waypoint is a type of Task and directly precedes task_7_give_object. 
-
-task_5_goto_waypoint is a type of Task. 
-
-task_7_give_object is a type of Task. 
-
-Plan_A_makespan is expected makespan of Plan_A. 
-
-Plan_A_number_of_tasks is number of tasks of Plan_A. 
-
-Plan_A_cost is cost of Plan_A. 
+'Plan A cost' is cost of 'Plan A'. 
 
 

@@ -1,0 +1,206 @@
+'Plan A' is a type of 'Plan' and includes task 'task 0 conduct payload activity' and 'task 1 post sleep' and 'task 2 initialize day' and 'task 3 conduct payload activity' and 'task 4 conduct payload activity' and 'task 5 have meal' and 'task 6 exercise' and 'task 7 change filter' and 'task 8 conduct payload activity' and 'task 9 conduct payload activity' and 'task 10 conduct payload activity' and 'task 11 conduct payload activity' and 'task 12 first reconfigurate thermal loops' and 'task 13 remove sleep station' and 'task 14 replace rpcm' and 'task 15 assemble sleep station' and 'task 16 second reconfigurate thermal loops' and 'task 17 finish rpcm' and 'task 18 sleep' and 'task 19 initialize day' and 'task 20 post sleep' and 'task 21 report payload activity at deadline' and 'task 22 report payload activity at deadline' and 'task 23 report payload activity at deadline' and 'task 24 report payload activity at deadline' and 'task 25 report payload activity at deadline' and 'task 26 report payload activity at deadline' and 'task 27 report payload activity at deadline' and 'task 28 have meal' and 'task 29 exercise' and 'task 30 change filter' and 'task 31 medical conference' and 'task 32 sleep' and is more expensive plan than 'Plan B' and is shorter plan than 'Plan B' and is slower plan than 'Plan B'. 
+
+'Plan A makespan' is a type of 'Quality' and is expected makespan of 'Plan A' and has data value '2670.02' and has a higher value than 'Plan B makespan'. 
+
+'Plan A number of tasks' is a type of 'Quality' and is number of tasks of 'Plan A' and has data value '33.0'. 
+
+'Plan A cost' is a type of 'Quality' and is cost of 'Plan A' and has data value '2880.0' and has a higher value than 'Plan B cost'. 
+
+'Plan B number of tasks' has a higher value than 'Plan A number of tasks' and is number of tasks of 'Plan B'. 
+
+'Plan B' is a type of 'Plan' and includes task 'task 1 post sleep' and 'task 5 have meal' and 'task 22 report payload activity at deadline' and 'task 24 report payload activity at deadline' and 'task 26 report payload activity at deadline' and 'task 0 initialize day' and 'task 2 post sleep' and 'task 3 post sleep' and 'task 4 have meal' and 'task 6 have meal' and 'task 7 exercise' and 'task 8 exercise' and 'task 9 exercise' and 'task 10 sleep' and 'task 11 sleep' and 'task 12 medical conference' and 'task 13 medical conference' and 'task 14 conduct payload activity' and 'task 15 conduct payload activity' and 'task 16 report payload activity at deadline' and 'task 17 conduct payload activity' and 'task 18 report payload activity at deadline' and 'task 19 conduct payload activity' and 'task 20 report payload activity at deadline' and 'task 21 conduct payload activity' and 'task 23 conduct payload activity' and 'task 25 conduct payload activity' and 'task 27 conduct payload activity' and 'task 28 report payload activity at deadline' and 'task 29 conduct payload activity' and 'task 30 report payload activity at deadline' and 'task 31 conduct payload activity' and 'task 32 report payload activity at deadline' and 'task 33 conduct payload activity' and 'task 34 report payload activity at deadline' and 'task 35 conduct payload activity' and 'task 36 report payload activity at deadline' and 'task 37 conduct payload activity' and 'task 38 report payload activity at deadline' and 'task 39 report payload activity at deadline' and 'task 40 first reconfigurate thermal loops' and 'task 41 remove sleep station' and 'task 42 replace rpcm' and 'task 43 assemble sleep station' and 'task 44 second reconfigurate thermal loops' and 'task 45 sleep' and 'task 46 finish rpcm'. 
+
+'task 20 post sleep' is a type of 'Task' and directly precedes 'task 21 report payload activity at deadline' and 'task 22 report payload activity at deadline' and 'task 23 report payload activity at deadline' and 'task 24 report payload activity at deadline' and 'task 25 report payload activity at deadline' and 'task 26 report payload activity at deadline' and 'task 27 report payload activity at deadline' and 'task 28 have meal'. 
+
+'task 5 have meal' is a type of 'Task' and directly precedes 'task 6 exercise' and 'task 7 exercise' and 'task 8 exercise' and 'task 9 exercise'. 
+
+'task 1 post sleep' is a type of 'Task' and directly precedes 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal'. 
+
+'task 16 second reconfigurate thermal loops' is a type of 'Task' and directly precedes 'task 17 finish rpcm' and 'task 18 sleep'. 
+
+'task 0 conduct payload activity' is a type of 'Task' and directly precedes 'task 3 conduct payload activity'. 
+
+'task 2 initialize day' is a type of 'Task' and directly precedes 'task 19 initialize day'. 
+
+'task 3 conduct payload activity' is a type of 'Task' and directly precedes 'task 4 conduct payload activity'. 
+
+'task 6 exercise' is a type of 'Task' and directly precedes 'task 7 change filter'. 
+
+'task 7 change filter' is a type of 'Task' and directly precedes 'task 8 conduct payload activity'. 
+
+'task 8 conduct payload activity' is a type of 'Task' and directly precedes 'task 9 conduct payload activity'. 
+
+'task 9 conduct payload activity' is a type of 'Task' and directly precedes 'task 10 conduct payload activity'. 
+
+'task 10 conduct payload activity' is a type of 'Task' and directly precedes 'task 11 conduct payload activity'. 
+
+'task 11 conduct payload activity' is a type of 'Task' and directly precedes 'task 12 first reconfigurate thermal loops'. 
+
+'task 12 first reconfigurate thermal loops' is a type of 'Task' and directly precedes 'task 13 remove sleep station'. 
+
+'task 13 remove sleep station' is a type of 'Task' and directly precedes 'task 14 replace rpcm'. 
+
+'task 14 replace rpcm' is a type of 'Task' and directly precedes 'task 15 assemble sleep station'. 
+
+'task 15 assemble sleep station' is a type of 'Task' and directly precedes 'task 16 second reconfigurate thermal loops'. 
+
+'task 18 sleep' is a type of 'Task' and directly precedes 'task 20 post sleep'. 
+
+'task 28 have meal' is a type of 'Task' and directly precedes 'task 29 exercise'. 
+
+'task 29 exercise' is a type of 'Task' and directly precedes 'task 30 change filter'. 
+
+'task 30 change filter' is a type of 'Task' and directly precedes 'task 31 medical conference'. 
+
+'task 31 medical conference' is a type of 'Task' and directly precedes 'task 32 sleep'. 
+
+'task 4 conduct payload activity' is a type of 'Task'. 
+
+'task 2 post sleep' directly precedes 'task 5 have meal'. 
+
+'task 3 post sleep' directly precedes 'task 5 have meal'. 
+
+'task 17 finish rpcm' is a type of 'Task'. 
+
+'task 19 initialize day' is a type of 'Task'. 
+
+'task 21 report payload activity at deadline' is a type of 'Task'. 
+
+'task 19 conduct payload activity' directly precedes 'task 22 report payload activity at deadline'. 
+
+'task 22 report payload activity at deadline' is a type of 'Task'. 
+
+'task 23 report payload activity at deadline' is a type of 'Task'. 
+
+'task 21 conduct payload activity' directly precedes 'task 24 report payload activity at deadline'. 
+
+'task 24 report payload activity at deadline' is a type of 'Task'. 
+
+'task 25 report payload activity at deadline' is a type of 'Task'. 
+
+'task 23 conduct payload activity' directly precedes 'task 26 report payload activity at deadline'. 
+
+'task 26 report payload activity at deadline' is a type of 'Task'. 
+
+'task 27 report payload activity at deadline' is a type of 'Task'. 
+
+'task 32 sleep' is a type of 'Task'. 
+
+'Plan B makespan' is expected makespan of 'Plan B'. 
+
+'Plan B cost' is cost of 'Plan B'. 
+
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 initialize day' and 'task 1 post sleep' and 'task 2 post sleep' and 'task 3 post sleep' and 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal' and 'task 7 exercise' and 'task 8 exercise' and 'task 9 exercise' and 'task 10 sleep' and 'task 11 sleep' and 'task 12 medical conference' and 'task 13 medical conference' and 'task 14 conduct payload activity' and 'task 15 conduct payload activity' and 'task 16 report payload activity at deadline' and 'task 17 conduct payload activity' and 'task 18 report payload activity at deadline' and 'task 19 conduct payload activity' and 'task 20 report payload activity at deadline' and 'task 21 conduct payload activity' and 'task 22 report payload activity at deadline' and 'task 23 conduct payload activity' and 'task 24 report payload activity at deadline' and 'task 25 conduct payload activity' and 'task 26 report payload activity at deadline' and 'task 27 conduct payload activity' and 'task 28 report payload activity at deadline' and 'task 29 conduct payload activity' and 'task 30 report payload activity at deadline' and 'task 31 conduct payload activity' and 'task 32 report payload activity at deadline' and 'task 33 conduct payload activity' and 'task 34 report payload activity at deadline' and 'task 35 conduct payload activity' and 'task 36 report payload activity at deadline' and 'task 37 conduct payload activity' and 'task 38 report payload activity at deadline' and 'task 39 report payload activity at deadline' and 'task 40 first reconfigurate thermal loops' and 'task 41 remove sleep station' and 'task 42 replace rpcm' and 'task 43 assemble sleep station' and 'task 44 second reconfigurate thermal loops' and 'task 45 sleep' and 'task 46 finish rpcm' and is cheaper plan than 'Plan A' and is longer plan than 'Plan A' and is faster plan than 'Plan A'. 
+
+'Plan B makespan' is a type of 'Quality' and is expected makespan of 'Plan B' and has data value '1636.02' and has a lower value than 'Plan A makespan'. 
+
+'Plan B number of tasks' is a type of 'Quality' and is number of tasks of 'Plan B' and has data value '47.0'. 
+
+'Plan B cost' is a type of 'Quality' and is cost of 'Plan B' and has data value '2235.02' and has a lower value than 'Plan A cost'. 
+
+'Plan A number of tasks' has a lower value than 'Plan B number of tasks' and is number of tasks of 'Plan A'. 
+
+'Plan A' is a type of 'Plan' and includes task 'task 1 post sleep' and 'task 5 have meal' and 'task 22 report payload activity at deadline' and 'task 24 report payload activity at deadline' and 'task 26 report payload activity at deadline' and 'task 0 conduct payload activity' and 'task 2 initialize day' and 'task 3 conduct payload activity' and 'task 4 conduct payload activity' and 'task 6 exercise' and 'task 7 change filter' and 'task 8 conduct payload activity' and 'task 9 conduct payload activity' and 'task 10 conduct payload activity' and 'task 11 conduct payload activity' and 'task 12 first reconfigurate thermal loops' and 'task 13 remove sleep station' and 'task 14 replace rpcm' and 'task 15 assemble sleep station' and 'task 16 second reconfigurate thermal loops' and 'task 17 finish rpcm' and 'task 18 sleep' and 'task 19 initialize day' and 'task 20 post sleep' and 'task 21 report payload activity at deadline' and 'task 23 report payload activity at deadline' and 'task 25 report payload activity at deadline' and 'task 27 report payload activity at deadline' and 'task 28 have meal' and 'task 29 exercise' and 'task 30 change filter' and 'task 31 medical conference' and 'task 32 sleep'. 
+
+'task 5 have meal' is a type of 'Task' and directly precedes 'task 6 exercise' and 'task 7 exercise' and 'task 8 exercise' and 'task 9 exercise'. 
+
+'task 1 post sleep' is a type of 'Task' and directly precedes 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal'. 
+
+'task 2 post sleep' is a type of 'Task' and directly precedes 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal'. 
+
+'task 3 post sleep' is a type of 'Task' and directly precedes 'task 4 have meal' and 'task 5 have meal' and 'task 6 have meal'. 
+
+'task 4 have meal' is a type of 'Task' and directly precedes 'task 7 exercise' and 'task 8 exercise' and 'task 9 exercise'. 
+
+'task 6 have meal' is a type of 'Task' and directly precedes 'task 7 exercise' and 'task 8 exercise' and 'task 9 exercise'. 
+
+'task 7 exercise' is a type of 'Task' and directly precedes 'task 10 sleep' and 'task 11 sleep' and 'task 12 medical conference'. 
+
+'task 8 exercise' is a type of 'Task' and directly precedes 'task 10 sleep' and 'task 11 sleep' and 'task 12 medical conference'. 
+
+'task 9 exercise' is a type of 'Task' and directly precedes 'task 10 sleep' and 'task 11 sleep' and 'task 12 medical conference'. 
+
+'task 14 conduct payload activity' is a type of 'Task' and directly precedes 'task 15 conduct payload activity' and 'task 16 report payload activity at deadline'. 
+
+'task 15 conduct payload activity' is a type of 'Task' and directly precedes 'task 17 conduct payload activity' and 'task 18 report payload activity at deadline'. 
+
+'task 17 conduct payload activity' is a type of 'Task' and directly precedes 'task 19 conduct payload activity' and 'task 20 report payload activity at deadline'. 
+
+'task 19 conduct payload activity' is a type of 'Task' and directly precedes 'task 21 conduct payload activity' and 'task 22 report payload activity at deadline'. 
+
+'task 21 conduct payload activity' is a type of 'Task' and directly precedes 'task 23 conduct payload activity' and 'task 24 report payload activity at deadline'. 
+
+'task 20 post sleep' directly precedes 'task 22 report payload activity at deadline' and 'task 24 report payload activity at deadline' and 'task 26 report payload activity at deadline'. 
+
+'task 23 conduct payload activity' is a type of 'Task' and directly precedes 'task 25 conduct payload activity' and 'task 26 report payload activity at deadline'. 
+
+'task 25 conduct payload activity' is a type of 'Task' and directly precedes 'task 27 conduct payload activity' and 'task 28 report payload activity at deadline'. 
+
+'task 27 conduct payload activity' is a type of 'Task' and directly precedes 'task 29 conduct payload activity' and 'task 30 report payload activity at deadline'. 
+
+'task 29 conduct payload activity' is a type of 'Task' and directly precedes 'task 31 conduct payload activity' and 'task 32 report payload activity at deadline'. 
+
+'task 31 conduct payload activity' is a type of 'Task' and directly precedes 'task 33 conduct payload activity' and 'task 34 report payload activity at deadline'. 
+
+'task 33 conduct payload activity' is a type of 'Task' and directly precedes 'task 35 conduct payload activity' and 'task 36 report payload activity at deadline'. 
+
+'task 35 conduct payload activity' is a type of 'Task' and directly precedes 'task 37 conduct payload activity' and 'task 38 report payload activity at deadline'. 
+
+'task 37 conduct payload activity' is a type of 'Task' and directly precedes 'task 39 report payload activity at deadline' and 'task 40 first reconfigurate thermal loops'. 
+
+'task 44 second reconfigurate thermal loops' is a type of 'Task' and directly precedes 'task 45 sleep' and 'task 46 finish rpcm'. 
+
+'task 12 medical conference' is a type of 'Task' and directly precedes 'task 13 medical conference'. 
+
+'task 13 medical conference' is a type of 'Task' and directly precedes 'task 14 conduct payload activity'. 
+
+'task 40 first reconfigurate thermal loops' is a type of 'Task' and directly precedes 'task 41 remove sleep station'. 
+
+'task 41 remove sleep station' is a type of 'Task' and directly precedes 'task 42 replace rpcm'. 
+
+'task 42 replace rpcm' is a type of 'Task' and directly precedes 'task 43 assemble sleep station'. 
+
+'task 43 assemble sleep station' is a type of 'Task' and directly precedes 'task 44 second reconfigurate thermal loops'. 
+
+'task 0 initialize day' is a type of 'Task'. 
+
+'task 10 sleep' is a type of 'Task'. 
+
+'task 11 sleep' is a type of 'Task'. 
+
+'task 16 report payload activity at deadline' is a type of 'Task'. 
+
+'task 18 report payload activity at deadline' is a type of 'Task'. 
+
+'task 20 report payload activity at deadline' is a type of 'Task'. 
+
+'task 22 report payload activity at deadline' is a type of 'Task'. 
+
+'task 24 report payload activity at deadline' is a type of 'Task'. 
+
+'task 26 report payload activity at deadline' is a type of 'Task'. 
+
+'task 28 report payload activity at deadline' is a type of 'Task'. 
+
+'task 30 report payload activity at deadline' is a type of 'Task'. 
+
+'task 32 report payload activity at deadline' is a type of 'Task'. 
+
+'task 34 report payload activity at deadline' is a type of 'Task'. 
+
+'task 36 report payload activity at deadline' is a type of 'Task'. 
+
+'task 38 report payload activity at deadline' is a type of 'Task'. 
+
+'task 39 report payload activity at deadline' is a type of 'Task'. 
+
+'task 45 sleep' is a type of 'Task'. 
+
+'task 46 finish rpcm' is a type of 'Task'. 
+
+'Plan A makespan' is expected makespan of 'Plan A'. 
+
+'Plan A cost' is cost of 'Plan A'. 
+
+

@@ -1,0 +1,5 @@
+
+
+·····There are two plans to disambiguate: Plan_A and Plan_B. 
+
+'Plan A' is plan with equal cost than and is plan with equal number of tasks than and is plan with equal expected makespan than and is equivalent plan to 'Plan B'. 

@@ -1,0 +1,18 @@
+'Plan A' is a type of 'Plan' and includes task 'task 0 light match' and 'task 1 mend fuse' and 'task 2 mend fuse' and 'task 3 light match' and 'task 4 mend fuse' and 'task 5 mend fuse' and 'task 6 light match' and 'task 7 mend fuse' and 'task 8 mend fuse' and 'task 9 light match' and 'task 10 mend fuse' and 'task 11 mend fuse' and 'task 12 light match' and 'task 13 mend fuse' and 'task 14 mend fuse' and 'task 15 light match' and 'task 16 mend fuse' and 'task 17 mend fuse' and 'task 18 light match' and 'task 19 mend fuse' and 'task 20 mend fuse' and 'task 21 light match' and 'task 22 mend fuse' and 'task 23 mend fuse' and 'task 24 light match' and 'task 25 mend fuse' and 'task 26 mend fuse' and 'task 27 light match' and 'task 28 mend fuse' and 'task 29 mend fuse' and 'task 30 light match' and 'task 31 mend fuse' and 'task 32 mend fuse' and is cheaper plan than 'Plan B' and is shorter plan than 'Plan B' and is faster plan than 'Plan B' and is better plan than 'Plan B'. 
+
+'Plan A makespan' is expected makespan of 'Plan A'. 
+
+'Plan A number of tasks' is number of tasks of 'Plan A'. 
+
+'Plan A cost' is cost of 'Plan A'. 
+
+
+'Plan B' is a type of 'Plan' and includes task 'task 0 light match' and 'task 1 mend fuse' and 'task 2 mend fuse' and 'task 3 light match' and 'task 4 mend fuse' and 'task 5 mend fuse' and 'task 6 light match' and 'task 7 mend fuse' and 'task 8 mend fuse' and 'task 9 light match' and 'task 10 mend fuse' and 'task 11 mend fuse' and 'task 12 light match' and 'task 13 mend fuse' and 'task 14 mend fuse' and 'task 15 light match' and 'task 16 mend fuse' and 'task 17 mend fuse' and 'task 18 light match' and 'task 19 mend fuse' and 'task 20 mend fuse' and 'task 21 light match' and 'task 22 mend fuse' and 'task 23 mend fuse' and 'task 24 light match' and 'task 25 mend fuse' and 'task 26 mend fuse' and 'task 27 light match' and 'task 28 mend fuse' and 'task 29 mend fuse' and 'task 30 light match' and 'task 31 mend fuse' and 'task 32 mend fuse' and 'task 33 light match' and 'task 34 mend fuse' and 'task 35 mend fuse' and 'task 36 light match' and 'task 37 mend fuse' and 'task 38 mend fuse' and is more expensive plan than 'Plan A' and is longer plan than 'Plan A' and is slower plan than 'Plan A' and is worse plan than 'Plan A'. 
+
+'Plan B makespan' is expected makespan of 'Plan B'. 
+
+'Plan B number of tasks' is number of tasks of 'Plan B'. 
+
+'Plan B cost' is cost of 'Plan B'. 
+
+
