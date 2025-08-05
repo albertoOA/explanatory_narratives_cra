@@ -556,6 +556,7 @@ def tuples_list_to_text_with_aggregation(tuples_in):
     
     for tuple_ in tuples:
         tuple_subject = extract_individual_from_tuple_element(tuple_[0])
+        tuple_subject = "'" + tuple_subject + "'"
         ## tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
         
         tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
@@ -575,10 +576,12 @@ def tuples_list_to_text_with_aggregation(tuples_in):
             for obj in tuple_[2]:
                 if not tuple_object:
                     tuple_object = extract_individual_from_tuple_element(obj)
+                    tuple_object = "'" + tuple_object + "'"
                 else: 
-                    tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
+                    tuple_object = tuple_object + ' and ' + "'" + extract_individual_from_tuple_element(obj) + "'"
         else:
             tuple_object = extract_individual_from_tuple_element(tuple_[2])
+            tuple_object = "'" + tuple_object + "'"
 
         ## tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
 

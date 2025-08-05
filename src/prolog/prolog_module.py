@@ -63,6 +63,7 @@ owl_uri_to_label_dict = {"http://www.iri.upc.edu/groups/perception/OCRA/ont/ocra
                          "http://www.iri.upc.edu/groups/perception/OCRA/ont/ocra_filling_a_tray.owl#": "ocra_filling_a_tray", \
                          "http://www.iri.upc.edu/groups/perception/OCRA/maps/piling_cloth.owl#": "map_piling_cloth", \
                          "http://www.iri.upc.edu/groups/perception/OCRA/maps/bringing_object.owl#": "map_bringing_object", \
+                         "http://www.iri.upc.edu/groups/perception/ont/maps/map_generic_cs.owl#": "map_generic_cs", \
                          "http://www.ease-crc.org/ont/SOMA.owl#": "soma", \
                          "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#": "dul", \
                          "http://www.w3.org/1999/02/22-rdf-syntax-ns#": "rdf", \

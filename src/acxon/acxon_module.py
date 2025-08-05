@@ -3,13 +3,10 @@
 """
 What is this code?
   - acxon module for ontology-based explanations. 
-  You can expect to find here all the implemented methods that are used in the ontology-based explanations algorithm (OX).
-  For the time being, only the methods to get the tuples from the knowledge based are implemented in this code. We will 
-  include the rest of the methods about constructing the textual explanation using the tuples. 
+  You can expect to find here all the implemented methods that are used in ACXON. 
 
 What is defined in it?
-  - Two main routines of the OX algorithm: 'retrieve_narrative_tuples' and 'construct_narrative'. Other methods are also
-  defined and used to build the two main ones. 
+  - Two main routines of the ACXON algorithm, other methods are also defined and used to build the two main ones. 
 
 
 What information could one find useful when using this code?
@@ -24,7 +21,7 @@ What information could one find useful when using this code?
   starting character in uppercase (e.g., 'PlanAdapatation', 'hasParticiant'). In order to enhance the readability of the 
   explanations, we split those names using the uppercase characters, and we replace the upper cases in the relatiohnships. 
 
-  - Note that we use query the knowledge base using time intervals, which adds some complexity to the process. When the
+  - Note that we query the knowledge base using time intervals, which adds some complexity to the process. When the
   interval is bound (you write a value), the query will only return true if both intervals are the ones you provided. 
   Hence, most of the queries would return false. That is why we have added some logic to our queries to get all the 
   answers that either are included in the bound interval or include the bound interval: 
@@ -73,23 +70,36 @@ def retrieve_narrative_tuples_(client_rosprolog, ontological_entities_pairs, t_l
                 if (specificity >= 1):
                     retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], tuples, ont_property_inverse_dict)
                     ## print("\n\n After retrieving level 1: ", time.time()- start)
+                    ## length_triples = len(tuples[pair_id][pairs_list[i][0]]) + len(tuples[pair_id][pairs_list[i][1]])
+                    ## print("\n\n C-Triples after level 1", length_triples)
                 else:
                     pass            
                 if (specificity >= 2):
                     retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], constrained_ontological_scope, tuples, ont_property_inverse_dict)
                     ## print("\n\n After retrieving level 2: ", time.time()- start)
+                    ## length_triples = len(tuples[pair_id][pairs_list[i][0]]) + len(tuples[pair_id][pairs_list[i][1]])
+                    ## print("\n\n C-Triples after level 2", length_triples)
                 else:
                     pass
                 if (specificity == 3):
                     retrieve_narrative_tuples_specificity_three(client_rosprolog, pair_id, pairs_list[i], time_intervals_list[i], constrained_ontological_scope, tuples, ont_property_inverse_dict)
                     ## print("\n\n After retrieving level 3: ", time.time()- start)
+                    ## length_triples = len(tuples[pair_id][pairs_list[i][0]]) + len(tuples[pair_id][pairs_list[i][1]])
+                    ## print("\n\n C-Triples after level 3", length_triples)
                 else:
                     pass
             
             ## print("\n\n Before pruning: ", time.time()- start)
+            ## length_triples = len(tuples[pair_id][pairs_list[i][0]]) + len(tuples[pair_id][pairs_list[i][1]])
+            ## print("\n\n Triples before pruning", length_triples)
+
             tuples[pair_id][pairs_list[i][0]], tuples[pair_id][pairs_list[i][1]] = \
                 prune_tuples(tuples[pair_id][pairs_list[i][0]], tuples[pair_id][pairs_list[i][1]])
+            
             ## print("\n\n After pruning: ", time.time()- start)
+            ## length_triples = len(tuples[pair_id][pairs_list[i][0]]) + len(tuples[pair_id][pairs_list[i][1]])
+            ## print("\n\n Triples after pruning", length_triples)
+        
         ## print(tuples)
 
     return tuples, pairs_id_to_pairs_to_compare_dict
@@ -123,9 +133,6 @@ def construct_narrative(client_rosprolog, target_pair_of_instances, tuples_of_th
     sentence = sentence + '\n'
 
     return sentence
-
-
-
 
 
 # retrieve narrative tuples functions
@@ -174,24 +181,21 @@ def retrieve_narrative_tuples_specificity_one(client_rosprolog, pair_id, pair_of
 def retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pair_of_instances, \
                                             instance_time_interval, constrained_ontological_scope, \
                                             tuples, ont_property_inverse_dict):
-    objects_related_to_instance = dict()
     for i in range(0, len(pair_of_instances)):
-        objects_related_to_instance[pair_of_instances[i]] = list()
+
+        q_1_initial = "kb_call(triple('"+pair_of_instances[i]+"', R, E) during [T1, T2])."
+        assertion_type_1 = "affirmative"
+
+        q_2_initial = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+            "kb_call(triple(D, owl:'sourceIndividual', '"+pair_of_instances[i]+"') during [T1, T2]), "\
+            "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
+            "kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2])."
+        assertion_type_2 = "negative"
         
         if constrained_ontological_scope:
             for ontological_class in constrained_ontological_scope:
-                q_1 = "kb_call(triple('"+pair_of_instances[i]+"', R, E) during [T1, T2]), "\
-                    "kb_call(triple(E, rdf:'type', "+ontological_class+"))."
-                assertion_type_1 = "affirmative"
-
-                q_2 = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
-                    "kb_call(triple(D, owl:'sourceIndividual', '"+pair_of_instances[i]+"') during [T1, T2]), "\
-                    "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
-                    "kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2]), "\
-                    "kb_call(triple(E, rdf:'type', "+ontological_class+"))."
-                assertion_type_2 = "negative"
-
-                
+                q_1 = q_1_initial.rstrip(".") + ", kb_call(triple(E, rdf:'type', "+ontological_class+"))."
+                q_2 = q_2_initial.rstrip(".") + ", kb_call(triple(E, rdf:'type', "+ontological_class+"))."
 
                 query_aff = client_rosprolog.query(q_1)
                 query_neg = client_rosprolog.query(q_2)
@@ -217,23 +221,11 @@ def retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pair_of
                             pass
                         else:
                             tuples[pair_id][pair_of_instances[i]].append(tr_)
-                            objects_related_to_instance[pair_of_instances[i]].append(tr_[2])
 
                     query.finish()
         else:
-            q_1 = "kb_call(triple('"+pair_of_instances[i]+"', R, E) during [T1, T2])."
-            assertion_type_1 = "affirmative"
-
-            q_2 = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
-                "kb_call(triple(D, owl:'sourceIndividual', '"+pair_of_instances[i]+"') during [T1, T2]), "\
-                "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
-                "kb_call(triple(D, owl:'targetIndividual', E) during [T1, T2])."
-            assertion_type_2 = "negative"
-
-            
-
-            query_aff = client_rosprolog.query(q_1)
-            query_neg = client_rosprolog.query(q_2)
+            query_aff = client_rosprolog.query(q_1_initial)
+            query_neg = client_rosprolog.query(q_2_initial)
 
             queries_to_kb_dict = {assertion_type_1:query_aff, assertion_type_2:query_neg}
 
@@ -256,43 +248,131 @@ def retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pair_of
                         pass
                     else:
                         tuples[pair_id][pair_of_instances[i]].append(tr_)
-                        objects_related_to_instance[pair_of_instances[i]].append(tr_[2])
 
                 query.finish()
 
-    # query for the relationships between the objects of the two instances that are related through the same ontological property
-    objects_related_to_instance_a = objects_related_to_instance[pair_of_instances[0]]
-    objects_related_to_instance_b = objects_related_to_instance[pair_of_instances[1]]
 
-    for object_a in objects_related_to_instance_a:
-        for object_b in objects_related_to_instance_b:
-            q_1 = "dif("+object_a+", "+object_b+"), kb_call(triple("+object_a+", R, "+object_b+") during [T1, T2])"
-            assertion_type_1 = "affirmative"
+    # horizontal knowledge of interest
+    q_1_initial = "kb_call(triple('"+pair_of_instances[0]+"', Rx, Oa) during [T1, T2]), "\
+        "kb_call(triple('"+pair_of_instances[1]+"', Rx, Ob) during [T1, T2]), "\
+        "dif(Oa, Ob), kb_call(triple(Oa, R, Ob) during [T1, T2])."
+    assertion_type_1 = "affirmative"
 
-            q_2 = "dif("+object_a+", "+object_b+"), kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
-                "kb_call(triple(D, owl:'sourceIndividual', "+object_a+") during [T1, T2]), "\
-                "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
-                "kb_call(triple(D, owl:'targetIndividual', "+object_b+") during [T1, T2])."
-            assertion_type_2 = "negative"
+    q_2_initial = "kb_call(triple('"+pair_of_instances[0]+"', Rx, Oa) during [T1, T2]), "\
+        "kb_call(triple('"+pair_of_instances[1]+"', Rx, Ob) during [T1, T2]), "\
+        "dif(Oa, Ob), kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+        "kb_call(triple(D, owl:'sourceIndividual', Oa) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'targetIndividual', Ob) during [T1, T2])."
+    assertion_type_2 = "negative"
 
-            query_aff = client_rosprolog.query(q_1)
-            query_neg = client_rosprolog.query(q_2)
+    q_3_initial = "kb_call(triple(Da, Rda, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+        "kb_call(triple(Da, owl:'sourceIndividual', '"+pair_of_instances[0]+"') during [T1, T2]), "\
+        "kb_call(triple(Da, owl:'assertionProperty', Rx) during [T1, T2]), "\
+        "kb_call(triple(Da, owl:'targetIndividual', Oa) during [T1, T2]), "\
+        "kb_call(triple(Db, Rdb, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+        "kb_call(triple(Db, owl:'sourceIndividual', '"+pair_of_instances[1]+"') during [T1, T2]), "\
+        "kb_call(triple(Db, owl:'assertionProperty', Rx) during [T1, T2]), "\
+        "kb_call(triple(Db, owl:'targetIndividual', Ob) during [T1, T2]), "\
+        "dif(Oa, Ob), kb_call(triple(Oa, R, Ob) during [T1, T2])."
+    assertion_type_3 = "affirmative"
 
-            queries_to_kb_dict.clear()
-            queries_to_kb_dict = {assertion_type_1:query_aff, assertion_type_2:query_neg}
+    q_4_initial = "kb_call(triple(Da, Rda, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+        "kb_call(triple(Da, owl:'sourceIndividual', '"+pair_of_instances[0]+"') during [T1, T2]), "\
+        "kb_call(triple(Da, owl:'assertionProperty', Rx) during [T1, T2]), "\
+        "kb_call(triple(Da, owl:'targetIndividual', Oa) during [T1, T2]), "\
+        "kb_call(triple(Db, Rdb, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+        "kb_call(triple(Db, owl:'sourceIndividual', '"+pair_of_instances[1]+"') during [T1, T2]), "\
+        "kb_call(triple(Db, owl:'assertionProperty', Rx) during [T1, T2]), "\
+        "kb_call(triple(Db, owl:'targetIndividual', Ob) during [T1, T2]), "\
+        "dif(Oa, Ob), kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+        "kb_call(triple(D, owl:'sourceIndividual', Oa) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'targetIndividual', Ob) during [T1, T2])."
+    assertion_type_4 = "negative"
+    
 
-            for assertion_type, query in queries_to_kb_dict.items():
+    if constrained_ontological_scope:
+        for ontological_class in constrained_ontological_scope:
+            q_1 = q_1_initial.rstrip(".") + ", kb_call(triple(Oa, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Ob, rdf:'type', "+ontological_class+"))."
+            q_2 = q_2_initial.rstrip(".") + ", kb_call(triple(Oa, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Ob, rdf:'type', "+ontological_class+"))."
+            q_3 = q_3_initial.rstrip(".") + ", kb_call(triple(Oa, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Ob, rdf:'type', "+ontological_class+"))."
+            q_4 = q_4_initial.rstrip(".") + ", kb_call(triple(Oa, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Ob, rdf:'type', "+ontological_class+"))."
+            
+            query_aff_1 = client_rosprolog.query(q_1)
+            query_neg_2 = client_rosprolog.query(q_2)
+            query_aff_3 = client_rosprolog.query(q_3)
+            query_neg_4 = client_rosprolog.query(q_4)
+
+            queries_to_kb_dict = {assertion_type_1:[query_aff_1, query_aff_3], \
+                                assertion_type_2:[query_neg_2, query_neg_4]}
+
+
+            for assertion_type, queries in queries_to_kb_dict.items():
+                for query in queries:
+                    for solution in query.solutions():
+                        tuple_subject = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['Oa'])] \
+                            + ":'" + extract_individual_from_kb_answer(solution['Oa']) + "'"
+                        tuple_relation = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['R'])] \
+                            + ":'" + extract_individual_from_kb_answer(solution['R']) + "'"
+                        tuple_object = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['Ob'])] \
+                            + ":'" + extract_individual_from_kb_answer(solution['Ob']) + "'"
+                        tuple_start = 'start:' + str(solution['T1'])
+                        tuple_end = 'end:' + str(solution['T2'])
+                        tr_ = construct_tuple_from_its_elements(assertion_type, tuple_subject, tuple_object, tuple_relation, tuple_start, tuple_end)
+                        ## print(tr_)
+                        if ((extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[0][0]) and \
+                                extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[0][1])) or \
+                                (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[1][0]) and \
+                                extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1][1]))):
+                            tr_[3] = ''
+                            tr_[4] = ''
+                        else:
+                            pass
+
+                        tr_inv_ = invert_tuple_(tr_, ont_property_inverse_dict)
+                        if tr_ in tuples[pair_id][pair_of_instances[0]] or tr_ in tuples[pair_id][pair_of_instances[1]]:
+                            ## print("Tuple already in list.")
+                            pass
+                        elif tr_inv_ in tuples[pair_id][pair_of_instances[0]] or tr_inv_ in tuples[pair_id][pair_of_instances[1]]:
+                            ## print("Inverse tuple already in list.")
+                            pass
+                        else:
+                            tuples[pair_id][pair_of_instances[0]].append(tr_)
+
+                    query.finish()
+
+    else:
+        query_aff_1 = client_rosprolog.query(q_1_initial)
+        query_neg_2 = client_rosprolog.query(q_2_initial)
+        query_aff_3 = client_rosprolog.query(q_3_initial)
+        query_neg_4 = client_rosprolog.query(q_4_initial)
+
+        queries_to_kb_dict = {assertion_type_1:[query_aff_1, query_aff_3], \
+                            assertion_type_2:[query_neg_2, query_neg_4]}
+
+
+        for assertion_type, queries in queries_to_kb_dict.items():
+            for query in queries:
                 for solution in query.solutions():
+                    tuple_subject = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['Oa'])] \
+                        + ":'" + extract_individual_from_kb_answer(solution['Oa']) + "'"
                     tuple_relation = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['R'])] \
                         + ":'" + extract_individual_from_kb_answer(solution['R']) + "'"
+                    tuple_object = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['Ob'])] \
+                        + ":'" + extract_individual_from_kb_answer(solution['Ob']) + "'"
                     tuple_start = 'start:' + str(solution['T1'])
                     tuple_end = 'end:' + str(solution['T2'])
-                    tr_ = construct_tuple_from_its_elements(assertion_type, object_a, object_b, tuple_relation, tuple_start, tuple_end)
+                    tr_ = construct_tuple_from_its_elements(assertion_type, tuple_subject, tuple_object, tuple_relation, tuple_start, tuple_end)
                     ## print(tr_)
                     if ((extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[0][0]) and \
-                         extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[0][1])) or \
-                         (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[1][0]) and \
-                         extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1][1]))):
+                            extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[0][1])) or \
+                            (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[1][0]) and \
+                            extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1][1]))):
                         tr_[3] = ''
                         tr_[4] = ''
                     else:
@@ -314,10 +394,7 @@ def retrieve_narrative_tuples_specificity_two(client_rosprolog, pair_id, pair_of
 def retrieve_narrative_tuples_specificity_three(client_rosprolog, pair_id, pair_of_instances, \
                                             instance_time_interval, constrained_ontological_scope, \
                                             tuples, ont_property_inverse_dict):
-    objects_related_to_instance = dict()
-    for i in range(0, len(pair_of_instances)):
-        objects_related_to_instance[pair_of_instances[i]] = list()
-        
+    for i in range(0, len(pair_of_instances)):        
         if constrained_ontological_scope:
             for ontological_class in constrained_ontological_scope:
                 q_1 = "kb_call(triple('"+pair_of_instances[i]+"', Rx, Ex) during [Tx1, Tx2]), "\
@@ -394,16 +471,12 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, pair_id, pair_
                                 pass
                             else:
                                 tuples[pair_id][pair_of_instances[i]].append(tr_)
-                                if (tr_[1] != "dul:'hasDataValue'"):
-                                    objects_related_to_instance[pair_of_instances[i]].append(tr_[2])
-                                    ## print(tr_)
-                                    ## print("··\n")
-                                else:
-                                    pass
                                 
 
                         query.finish()
         else: 
+            # NOTE: It is complex to do the simplification done in level two, because the part about the 
+            # constraint MUST go in that position of the query, not at the begining nor the end. 
             q_1 = "kb_call(triple('"+pair_of_instances[i]+"', Rx, Ex) during [Tx1, Tx2]), "\
                 "kb_call((triple(Ex, R, E) during [T1, T2], (T1>="+str(instance_time_interval[i][0])+\
                 ", T1=<"+str(instance_time_interval[i][1])+"; T2>="+str(instance_time_interval[i][0])+\
@@ -474,57 +547,254 @@ def retrieve_narrative_tuples_specificity_three(client_rosprolog, pair_id, pair_
                             pass
                         else:
                             tuples[pair_id][pair_of_instances[i]].append(tr_)
-                            if (tr_[1] != "dul:'hasDataValue'" and tr_[1] != "rdfs:'isDefinedBy'"):
-                                # note that the data and the resources that are objects with those 
-                                # relations are not relevant to continue searching (e.b., data cannot be subject 
-                                # and resourcers might be URIs causing code crashes)
-                                objects_related_to_instance[pair_of_instances[i]].append(tr_[2])
-                                ## print(tr_)  
-                                ## print("··\n") 
-                            else:
-                                pass
                             
 
                     query.finish()
 
-    # query for the relationships between the objects of the two instances that are related through the same ontological property
-    objects_related_to_instance_a = objects_related_to_instance[pair_of_instances[0]]
-    objects_related_to_instance_b = objects_related_to_instance[pair_of_instances[1]]
+    # query for the relationships between the objects of the two instances that are related through 
+    # the same ontological property  (from 1 to 4 the initial and last relations are changed to postive
+    # and negative while from 5 to 8 is the relation in the middle that changes)
+    q_1_initial = "kb_call(triple('"+pair_of_instances[0]+"', Rx, Oax) during [Tx1, Tx2]), "\
+        "kb_call(triple('"+pair_of_instances[1]+"', Rx, Obx) during [Tx1, Tx2]), "\
+        "kb_call((triple(Oax, Rm, Oa) during [T1, T2], triple(Obx, Rm, Ob) during [T1, T2]," \
+        " (T1>="+str(instance_time_interval[i][0])+ \
+        ", T1=<"+str(instance_time_interval[i][1])+"; T2>="+str(instance_time_interval[i][0])+\
+        ", T2=<"+str(instance_time_interval[i][1])+"; "+str(instance_time_interval[i][0])+">=T1, "\
+        +str(instance_time_interval[1])+"=<T2; T2=:=inf))), " \
+        "dif(Oa, Ob), kb_call(triple(Oa, R, Ob) during [T1, T2])."
+    assertion_type_1 = "affirmative"
 
-    ## print(objects_related_to_instance_a)
-    ## print("-\n")
-    ## print(objects_related_to_instance_b)
-    ## print("--------\n\n")
+    q_2_initial = "kb_call(triple('"+pair_of_instances[0]+"', Rx, Oax) during [Tx1, Tx2]), "\
+        "kb_call(triple('"+pair_of_instances[1]+"', Rx, Obx) during [Tx1, Tx2]), "\
+        "kb_call((triple(Oax, Rm, Oa) during [T1, T2], triple(Obx, Rm, Ob) during [T1, T2]," \
+        " (T1>="+str(instance_time_interval[i][0])+ \
+        ", T1=<"+str(instance_time_interval[i][1])+"; T2>="+str(instance_time_interval[i][0])+\
+        ", T2=<"+str(instance_time_interval[i][1])+"; "+str(instance_time_interval[i][0])+">=T1, "\
+        +str(instance_time_interval[1])+"=<T2; T2=:=inf))), " \
+        "dif(Oa, Ob), kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+        "kb_call(triple(D, owl:'sourceIndividual', Oa) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'targetIndividual', Ob) during [T1, T2])."
+    assertion_type_2 = "negative"
 
-    for object_a in objects_related_to_instance_a:
-        for object_b in objects_related_to_instance_b:
-            q_1 = "dif(Oa, E), kb_call(triple("+object_a+", R, "+object_b+") during [T1, T2])"
-            assertion_type_1 = "affirmative"
+    q_3_initial = "kb_call(triple(Da, Rda, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'sourceIndividual', '"+pair_of_instances[0]+"') during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'assertionProperty', Rdx) during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'targetIndividual', Oax) during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, Rdb, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'sourceIndividual', '"+pair_of_instances[1]+"') during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'assertionProperty', Rdx) during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'targetIndividual', Obx) during [Tx1, Tx2]), "\
+        "kb_call((triple(Oax, Rx, Oa) during [T1, T2], triple(Obx, Rx, Ob) during [T1, T2]," \
+        " (T1>="+str(instance_time_interval[i][0])+ \
+        ", T1=<"+str(instance_time_interval[i][1])+"; T2>="+str(instance_time_interval[i][0])+\
+        ", T2=<"+str(instance_time_interval[i][1])+"; "+str(instance_time_interval[i][0])+">=T1, "\
+        +str(instance_time_interval[1])+"=<T2; T2=:=inf))), " \
+        "dif(Oa, Ob), kb_call(triple(Oa, R, Ob) during [T1, T2])."
+    assertion_type_3 = "affirmative"
 
-            q_2 = "kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
-                "kb_call(triple(D, owl:'sourceIndividual', "+object_a+") during [T1, T2]), "\
-                "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
-                "kb_call(triple(D, owl:'targetIndividual', "+object_b+") during [T1, T2])."
-            assertion_type_2 = "negative"
+    q_4_initial = "kb_call(triple(Da, Rda, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'sourceIndividual', '"+pair_of_instances[0]+"') during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'assertionProperty', Rdx) during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'targetIndividual', Oax) during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, Rdb, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'sourceIndividual', '"+pair_of_instances[1]+"') during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'assertionProperty', Rdx) during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'targetIndividual', Obx) during [Tx1, Tx2]), "\
+        "kb_call((triple(Oax, Rx, Oa) during [T1, T2], triple(Obx, Rx, Ob) during [T1, T2]," \
+        " (T1>="+str(instance_time_interval[i][0])+ \
+        ", T1=<"+str(instance_time_interval[i][1])+"; T2>="+str(instance_time_interval[i][0])+\
+        ", T2=<"+str(instance_time_interval[i][1])+"; "+str(instance_time_interval[i][0])+">=T1, "\
+        +str(instance_time_interval[1])+"=<T2; T2=:=inf))), " \
+        "dif(Oa, Ob), kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+        "kb_call(triple(D, owl:'sourceIndividual', Oa) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'targetIndividual', Ob) during [T1, T2])."
+    assertion_type_4 = "negative"
 
-            query_aff = client_rosprolog.query(q_1)
-            query_neg = client_rosprolog.query(q_2)
+    q_5_initial = "kb_call(triple('"+pair_of_instances[0]+"', Rx, Oax) during [Tx1, Tx2]), "\
+        "kb_call(triple('"+pair_of_instances[1]+"', Rx, Obx) during [Tx1, Tx2]), "\
+        "kb_call((triple(D, Rdma, owl:'NegativePropertyAssertion') during [T1, T2], "\
+        "triple(D, owl:'sourceIndividual', Oax) during [T1, T2], "\
+        "triple(D, owl:'assertionProperty', Rm) during [T1, T2], "\
+        "triple(D, owl:'targetIndividual', Oa) during [T1, T2], "\
+        "triple(D, Rdmb, owl:'NegativePropertyAssertion') during [T1, T2], "\
+        "triple(D, owl:'sourceIndividual', Obx) during [T1, T2], "\
+        "triple(D, owl:'assertionProperty', Rm) during [T1, T2], "\
+        "triple(D, owl:'targetIndividual', Ob) during [T1, T2], "\
+        " (T1>="+str(instance_time_interval[i][0])+ \
+        ", T1=<"+str(instance_time_interval[i][1])+"; T2>="+str(instance_time_interval[i][0])+\
+        ", T2=<"+str(instance_time_interval[i][1])+"; "+str(instance_time_interval[i][0])+">=T1, "\
+        +str(instance_time_interval[1])+"=<T2; T2=:=inf))), " \
+        "dif(Oa, Ob), kb_call(triple(Oa, R, Ob) during [T1, T2])."
+    assertion_type_5 = "affirmative"
 
-            queries_to_kb_dict.clear()
-            queries_to_kb_dict = {assertion_type_1:query_aff, assertion_type_2:query_neg}
+    q_6_initial = "kb_call(triple('"+pair_of_instances[0]+"', Rx, Oax) during [Tx1, Tx2]), "\
+        "kb_call(triple('"+pair_of_instances[1]+"', Rx, Obx) during [Tx1, Tx2]), "\
+        "kb_call((triple(D, Rdma, owl:'NegativePropertyAssertion') during [T1, T2], "\
+        "triple(D, owl:'sourceIndividual', Oax) during [T1, T2], "\
+        "triple(D, owl:'assertionProperty', Rm) during [T1, T2], "\
+        "triple(D, owl:'targetIndividual', Oa) during [T1, T2], "\
+        "triple(D, Rdmb, owl:'NegativePropertyAssertion') during [T1, T2], "\
+        "triple(D, owl:'sourceIndividual', Obx) during [T1, T2], "\
+        "triple(D, owl:'assertionProperty', Rm) during [T1, T2], "\
+        "triple(D, owl:'targetIndividual', Ob) during [T1, T2], "\
+        " (T1>="+str(instance_time_interval[i][0])+ \
+        ", T1=<"+str(instance_time_interval[i][1])+"; T2>="+str(instance_time_interval[i][0])+\
+        ", T2=<"+str(instance_time_interval[i][1])+"; "+str(instance_time_interval[i][0])+">=T1, "\
+        +str(instance_time_interval[1])+"=<T2; T2=:=inf))), " \
+        "dif(Oa, Ob), kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+        "kb_call(triple(D, owl:'sourceIndividual', Oa) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'targetIndividual', Ob) during [T1, T2])."
+    assertion_type_6 = "negative"
 
-            for assertion_type, query in queries_to_kb_dict.items():
+    q_7_initial = "kb_call(triple(Da, Rda, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'sourceIndividual', '"+pair_of_instances[0]+"') during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'assertionProperty', Rdx) during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'targetIndividual', Oax) during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, Rdb, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'sourceIndividual', '"+pair_of_instances[1]+"') during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'assertionProperty', Rdx) during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'targetIndividual', Obx) during [Tx1, Tx2]), "\
+        "kb_call((triple(D, Rdma, owl:'NegativePropertyAssertion') during [T1, T2], "\
+        "triple(D, owl:'sourceIndividual', Oax) during [T1, T2], "\
+        "triple(D, owl:'assertionProperty', Rm) during [T1, T2], "\
+        "triple(D, owl:'targetIndividual', Oa) during [T1, T2], "\
+        "triple(D, Rdmb, owl:'NegativePropertyAssertion') during [T1, T2], "\
+        "triple(D, owl:'sourceIndividual', Obx) during [T1, T2], "\
+        "triple(D, owl:'assertionProperty', Rm) during [T1, T2], "\
+        "triple(D, owl:'targetIndividual', Ob) during [T1, T2], "\
+        " (T1>="+str(instance_time_interval[i][0])+ \
+        ", T1=<"+str(instance_time_interval[i][1])+"; T2>="+str(instance_time_interval[i][0])+\
+        ", T2=<"+str(instance_time_interval[i][1])+"; "+str(instance_time_interval[i][0])+">=T1, "\
+        +str(instance_time_interval[1])+"=<T2; T2=:=inf))), " \
+        "dif(Oa, Ob), kb_call(triple(Oa, R, Ob) during [T1, T2])."
+    assertion_type_7 = "affirmative"
+
+    q_8_initial = "kb_call(triple(Da, Rda, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'sourceIndividual', '"+pair_of_instances[0]+"') during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'assertionProperty', Rdx) during [Tx1, Tx2]), "\
+        "kb_call(triple(Da, owl:'targetIndividual', Oax) during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, Rdb, owl:'NegativePropertyAssertion') during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'sourceIndividual', '"+pair_of_instances[1]+"') during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'assertionProperty', Rdx) during [Tx1, Tx2]), "\
+        "kb_call(triple(Db, owl:'targetIndividual', Obx) during [Tx1, Tx2]), "\
+        "kb_call((triple(D, Rdma, owl:'NegativePropertyAssertion') during [T1, T2], "\
+        "triple(D, owl:'sourceIndividual', Oax) during [T1, T2], "\
+        "triple(D, owl:'assertionProperty', Rm) during [T1, T2], "\
+        "triple(D, owl:'targetIndividual', Oa) during [T1, T2], "\
+        "triple(D, Rdmb, owl:'NegativePropertyAssertion') during [T1, T2], "\
+        "triple(D, owl:'sourceIndividual', Obx) during [T1, T2], "\
+        "triple(D, owl:'assertionProperty', Rm) during [T1, T2], "\
+        "triple(D, owl:'targetIndividual', Ob) during [T1, T2], "\
+        " (T1>="+str(instance_time_interval[i][0])+ \
+        ", T1=<"+str(instance_time_interval[i][1])+"; T2>="+str(instance_time_interval[i][0])+\
+        ", T2=<"+str(instance_time_interval[i][1])+"; "+str(instance_time_interval[i][0])+">=T1, "\
+        +str(instance_time_interval[1])+"=<T2; T2=:=inf))), " \
+        "dif(Oa, Ob), kb_call(triple(D, Rd, owl:'NegativePropertyAssertion') during [T1, T2]), "\
+        "kb_call(triple(D, owl:'sourceIndividual', Oa) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'assertionProperty', R) during [T1, T2]), "\
+        "kb_call(triple(D, owl:'targetIndividual', Ob) during [T1, T2])."
+    assertion_type_8 = "negative"
+
+    if constrained_ontological_scope:
+        for ontological_class in constrained_ontological_scope:
+            q_1 = q_1_initial.rstrip(".") + ", kb_call(triple(Oax, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Obx, rdf:'type', "+ontological_class+"))."
+            q_2 = q_2_initial.rstrip(".") + ", kb_call(triple(Oax, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Obx, rdf:'type', "+ontological_class+"))."
+            q_3 = q_3_initial.rstrip(".") + ", kb_call(triple(Oax, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Obx, rdf:'type', "+ontological_class+"))."
+            q_4 = q_4_initial.rstrip(".") + ", kb_call(triple(Oax, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Obx, rdf:'type', "+ontological_class+"))."
+            q_5 = q_5_initial.rstrip(".") + ", kb_call(triple(Oax, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Obx, rdf:'type', "+ontological_class+"))."
+            q_6 = q_6_initial.rstrip(".") + ", kb_call(triple(Oax, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Obx, rdf:'type', "+ontological_class+"))."
+            q_7 = q_7_initial.rstrip(".") + ", kb_call(triple(Oax, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Obx, rdf:'type', "+ontological_class+"))."
+            q_8 = q_8_initial.rstrip(".") + ", kb_call(triple(Oax, rdf:'type', "+ontological_class+")), " \
+                + "kb_call(triple(Obx, rdf:'type', "+ontological_class+"))."
+            
+            query_aff_1 = client_rosprolog.query(q_1)
+            query_neg_2 = client_rosprolog.query(q_2)
+            query_aff_3 = client_rosprolog.query(q_3)
+            query_neg_4 = client_rosprolog.query(q_4)
+            query_aff_5 = client_rosprolog.query(q_5)
+            query_neg_6 = client_rosprolog.query(q_6)
+            query_aff_7 = client_rosprolog.query(q_7)
+            query_neg_8 = client_rosprolog.query(q_8)
+
+            queries_to_kb_dict = {assertion_type_1:[query_aff_1, query_aff_3, query_aff_5, query_aff_7], \
+                                assertion_type_2:[query_neg_2, query_neg_4, query_neg_6, query_neg_8]}
+
+
+            for assertion_type, queries in queries_to_kb_dict.items():
+                for query in queries:
+                    for solution in query.solutions():
+                        tuple_subject = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['Oa'])] \
+                            + ":'" + extract_individual_from_kb_answer(solution['Oa']) + "'"
+                        tuple_relation = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['R'])] \
+                            + ":'" + extract_individual_from_kb_answer(solution['R']) + "'"
+                        tuple_object = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['Ob'])] \
+                            + ":'" + extract_individual_from_kb_answer(solution['Ob']) + "'"
+                        tuple_start = 'start:' + str(solution['T1'])
+                        tuple_end = 'end:' + str(solution['T2'])
+                        tr_ = construct_tuple_from_its_elements(assertion_type, tuple_subject, tuple_object, tuple_relation, tuple_start, tuple_end)
+                        ## print(tr_)
+                        if ((extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[0][0]) and \
+                                extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[0][1])) or \
+                                (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[1][0]) and \
+                                extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1][1]))):
+                            tr_[3] = ''
+                            tr_[4] = ''
+                        else:
+                            pass
+
+                        tr_inv_ = invert_tuple_(tr_, ont_property_inverse_dict)
+                        if tr_ in tuples[pair_id][pair_of_instances[0]] or tr_ in tuples[pair_id][pair_of_instances[1]]:
+                            ## print("Tuple already in list.")
+                            pass
+                        elif tr_inv_ in tuples[pair_id][pair_of_instances[0]] or tr_inv_ in tuples[pair_id][pair_of_instances[1]]:
+                            ## print("Inverse tuple already in list.")
+                            pass
+                        else:
+                            tuples[pair_id][pair_of_instances[0]].append(tr_)
+
+                    query.finish()
+
+    else:
+        query_aff_1 = client_rosprolog.query(q_1_initial)
+        query_neg_2 = client_rosprolog.query(q_2_initial)
+        query_aff_3 = client_rosprolog.query(q_3_initial)
+        query_neg_4 = client_rosprolog.query(q_4_initial)
+        query_aff_5 = client_rosprolog.query(q_5_initial)
+        query_neg_6 = client_rosprolog.query(q_6_initial)
+        query_aff_7 = client_rosprolog.query(q_7_initial)
+        query_neg_8 = client_rosprolog.query(q_8_initial)
+
+        queries_to_kb_dict = {assertion_type_1:[query_aff_1, query_aff_3, query_aff_5, query_aff_7], \
+                            assertion_type_2:[query_neg_2, query_neg_4, query_neg_6, query_neg_8]}
+
+
+        for assertion_type, queries in queries_to_kb_dict.items():
+            for query in queries:
                 for solution in query.solutions():
+                    tuple_subject = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['Oa'])] \
+                        + ":'" + extract_individual_from_kb_answer(solution['Oa']) + "'"
                     tuple_relation = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['R'])] \
                         + ":'" + extract_individual_from_kb_answer(solution['R']) + "'"
+                    tuple_object = owl_uri_to_label_dict[extract_raw_uri_from_kb_answer(solution['Ob'])] \
+                        + ":'" + extract_individual_from_kb_answer(solution['Ob']) + "'"
                     tuple_start = 'start:' + str(solution['T1'])
                     tuple_end = 'end:' + str(solution['T2'])
-                    tr_ = construct_tuple_from_its_elements(assertion_type, object_a, object_b, tuple_relation, tuple_start, tuple_end)
+                    tr_ = construct_tuple_from_its_elements(assertion_type, tuple_subject, tuple_object, tuple_relation, tuple_start, tuple_end)
                     ## print(tr_)
                     if ((extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[0][0]) and \
-                         extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[0][1])) or \
-                         (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[1][0]) and \
-                         extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1][1]))):
+                            extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[0][1])) or \
+                            (extract_individual_from_tuple_element(tr_[3]) == str(instance_time_interval[1][0]) and \
+                            extract_individual_from_tuple_element(tr_[4]) == str(instance_time_interval[1][1]))):
                         tr_[3] = ''
                         tr_[4] = ''
                     else:
@@ -548,6 +818,7 @@ def prune_tuples(tuples_instance_a, tuples_instance_b):
     tuples_instance_a_cp = tuples_instance_a.copy() # list()
     tuples_instance_b_cp = tuples_instance_b.copy() # list()
 
+    # Find non-divergent tuples <Pa, p, o, ti, tf, sign> AND <Pb, p, o, ti, tf, sign>
     tp_to_delete = list()
     while tuples_instance_a_cp:
         tp_ = tuples_instance_a_cp.pop(0)
@@ -560,9 +831,19 @@ def prune_tuples(tuples_instance_a, tuples_instance_b):
             else:
                 pass
     
+    # Delete non-divergent tuples <Pa, p, o, ti, tf, sign> AND <Pb, p, o, ti, tf, sign>
+    pruned_tuples_instance_a_initial = list()
+    pruned_tuples_instance_a_initial = [i for i in tuples_instance_a if i not in tp_to_delete]
+    # Delete tuples connected to the deleted non-divergent tuples (pruning the whole branch) <o, q, ox, ti, tf, sign>
     pruned_tuples_instance_a = list()
-    pruned_tuples_instance_a = [i for i in tuples_instance_a if i not in tp_to_delete]
+    unique_elements_set = set()
+    for sublist in tp_to_delete:
+        unique_elements_set.add(sublist[2]) # Identify objects (o) from non-divergent tuples
+    # Create a new list without the tuples dependent on non-divergent tuples
+    pruned_tuples_instance_a = [sublist for sublist in pruned_tuples_instance_a_initial if sublist[0] not in unique_elements_set]
 
+
+    # Find non-divergent tuples <Pb, p, o, ti, tf, sign> AND <Pa, p, o, ti, tf, sign>
     tp_to_delete = list()
     while tuples_instance_b_cp:
         tp_ = tuples_instance_b_cp.pop(0)
@@ -574,9 +855,17 @@ def prune_tuples(tuples_instance_a, tuples_instance_b):
                     pass
             else:
                 pass
-    
+    # Delete non-divergent tuples <Pa, p, o, ti, tf, sign> AND <Pb, p, o, ti, tf, sign>
+    pruned_tuples_instance_b_initial = list()
+    pruned_tuples_instance_b_initial = [i for i in tuples_instance_b if i not in tp_to_delete]
+    # Delete tuples connected to the deleted non-divergent tuples (pruning the whole branch) <o, q, ox, ti, tf, sign>
     pruned_tuples_instance_b = list()
-    pruned_tuples_instance_b = [i for i in tuples_instance_b if i not in tp_to_delete]
+    unique_elements_set = set()
+    for sublist in tp_to_delete:
+        unique_elements_set.add(sublist[2]) # Identify objects (o) from non-divergent tuples
+    # Create a new list without the tuples dependent on non-divergent tuples
+    pruned_tuples_instance_b = [sublist for sublist in pruned_tuples_instance_b_initial if sublist[0] not in unique_elements_set]
+
 
     return pruned_tuples_instance_a, pruned_tuples_instance_b
 
@@ -627,12 +916,31 @@ def cast_c_tuples(pair_of_instances, tuples_of_the_pair_in, ont_prop_dict):
 
 def cluster_c_tuples(pair_of_instances, tuples_in):
     # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
-    # -tuples about direct relationship between the two instances are clustered together 
-    # -tuples about a single instance are clustered together by predicate (using the remaining tuples)
+    # -tuples about direct relationship between the two instances are clustered together (specificity level one)
+    # -tuples are clustered together by predicate using the remaining tuples 
+    #       - tuples about entities directly related to the pair of instances (including horizontal relations) (specificity level two)
+    #       - tuples about entities indirectly related to the pair of instances (third level tuples of entities that are related to each other at the second)
+    #       - tuples about entities no related to the pair of instances (second and third level tuples of entities that are only found in one of the pair's instances (e.g. only related to A))
     clustered_tuples_dict = dict()
     tuples = tuples_in.copy()
     
     tuples_cp = tuples.copy()
+    
+    """
+    # Next tuples are useful to test some aspects of the clustering  
+    tuples_cp.append(["map_bringing_object:'task_27_mend_fuse'", "dul:'isExecutedIn'", "map_bringing_object:'ACTION_27'", '', '', 'affirmative']) 
+    tuples_cp.append(["map_bringing_object:'task_27_mend_fuse'", "dul:'directlyPrecedes'", "map_bringing_object:'task_26_mend_fuse'", '', '', 'affirmative'])
+    tuples_cp.append(["map_bringing_object:'ACTION_27'", "dul:'isPreconditionOf'", "map_bringing_object:'ACTION_28_a'", '', '', 'affirmative'])
+    tuples_cp.append(["map_bringing_object:'ACTION_28_a'", "dul:'isPreconditionOf'", "map_bringing_object:'ACTION_28_b'", '', '', 'affirmative'])
+    tuples_cp.append(["map_bringing_object:'ACTION_IX'", "dul:'hasPrecondition'", "map_bringing_object:'ACTION_X'", '', '', 'affirmative'])
+    tuples_cp.append(["map_bringing_object:'plan_0_2024-03-08_17:04:34.350098-UTC'", "ocra_common:'hasNumberOfTasks'", "map_bringing_object:'EXTRA_TUPLE'", '', '', 'affirmative'])
+    print("\n\n --> Length tuples before cluster")
+    print(len(tuples_cp))
+    """
+
+
+
+    tuples_cp_permanent = tuples_cp.copy() # a copy of the original initial tuples that will NOT be modified
 
     # cluster tuples that relate the two instances to each other
     indices = find_indices_of_tuples_including_the_pair(pair_of_instances, tuples_cp)
@@ -644,66 +952,159 @@ def cluster_c_tuples(pair_of_instances, tuples_in):
     tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
 
     # cluster the remaining tuples by predicate
-    ## cont = 0
     while tuples_cp:
-        indices = find_indices_of_related_tuples(pair_of_instances, tuples_cp[0], tuples_cp) 
-        related_tuples = extract_related_tuples(tuples_cp, indices)
-        ## clustered_tuples_dict[cont] = related_tuples # alternative to the next line
-        clustered_tuples_dict[tuples_cp[0][1]] = related_tuples # alternative to the previous line
-        indices_to_remove = indices.copy()
-        indices_to_remove.append(0)
-        tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove] 
-        ## cont += 1
-    
+        # level two of specificity (including horizontal relations), thus entities directly related to the pair of instances
+        indices = find_indices_of_directly_related_tuples(pair_of_instances, tuples_cp[0], tuples_cp) 
+        related_tuples_d = extract_related_tuples(tuples_cp, indices) 
+        indices_to_remove_d = indices.copy()
+
+        # level three of specificity that comes from entities horizontally connected at the second level (e.g. cost A and cost B), thus indireclty related to the pair
+        indices = find_indices_of_indirectly_related_tuples(pair_of_instances, tuples_cp[0], tuples_cp, tuples_cp_permanent) 
+        related_tuples_i = extract_related_tuples(tuples_cp, indices) 
+        indices_to_remove_i = indices.copy()
+
+        # level three of specificity and level two in which there is no connection of parent nodes between the two instances (this includes the case of tasks included in one plan 
+        # and not in the other plan)
+        indices = find_indices_of_non_related_tuples(pair_of_instances, tuples_cp[0], tuples_cp, tuples_cp_permanent)
+        related_tuples_n = extract_related_tuples(tuples_cp, indices)
+        indices_to_remove_n = indices.copy()
+
+        if indices_to_remove_d:
+            clustered_tuples_dict["<tuples_specificity_two_direct>"+tuples_cp[0][1]] = related_tuples_d
+            tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove_d] 
+        elif indices_to_remove_i:
+            # important to put this before the next case, since this case is included in the next one (sometimes, both lists of indices exist)
+            clustered_tuples_dict["<tuples_specificity_three_indirect>"+tuples_cp[0][1]+"_"+tuples_cp[0][0]] = related_tuples_i
+            tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove_i] 
+        elif indices_to_remove_n:
+            clustered_tuples_dict["<tuples_specificity_three_unrelated>"+tuples_cp[0][1]] = related_tuples_n
+            tuples_cp = [tuples_cp[j] for j in range(0, len(tuples_cp)) if j not in indices_to_remove_n]
+
+        """
+        print("indices")
+        print(indices_to_remove_d)
+        print(indices_to_remove_i)
+        print(indices_to_remove_n)
+        """
+
+
+        
+    """ 
+    for key, value in clustered_tuples_dict.items():
+        print("\n\n --> Length tuples for each cluster")
+        print(key)
+        print(len(value))
+        print(value)
+        print("--\n")
+    """
+        
     return clustered_tuples_dict
 
 
 def order_c_tuples(tuples_dict_in):
     # rules have been taken from 'Agregation in natural language generation, by H Dalianis'
-    # -(between sentences) external ordering: tuples relating the two instances go first
-    # -(between sentences) external ordering: much info > less info (remaining tuples)
+    # -(between sentences) external ordering: clusters go in order of specificity (from 1 to 3) 
+    # -(between sentences) external ordering: within each specificity, clusters are ordered like: more info > less info (remaining tuples)
     # -(within a sentence) internal ordering: superclass > attributes
+    handy_dict = dict()
     ordered_tuples = dict()
     ordered_tuples_ext = dict()
     ordered_tuples_int = dict()
     tuples_dict = tuples_dict_in.copy()
-    cont = 0
-    
-    # external ordering
     tuples_dict_cp = tuples_dict.copy()
 
-    ordered_tuples_ext[cont] = tuples_dict_cp["tuples_specificity_one"]
+    level_two_direct_tuples_dict = dict()
+    level_three_indirect_tuples_dict = dict()
+    level_three_unrelated_tuples_dict = dict()
+    for key, value in tuples_dict_cp.items():
+        if '<tuples_specificity_two_direct>' in key:
+            level_two_direct_tuples_dict[key] = value
+        elif '<tuples_specificity_three_indirect>' in key:
+            level_three_indirect_tuples_dict[key] = value
+        elif '<tuples_specificity_three_unrelated>' in key:
+            level_three_unrelated_tuples_dict[key] = value
+        else:
+            pass
+
+    # · EXTERNAL ordering
+    cont = 0
+    # specificity one
+    ## ordered_tuples_ext[cont] = tuples_dict_cp["tuples_specificity_one"]
+    handy_dict["tuples_specificity_one"] = tuples_dict_cp["tuples_specificity_one"]
+    ordered_tuples_ext[cont] = handy_dict.copy() # a dictionary of dictionaries (thus the semantic key is kept)
     tuples_dict_cp.pop("tuples_specificity_one")
+
     cont += 1
-    
-    while (tuples_dict_cp):
-        key_with_max_info = list(tuples_dict_cp.keys())[0]
-        for key, value in tuples_dict_cp.items():
-            if len(tuples_dict_cp[key_with_max_info]) < len(value):
+    # specificity two
+    while (level_two_direct_tuples_dict):
+        key_with_max_info = list(level_two_direct_tuples_dict.keys())[0]
+        for key, value in level_two_direct_tuples_dict.items():
+            if len(level_two_direct_tuples_dict[key_with_max_info]) < len(value):
                     key_with_max_info = key
             else:
                 pass
         
-        ordered_tuples_ext[cont] = tuples_dict_cp[key_with_max_info]
-        tuples_dict_cp.pop(key_with_max_info)
-        cont += 1
-        
-    # internal ordering
-    """
-    for key, value in ordered_tuples_ext.items():
-        new_value = list()
-        
-        for v in value:
-            if 'type' in v[1]:
-                new_value.insert(0, v)
+        handy_dict.clear()
+        handy_dict[key_with_max_info] = level_two_direct_tuples_dict[key_with_max_info]
+        ordered_tuples_ext[cont] = handy_dict.copy()
+        level_two_direct_tuples_dict.pop(key_with_max_info)
+        cont += 1 
+    # specificity three indirect
+    while (level_three_indirect_tuples_dict):
+        key_with_max_info = list(level_three_indirect_tuples_dict.keys())[0]
+        for key, value in level_three_indirect_tuples_dict.items():
+            if len(level_three_indirect_tuples_dict[key_with_max_info]) < len(value):
+                    key_with_max_info = key
             else:
-                new_value.append(v)
+                pass
         
-        ordered_tuples_int[key] = new_value
+        handy_dict.clear()
+        handy_dict[key_with_max_info] = level_three_indirect_tuples_dict[key_with_max_info]
+        ordered_tuples_ext[cont] = handy_dict.copy()
+        level_three_indirect_tuples_dict.pop(key_with_max_info)
+        cont += 1
+    # specificity three unrelated
+    while (level_three_unrelated_tuples_dict):
+        key_with_max_info = list(level_three_unrelated_tuples_dict.keys())[0]
+        for key, value in level_three_unrelated_tuples_dict.items():
+            if len(level_three_unrelated_tuples_dict[key_with_max_info]) < len(value):
+                    key_with_max_info = key
+            else:
+                pass
         
-    ordered_tuples = ordered_tuples_int.copy()
+        handy_dict.clear()
+        handy_dict[key_with_max_info] = level_three_unrelated_tuples_dict[key_with_max_info]
+        ordered_tuples_ext[cont] = handy_dict.copy()
+        level_three_unrelated_tuples_dict.pop(key_with_max_info)
+        cont += 1
+
+    # · INTERNAL ordering
+    
+    for number_key, dict_ in ordered_tuples_ext.items():
+        for key, value in dict_.items():
+            new_value = list()
+            
+            for v in value:
+                if 'type' in v[1]:
+                    new_value.insert(0, v)
+                else:
+                    new_value.append(v)
+            
+        handy_dict.clear()
+        handy_dict[key] = new_value
+        ordered_tuples_int[number_key] = handy_dict.copy()
+        
+    ordered_tuples = ordered_tuples_int.copy() # it is a dictionary of dictionaries {0: {'tuples_specificity_one': [tuples..]}, 1: {"<tuples_specificity_two_direct>": [tuples..]}, ..}
+    
+    #ordered_tuples = ordered_tuples_ext.copy()
+
+    """ 
+    print("\n\n --> Ordered clusters")
+    for key, value in ordered_tuples.items():
+        print(key)
+        print(value)
+        print("--\n")
     """
-    ordered_tuples = ordered_tuples_ext.copy()
 
     return ordered_tuples
 
@@ -714,19 +1115,30 @@ def group_c_tuples(tuples_dict_in): # ont_prop_plural_dict
     # -object grouping: objects that share subject and property are grouped (and)
     # -predicate grouping: predicates that relate the same subject and object are grouped (and)
     grouped_tuples = dict()
-    tuples_dict = tuples_dict_in.copy()
+    handy_dict = dict()
+    tuples_dict = tuples_dict_in.copy() # it is a dictionary of dictionaries {0: {'tuples_specificity_one': [tuples..]}, 1: {"<tuples_specificity_two_direct>": [tuples..]}, ..}
     
     for i in range(0, len(tuples_dict.keys())):
-        # object grouping
-        grouped_tuples_by_object = group_tuples_of_same_object_type(tuples_dict[i]) 
+        for key in tuples_dict[i].keys():
+            # object grouping
+            grouped_tuples_by_object = group_tuples_of_same_object_type(tuples_dict[i][key]) 
 
-        # predicate grouping
-        grouped_tuples_by_predicate = group_tuples_of_same_predicate(grouped_tuples_by_object) 
+            # predicate grouping
+            grouped_tuples_by_predicate = group_tuples_of_same_predicate(grouped_tuples_by_object) 
 
-        ## print(grouped_tuples_by_predicate)
-        ## print("·· _ ··\n")
+            ## print(grouped_tuples_by_predicate)
+            ## print("·· _ ··\n")
+            handy_dict.clear()
+            handy_dict[key] = grouped_tuples_by_predicate
 
-        grouped_tuples[i] = grouped_tuples_by_predicate
+        grouped_tuples[i] = handy_dict.copy()
+
+    #for key, value in grouped_tuples.items():
+    #    print("\n\n --> Length tuples for each cluster AFTER INITIAL GROUPING")
+    #    print(key)
+    #    print(len(value))
+    #    print(value)
+    #    print("--\n")
  
     return grouped_tuples
 
@@ -740,6 +1152,7 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
     tuples_dict = tuples_dict_in.copy()
     pair_of_instances_with_uri_label = list()
     text_for_each_cluster_dict = dict()
+    handy_dict = dict()
     tuple_a = list()
     tuple_b = list()
 
@@ -749,133 +1162,160 @@ def group_c_tuples_in_a_sentence(pair_of_instances, tuples_dict_in): # ont_prop_
         from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
     
     for i in range(0, len(tuples_dict.keys())):
-        tuples_cp = tuples_dict[i].copy()
-        index_a = None
-        index_b = None
-        index_ = None
-        indices_related_to_a = list()
-        indices_related_to_b = list()
-        indices_related_to_instance = list()
-        indices_unrelated_to_instance = list()
-        indices_unrelated_to_instance_a = list()
-        indices_unrelated_to_instance_b = list()
-
-        for q in range(0, len(tuples_cp)):
-            for j in range(0, len(tuples_cp)):
-                if tuples_cp[q][0] == pair_of_instances_with_uri_label[0] and \
-                  tuples_cp[j][0] == pair_of_instances_with_uri_label[1] \
-                  and tuples_cp[q][1] == tuples_cp[j][1]:
-                    index_a = [q]  # index must be in a list format to use 'extract_related_tuples'
-                    index_b = [j]
-                    break
-                elif tuples_cp[q][0] == pair_of_instances_with_uri_label[0]:
-                    index_ = [q]
-                elif tuples_cp[j][0] == pair_of_instances_with_uri_label[1]:
-                    index_ = [j]
-                else:
-                    continue
-        
-        # extracting the tuples related to the main ones (horizontal relations from level 2 and level 3)
-        if index_a and index_b:  
-            tuple_a = extract_related_tuples(tuples_cp, index_a)[0] # it returns a list of lists (just one in here)
-            tuple_b = extract_related_tuples(tuples_cp, index_b)[0] # it returns a list of lists (just one in here)
+        for key in tuples_dict[i].keys():
+            tuples_cp = tuples_dict[i][key].copy()
+            index_a = None
+            index_b = None
+            index_ = None
+            indices_related_to_a = list()
+            indices_related_to_b = list()
+            indices_related_to_instance = list()
+            indices_related_to_deep_tuple_instance = list()
+            indices_unrelated_to_instance = list()
+            indices_unrelated_to_deep_tuple_instance = list()
+            indices_unrelated_to_instance_a = list()
+            indices_unrelated_to_instance_b = list()
 
             for q in range(0, len(tuples_cp)):
-                ## print(tuples_cp[q][0])
-                ## print(tuples_cp[index_a[0]][2])
-                ## print(tuples_cp[index_b[0]][2])
-                ## print("_-_\n\n")
-                if isinstance(tuples_cp[index_a[0]][2], list) or isinstance(tuples_cp[index_b[0]][2], list):
-                    if tuples_cp[q][0] in tuples_cp[index_a[0]][2]:
-                        indices_related_to_a.append(q)
+                for j in range(0, len(tuples_cp)):
+                    if tuples_cp[q][0] == pair_of_instances_with_uri_label[0] and \
+                      tuples_cp[j][0] == pair_of_instances_with_uri_label[1] \
+                      and tuples_cp[q][1] == tuples_cp[j][1]:
+                        index_a = [q]  # index must be in a list format to use 'extract_related_tuples'
+                        index_b = [j]
+                        break
+                    elif tuples_cp[q][0] == pair_of_instances_with_uri_label[0]:
+                        index_ = [q]
+                    elif tuples_cp[j][0] == pair_of_instances_with_uri_label[1]:
+                        index_ = [j]
                     else:
-                        if q == index_a[0] or q == index_b[0]:
-                            pass
-                        else: 
-                            indices_unrelated_to_instance_a.append(q)
+                        ## print(tuples_cp[q])
+                        index_deep_tuple = [0]
+                        #continue
+            
+            # extracting the tuples related to the main ones (horizontal relations from level 2 and level 3)
+            if index_a and index_b:  
+                tuple_a = extract_related_tuples(tuples_cp, index_a)[0] # it returns a list of lists (just one in here)
+                tuple_b = extract_related_tuples(tuples_cp, index_b)[0] # it returns a list of lists (just one in here)
 
-                    if tuples_cp[q][0] in tuples_cp[index_b[0]][2]:
-                        indices_related_to_b.append(q)
+                for q in range(0, len(tuples_cp)):
+                    ## print(tuples_cp[q][0])
+                    ## print(tuples_cp[index_a[0]][2])
+                    ## print(tuples_cp[index_b[0]][2])
+                    ## print("_-_\n\n")
+                    if isinstance(tuples_cp[index_a[0]][2], list) or isinstance(tuples_cp[index_b[0]][2], list):
+                        if tuples_cp[q][0] in tuples_cp[index_a[0]][2]:
+                            indices_related_to_a.append(q)
+                        else:
+                            if q == index_a[0] or q == index_b[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance_a.append(q)
+
+                        if tuples_cp[q][0] in tuples_cp[index_b[0]][2]:
+                            indices_related_to_b.append(q)
+                        else:
+                            if q == index_a[0] or q == index_b[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance_b.append(q)
                     else:
-                        if q == index_a[0] or q == index_b[0]:
-                            pass
-                        else: 
-                            indices_unrelated_to_instance_b.append(q)
+                        if tuples_cp[index_a[0]][2] == tuples_cp[q][0]:
+                            indices_related_to_a.append(q)
+                        else:
+                            if q == index_a[0] or q == index_b[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance_a.append(q)
+
+                        if tuples_cp[index_b[0]][2] == tuples_cp[q][0]:
+                            indices_related_to_b.append(q)
+                        else:
+                            if q == index_a[0] or q == index_b[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance_b.append(q)
+                
+                indices_unrelated_to_instance.extend([value for value in indices_unrelated_to_instance_a if value in indices_unrelated_to_instance_b])
+                
+                # checking if we are considering all possible tuples
+                if indices_unrelated_to_instance:
+                    print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
+                    print(indices_unrelated_to_instance)
+                    for index_unrelated in indices_unrelated_to_instance:
+                        print(tuples_cp[index_unrelated])
                 else:
-                    if tuples_cp[index_a[0]][2] == tuples_cp[q][0]:
-                        indices_related_to_a.append(q)
+                    ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
+                    pass
+
+                tuples_related_to_a = extract_related_tuples(tuples_cp, indices_related_to_a)
+                tuples_related_to_b = extract_related_tuples(tuples_cp, indices_related_to_b)
+
+                # construct text for the two instances to compare 
+                text_a = construct_text_about_single_tuple(tuple_a, tuples_related_to_a)            
+                text_b = construct_text_about_single_tuple(tuple_b, tuples_related_to_b)
+
+                # construct the text for a single cluster
+                text_for_each_cluster_dict[i] = text_a + "; while " + text_b
+
+                ## print(text_a + "; while " + text_b + ". ")
+                ## print("|Ix2|\n")
+                continue
+            elif index_: 
+                tuple_ = extract_related_tuples(tuples_cp, index_)[0] # it returns a list of lists (just one in here)
+                
+                for q in range(0, len(tuples_cp)):
+                    if isinstance(tuples_cp[index_[0]][2], list):
+                        if tuples_cp[q][0] in tuples_cp[index_[0]][2]:
+                            indices_related_to_instance.append(q)
+                        else:
+                            if q == index_[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance.append(q)
                     else:
-                        if q == index_a[0] or q == index_b[0]:
-                            pass
-                        else: 
-                            indices_unrelated_to_instance_a.append(q)
-
-                    if tuples_cp[index_b[0]][2] == tuples_cp[q][0]:
-                        indices_related_to_b.append(q)
-                    else:
-                        if q == index_a[0] or q == index_b[0]:
-                            pass
-                        else: 
-                            indices_unrelated_to_instance_b.append(q)
-            
-            indices_unrelated_to_instance.extend([value for value in indices_unrelated_to_instance_a if value in indices_unrelated_to_instance_b])
-            
-            # checking if we are considering all possible tuples
-            if indices_unrelated_to_instance:
-                print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
-                print(indices_unrelated_to_instance)
-                ## for index_unrelated in indices_unrelated_to_instance:
-                ##     print(tuples_cp[index_unrelated])
-            else:
-                ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
-                pass
-
-            tuples_related_to_a = extract_related_tuples(tuples_cp, indices_related_to_a)
-            tuples_related_to_b = extract_related_tuples(tuples_cp, indices_related_to_b)
-
-            # construct text for the two instances to compare 
-            text_a = construct_text_from_single_tuple(tuple_a, tuples_related_to_a)            
-            text_b = construct_text_from_single_tuple(tuple_b, tuples_related_to_b)
-
-            # construct the text for a single cluster
-            text_for_each_cluster_dict[i] = text_a + "; while " + text_b
-
-            ## print(text_a + "; while " + text_b + ". ")
-            ## print("|Ix2|\n")
-            continue
-        elif index_: 
-            tuple_ = extract_related_tuples(tuples_cp, index_)[0] # it returns a list of lists (just one in here)
-            
-            for q in range(0, len(tuples_cp)):
-                if tuples_cp[index_[0]][2] == tuples_cp[q][0]:
-                    indices_related_to_instance.append(q)
+                        if tuples_cp[index_[0]][2] == tuples_cp[q][0]:
+                            indices_related_to_instance.append(q)
+                        else:
+                            if q == index_[0]:
+                                pass
+                            else: 
+                                indices_unrelated_to_instance.append(q)
+                
+                # checking if we are considering all possible tuples
+                if indices_unrelated_to_instance:
+                    print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
+                    print(indices_unrelated_to_instance)
+                    print(index_)
+                    print(tuples_cp[index_[0]])
+                    for index_unrelated in indices_unrelated_to_instance:
+                        print(tuples_cp[index_unrelated])
                 else:
-                    if q == index_[0]:
-                        pass
-                    else: 
-                        indices_unrelated_to_instance.append(q)
-            
-            # checking if we are considering all possible tuples
-            if indices_unrelated_to_instance:
-                print("\n\n-> WARNING -- SOME tupples are not being included in the narrative.\n\n")
-                print(indices_unrelated_to_instance)
+                    ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
+                    pass
+
+                tuples_related_to_instance = extract_related_tuples(tuples_cp, indices_related_to_instance)
+
+                # construct text for the two instances to compare 
+                text_ = construct_text_about_single_tuple(tuple_, tuples_related_to_instance)
+
+                # construct the text for a single cluster
+                text_for_each_cluster_dict[i] = text_
+
+                ## print(text_ + ". ")
+                ## print("|I|\n")
+                continue        
             else:
-                ## print("\n\n-> INFO -- ALL tupples are being included in the narrative.\n\n")
-                pass
+                # construct text about multiple tuples related to each other  
+                text_ = construct_text_about_multiple_tuples(tuples_cp, key)
 
-            tuples_related_to_instance = extract_related_tuples(tuples_cp, indices_related_to_instance)
+                # construct the text for a single cluster
+                text_for_each_cluster_dict[i] = text_
 
-            # construct text for the two instances to compare 
-            text_ = construct_text_from_single_tuple(tuple_, tuples_related_to_instance)
-
-            # construct the text for a single cluster
-            text_for_each_cluster_dict[i] = text_
-
-            ## print(text_ + ". ")
-            ## print("|I|\n")
-            continue
-        else:
-            pass
+                ## print(text_ + ". ")
+                ## print("|I|\n")
+                continue
+                #pass
 
     for text_ in text_for_each_cluster_dict.values():
         sentence = sentence + text_ + ". "
@@ -1063,7 +1503,7 @@ def from_uri_based_ontology_entity_to_uri_label_based(entity):
     return mod_entity
 
 
-def find_indices_of_related_tuples(pair_of_instances, tuple_in, tuples_in):
+def find_indices_of_directly_related_tuples(pair_of_instances, tuple_in, tuples_in):
     indices = []
     tuple_ = tuple_in.copy()
     tuples = tuples_in.copy()
@@ -1075,20 +1515,117 @@ def find_indices_of_related_tuples(pair_of_instances, tuple_in, tuples_in):
         from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
     
     for i in range (0, len(tuples)):
+        # The following code captures the vertical relations at level 2 (e.g. has cost, defines task, etc.)
         if pair_of_instances_with_uri_label[0] == tuples[i][0] or pair_of_instances_with_uri_label[1] == tuples[i][0]:
             if tuple_[1] == tuples[i][1]:
-                indices.append(i)
+                if i not in indices:
+                    indices.append(i)
+                else:
+                    pass
+
+                # The following code captures the horizontal relations at level 2 (e.g. has worse quality value)
                 for j in range (0, len(tuples)):
-                    if tuples[i][2] == tuples[j][0]:
-                        # This also captures the horizontal relations (e.g. has worse quality value) at level 2, 
-                        # for the level 3 it is not needed to capture them, since they will be narrated in a
-                        # different sentence, otherwise, the sentences would be too long. Hence, they will be 
-                        # clustered in another cluster
-                        indices.append(j) 
+                    if tuple_[2] == tuples[j][0] and tuples[i][2] == tuples[j][2] or \
+                     tuple_[2] == tuples[j][2] and tuples[i][2] == tuples[j][0]: 
+                        if j not in indices:
+                            indices.append(j)
+                        else:
+                            pass
                     else:
                         pass
             else:
                 pass
+        else: 
+            pass
+
+    return indices
+
+def find_indices_of_indirectly_related_tuples(pair_of_instances, tuple_in, tuples_in, tuples_original_in):
+    indices = []
+    tuple_ = tuple_in.copy()
+    tuples = tuples_in.copy()
+    tuples_original = tuples_original_in.copy()
+
+    pair_of_instances_with_uri_label = list()
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[0]))
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
+    
+    for i in range (0, len(tuples)):
+        # The following code captures the vertical relations at level 3 (e.g. has data value, etc.)
+        if pair_of_instances_with_uri_label[0] != tuples[i][0] and pair_of_instances_with_uri_label[1] != tuples[i][0] and \
+         pair_of_instances_with_uri_label[1] != tuples[i][0] and pair_of_instances_with_uri_label[0] != tuples[i][0]:
+            if tuple_[1] == tuples[i][1]:
+                if i not in indices:
+                    for y in range (0, len(tuples_original)):
+                        if tuple_[0] == tuples_original[y][0] and tuples[i][0] == tuples_original[y][2] or \
+                        tuple_[0] == tuples_original[y][2] and tuples[i][0] == tuples_original[y][0]:
+                            indices.append(i)
+
+                            if 0 not in indices:
+                                indices.append(0)
+                            else:
+                                pass
+
+                            # The following code captures the horizontal relations at level 3 
+                            for j in range (0, len(tuples)):
+                                if tuple_[2] == tuples[j][0] and tuples[i][2] == tuples[j][2] or \
+                                 tuple_[2] == tuples[j][2] and tuples[i][2] == tuples[j][0]: 
+                                    if j not in indices:
+                                        indices.append(j)
+                                    else:
+                                        pass
+                                else:
+                                    pass
+                        else:
+                            pass
+                else:
+                    pass
+            else:
+                pass
+        else:
+            pass
+
+
+    return indices
+
+def find_indices_of_non_related_tuples(pair_of_instances, tuple_in, tuples_in, tuples_original_in):
+    indices = []
+    tuple_ = tuple_in.copy()
+    tuples = tuples_in.copy()
+    tuples_original = tuples_original_in.copy()
+
+    pair_of_instances_with_uri_label = list()
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[0]))
+    pair_of_instances_with_uri_label.append(\
+        from_uri_based_ontology_entity_to_uri_label_based(pair_of_instances[1]))
+    
+    for i in range (0, len(tuples)):
+        # The following code captures the vertical relations at level 3 (e.g. has data value, etc.)
+        if pair_of_instances_with_uri_label[0] != tuples[i][0] and pair_of_instances_with_uri_label[1] != tuples[i][0] and \
+         pair_of_instances_with_uri_label[1] != tuples[i][0] and pair_of_instances_with_uri_label[0] != tuples[i][0]:
+            if tuple_[1] == tuples[i][1]:
+                if i not in indices:
+                    indices.append(i)
+
+                    # The following code captures the horizontal relations at level 3 
+                    for j in range (0, len(tuples)):
+                        if tuple_[2] == tuples[j][0] and tuples[i][2] == tuples[j][2] or \
+                         tuple_[2] == tuples[j][2] and tuples[i][2] == tuples[j][0]: 
+                            if j not in indices:
+                                indices.append(j)
+                            else:
+                                pass
+                        else:
+                            pass
+                else:
+                    pass
+            else:
+                pass
+        else:
+            pass
 
     return indices
 
@@ -1202,12 +1739,13 @@ def group_tuples_of_same_predicate(tuples_in): # ont_prop_plural_dict
     return new_tuples
 
 
-def construct_text_from_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
+def construct_text_about_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
     text = ''
     tuple_ = tuple_in.copy()
     tuples_related_to_main_tuple_ = tuples_related_to_main_tuple_in.copy()
     
     tuple_subject = extract_individual_from_tuple_element(tuple_[0])
+    tuple_subject = "'" + tuple_subject + "'"
     ## tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
 
     if type(tuple_[1]) == list:
@@ -1240,11 +1778,12 @@ def construct_text_from_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
         for obj in tuple_[2]:
             if not tuple_object:
                 tuple_object = extract_individual_from_tuple_element(obj)
+                tuple_object = "'" + tuple_object + "'"
             else: 
                 if are_there_multiple_related_tuples_for_same_object_:
-                    tuple_object = tuple_object + ', and also ' + tuple_relationship + ' ' + extract_individual_from_tuple_element(obj)
+                    tuple_object = tuple_object + ', and also ' + tuple_relationship + ' ' + "'" + extract_individual_from_tuple_element(obj) + "'"
                 else:
-                    tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
+                    tuple_object = tuple_object + ' and ' + "'" + extract_individual_from_tuple_element(obj) + "'"
             
             # aggreate text about related tuples
             if tuples_related_to_main_tuple_:
@@ -1262,10 +1801,100 @@ def construct_text_from_single_tuple(tuple_in, tuples_related_to_main_tuple_in):
                 pass
     else:
         tuple_object = extract_individual_from_tuple_element(tuple_[2])
+        tuple_object = "'" + tuple_object + "'"
         
         # aggreate text about related tuples
         if tuples_related_to_main_tuple_:
             tuple_object = tuple_object + ", which " + construct_aggregated_text_from_multiple_tuples(tuples_related_to_main_tuple_)
+        else: 
+            pass
+
+    ## tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
+
+    if (extract_individual_from_tuple_element(tuple_[4]) == 'Infinity'):
+        tuple_start = ''
+        tuple_end = ''
+    else:
+        tuple_start = extract_individual_from_tuple_element(tuple_[3])
+        tuple_end = extract_individual_from_tuple_element(tuple_[4])
+
+    if (tuple_start and tuple_end):
+        text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
+    else:
+        text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object 
+
+    return text
+
+
+def construct_text_about_multiple_tuples(tuples_in, cluster_semantic_id):
+    # Note that there is no need for using the connector 'which', since in this case all the tuples share the same relation
+    text = ''
+    tuples_cp = tuples_in.copy()
+
+    tuple_ = tuples_cp.pop(0) # then the function can be recursively called
+    
+    tuple_subject = extract_individual_from_tuple_element(tuple_[0])
+    tuple_subject = "'" + tuple_subject + "'"
+    ## tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
+
+    if type(tuple_[1]) == list:
+        tuple_relationship = ''
+        for obj in tuple_[1]:
+            if not tuple_relationship:
+                tuple_relationship = extract_individual_from_tuple_element(obj)
+                tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(tuple_relationship)
+            else: 
+                additional_tuple_relationship = extract_individual_from_tuple_element(obj)
+                additional_tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(additional_tuple_relationship)
+                if tuple_[5] == "negative":
+                    tuple_relationship = tuple_relationship + ' and (not)' + additional_tuple_relationship
+                else:
+                    tuple_relationship = tuple_relationship + ' and ' + additional_tuple_relationship        
+    else:
+        tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
+        tuple_relationship = manual_substitution_of_property_label_for_more_readable_narratives(tuple_relationship)
+    
+    tuple_relationship = re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_relationship) # adding space between words
+    tuple_relationship = tuple_relationship.lower() # lowercase
+    if tuple_[5] == "negative":
+        tuple_relationship = "(not) " + tuple_relationship
+    else:
+        pass
+    
+    are_there_multiple_related_tuples_for_same_object_ = False
+    if type(tuple_[2]) == list:
+        tuple_object = ''
+        for obj in tuple_[2]:
+            if not tuple_object:
+                tuple_object = extract_individual_from_tuple_element(obj)
+                tuple_object = "'" + tuple_object + "'"
+            else: 
+                if are_there_multiple_related_tuples_for_same_object_:
+                    tuple_object = tuple_object + ', and also ' + tuple_relationship + ' ' + "'" + extract_individual_from_tuple_element(obj) + "'"
+                else:
+                    tuple_object = tuple_object + ', and ' + "'" + extract_individual_from_tuple_element(obj) + "'"
+                    are_there_multiple_related_tuples_for_same_object_ = True
+            
+        # aggreate text about related tuples 
+        if tuples_cp:
+            text_to_add = construct_text_about_multiple_tuples(tuples_cp, cluster_semantic_id)
+            if '<tuples_specificity_three_indirect>' in cluster_semantic_id:
+                tuple_object = tuple_object + ", while " + text_to_add # then it is worthy comparing them (e.g. the value of the cost of two different plans)
+            else:
+                tuple_object = tuple_object + ", and " + text_to_add # better just to put them together (e.g. relations between tasks of the same plan)
+        else: 
+            pass
+    else:
+        tuple_object = extract_individual_from_tuple_element(tuple_[2])
+        tuple_object = "'" + tuple_object + "'"
+        
+        # aggreate text about related tuples
+        if tuples_cp:
+            text_to_add = construct_text_about_multiple_tuples(tuples_cp, cluster_semantic_id)
+            if '<tuples_specificity_three_indirect>' in cluster_semantic_id:
+                tuple_object = tuple_object + ", while " + text_to_add # then it is worthy comparing them (e.g. the value of the cost of two different plans)
+            else:
+                tuple_object = tuple_object + ", and " + text_to_add # better just to put them together (e.g. relations between tasks of the same plan)
         else: 
             pass
 
@@ -1322,10 +1951,12 @@ def construct_aggregated_text_from_single_tuple(tuple_in):
         for obj in tuple_[2]:
             if not tuple_object:
                 tuple_object = extract_individual_from_tuple_element(obj)
+                tuple_object = "'" + tuple_object + "'"
             else: 
-                tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
+                tuple_object = tuple_object + ' and ' + "'" + extract_individual_from_tuple_element(obj) + "'"
     else:
         tuple_object = extract_individual_from_tuple_element(tuple_[2])
+        tuple_object = "'" + tuple_object + "'"
 
     ## tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
 
@@ -1353,139 +1984,6 @@ def construct_aggregated_text_from_multiple_tuples(tuples_in):
             text = text + construct_aggregated_text_from_single_tuple(tuple_)
         else:
             text = text + " and " + construct_aggregated_text_from_single_tuple(tuple_)
-
-    return text
-
-def tuples_list_to_text_with_c_aggregation(pair_of_instances, tuples_in):
-    text = ''
-    tuples = tuples_in.copy()
-    
-    for tuple_ in tuples:
-        tuple_subject = extract_individual_from_tuple_element(tuple_[0])
-        tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
-        
-        if type(tuple_[1]) == list:
-            tuple_relationship = ''
-            for obj in tuple_[1]:
-                if not tuple_relationship:
-                    tuple_relationship = extract_individual_from_tuple_element(obj)
-                else: 
-                    if tuple_[5] == "negative":
-                        tuple_relationship = tuple_relationship + ' and (not)' + extract_individual_from_tuple_element(obj)
-                    else:
-                        tuple_relationship = tuple_relationship + ' and ' + extract_individual_from_tuple_element(obj)        
-        else:
-            tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
-        
-        if tuple_relationship == "type":
-            tuple_relationship = "isATypeOf"
-        else:
-            pass
-        tuple_relationship = re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_relationship) # adding space between words
-        tuple_relationship = tuple_relationship.lower() # lowercase
-        if tuple_[5] == "negative":
-            tuple_relationship = "(not) " + tuple_relationship
-        else:
-            pass
-
-        if type(tuple_[2]) == list:
-            tuple_object = ''
-            for obj in tuple_[2]:
-                if not tuple_object:
-                    tuple_object = extract_individual_from_tuple_element(obj)
-                else: 
-                    tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
-        else:
-            tuple_object = extract_individual_from_tuple_element(tuple_[2])
-
-        tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
-
-        if (extract_individual_from_tuple_element(tuple_[4]) == 'Infinity'):
-            tuple_start = ''
-            tuple_end = ''
-        else:
-            tuple_start = extract_individual_from_tuple_element(tuple_[3])
-            tuple_end = extract_individual_from_tuple_element(tuple_[4])
-
-        if not text: 
-            # empty text
-            if (tuple_start and tuple_end):
-                text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
-            else:
-                text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object 
-        else:
-            # non-empty text
-            if (tuple_start and tuple_end):
-                text = text + ' and ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
-            else:
-                text = text + ' and ' + tuple_relationship + ' ' + tuple_object 
-
-    return text
-
-
-def tuples_list_to_text_with_aggregation(tuples_in):
-    text = ''
-    tuples = tuples_in.copy()
-    
-    for tuple_ in tuples:
-        tuple_subject = extract_individual_from_tuple_element(tuple_[0])
-        tuple_subject = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_subject)+"'" # adding space between words
-        
-        if type(tuple_[1]) == list:
-            tuple_relationship = ''
-            for obj in tuple_[1]:
-                if not tuple_relationship:
-                    tuple_relationship = extract_individual_from_tuple_element(obj)
-                else: 
-                    if tuple_[5] == "negative":
-                        tuple_relationship = tuple_relationship + ' and (not)' + extract_individual_from_tuple_element(obj)
-                    else:
-                        tuple_relationship = tuple_relationship + ' and ' + extract_individual_from_tuple_element(obj)        
-        else:
-            tuple_relationship = extract_individual_from_tuple_element(tuple_[1])
-        
-        if tuple_relationship == "type":
-            tuple_relationship = "isATypeOf"
-        else:
-            pass
-        tuple_relationship = re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_relationship) # adding space between words
-        tuple_relationship = tuple_relationship.lower() # lowercase
-        if tuple_[5] == "negative":
-            tuple_relationship = "(not) " + tuple_relationship
-        else:
-            pass
-
-        if type(tuple_[2]) == list:
-            tuple_object = ''
-            for obj in tuple_[2]:
-                if not tuple_object:
-                    tuple_object = extract_individual_from_tuple_element(obj)
-                else: 
-                    tuple_object = tuple_object + ' and ' + extract_individual_from_tuple_element(obj)
-        else:
-            tuple_object = extract_individual_from_tuple_element(tuple_[2])
-
-        tuple_object = "'"+re.sub(r"(?<=\w)([A-Z])", r" \1", tuple_object)+"'" # adding space between words
-
-        if (extract_individual_from_tuple_element(tuple_[4]) == 'Infinity'):
-            tuple_start = ''
-            tuple_end = ''
-        else:
-            tuple_start = extract_individual_from_tuple_element(tuple_[3])
-            tuple_end = extract_individual_from_tuple_element(tuple_[4])
-
-        if not text: 
-            # empty text
-            if (tuple_start and tuple_end):
-                text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
-            else:
-                text = tuple_subject + ' ' + tuple_relationship + ' ' + tuple_object 
-        else:
-            # non-empty text
-            if (tuple_start and tuple_end):
-                text = text + ' and ' + tuple_relationship + ' ' + tuple_object + ' ' + 'from ' + tuple_start + ' to ' + tuple_end
-            else:
-                text = text + ' and ' + tuple_relationship + ' ' + tuple_object 
 
     return text
 
