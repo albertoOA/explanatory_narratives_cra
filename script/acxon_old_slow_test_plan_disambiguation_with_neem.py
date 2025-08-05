@@ -4,7 +4,7 @@
 
 """
 What is this code?
-  - acxon fast test for ontology-based narratives. MODIFIED TO SPEED UP THE CONSTRUCTION
+  - acxon test for ontology-based narratives. 
   You can expect to find here an example of use of the algorithm for explanatory ontology-based narratives in the 
   collaborative robotics and adaptation domain. Make sure that you have properly selected the algorithm parameters
   (e.g., the temporal locality (t_locality), the specificity, etc.). You can modify them below.
@@ -18,13 +18,13 @@ import rospy
 import roslib
 import rospkg
 from utils.test_module import *
-from acxon.acxon_fast_module import *
+from acxon.acxon_module import *
 from prolog.prolog_module import *
 from rosprolog_client import PrologException, Prolog
 from know_cra.rosplan_cra_module import ROSPlanCRA
 
 if __name__ == '__main__': 
-    rospy.init_node('acxon_fast_test_plan_disambiguation_with_neem')
+    rospy.init_node('acxon_test_plan_disambiguation_with_neem')
     roslib.load_manifest('rosprolog')
 
     # TEST variables  
@@ -59,9 +59,9 @@ if __name__ == '__main__':
     human_name_planning_domain = 'the_manager'
     t_locality = [1.0, 5.0]
     narratives_file = rospack.get_path('explanatory_narratives_cra') + \
-      "/txt/acxon_fast_based/test/"+planning_domain+"/generated_c_narratives_plan_comparison_with_specificity_" + str(specificity) + "_problem_" + planning_problem + ".txt"
+      "/txt/acxon_based/test/"+planning_domain+"/generated_c_narratives_plan_comparison_with_specificity_" + str(specificity) + "_problem_" + planning_problem + ".txt"
     evaluation_results_file = rospack.get_path('explanatory_narratives_cra') + \
-      "/csv/acxon_fast_based/test/" + planning_domain + "/problem_" + planning_problem + "_with_specificity_" + str(specificity) + ".csv"
+      "/csv/acxon_based/test/" + planning_domain + "/problem_" + planning_problem + "_with_specificity_" + str(specificity) + ".csv"
     
 
     
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     classes_to_compare = [["dul:'Plan'", "dul:'Plan'"]] 
     ## constrained_ontological_scope = ["dul:'Quality'", "dul:'Event'"] # classes to constrain the scope of the narrative
     constrained_ontological_scope = [] # no constrain at all, the narrative will use all the stored knowledge 
-    narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_fast_based/generated_c_narratives_plan_disambiguation_with_specificity_" + str(specificity) + ".txt"
+    narratives_file = rospack.get_path('explanatory_narratives_cra') + "/txt/acxon_based/generated_c_narratives_plan_disambiguation_with_specificity_" + str(specificity) + ".txt"
 
     tuples_dict, pairs_id_to_pairs_to_compare_dict = retrieve_narrative_tuples_(client_rosprolog, classes_to_compare, t_locality, constrained_ontological_scope, specificity)
 
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 
       # TODO : improve the narratives
       # - substitute the name of the plans for something more readable [DONE]
-      # - modify some properties (e.g., far from / near to -> is far from / is close to, etc.) [DONE - acxon_fast_module.py]
+      # - modify some properties (e.g., far from / near to -> is far from / is close to, etc.) [DONE - acxon_module.py]
       # - substitute the 'has data value' when it appears [PARTIALLY DONE - with previous (propperties modficiation)]
 
       # Combine all the narratives
@@ -123,7 +123,7 @@ if __name__ == '__main__':
 
     f.close()
 
-    print("[acxon_fast_test_plan_disambiguation_with_neem.py] Narratives have been properly generated, check the 'txt'.")
+    print("[acxon_test_plan_disambiguation_with_neem.py] Narratives have been properly generated, check the 'txt'.")
     
     end = time.time()
     

@@ -17,9 +17,11 @@ import time
 import rospy
 import roslib
 import rospkg
+import textstat
 from axon.axon_module import *
 from utils.test_module import *
 from prolog.prolog_module import *
+from readability import Readability
 from rosprolog_client import PrologException, Prolog
 from know_cra.rosplan_cra_module import ROSPlanCRA
 
@@ -80,7 +82,11 @@ if __name__ == '__main__':
         list(triples_dict.keys())[0] \
         + " and " + \
         list(triples_dict.keys())[1] + ". \n\n" 
-    combined_narrative = introductory_text + narrative
+    introductory_text = introductory_text.replace(list(triples_dict.keys())[0], "Plan_A")
+    introductory_text = introductory_text.replace(list(triples_dict.keys())[1], "Plan_B")
+    
+    ## combined_narrative = introductory_text + narrative
+    combined_narrative = narrative
 
     # Modify the narrative to make it more appealing
     combined_narrative_mod = combined_narrative.replace(list(triples_dict.keys())[0], "Plan_A")
@@ -91,12 +97,28 @@ if __name__ == '__main__':
     combined_narrative_mod = combined_narrative_mod.replace("has role", "is classified as")
     combined_narrative_mod = combined_narrative_mod.replace("is role of", "classifies")
     combined_narrative_mod = combined_narrative_mod.replace("defines task", "includes task")
+    combined_narrative_mod = combined_narrative_mod.replace("_", " ")
 
+    # Evaluation metrics
+    words_count = len(combined_narrative_mod.split())
+    """
+    if words_count > 99:
+      r = Readability(combined_narrative_mod)
+      read_metric = r.gunning_fog()
+      read_score = read_metric.score
+      read_score = textstat.dale_chall_readability_score(combined_narrative_mod)
+      read_grade_level = read_metric.grade_level
+    else:
+      read_score = "Not enough words"
+      read_grade_level = "Not enough words"
+    """
+
+    read_score = textstat.dale_chall_readability_score(combined_narrative_mod)
+
+
+    combined_narrative = introductory_text + combined_narrative_mod
 
     f.write(combined_narrative_mod)
-
-    words_count = len(combined_narrative_mod.split())
-
     f.close()
 
     print("[axon_test.py] Narratives have been properly generated, check the 'txt'.")
@@ -104,7 +126,9 @@ if __name__ == '__main__':
     end = time.time()
      
     # results dictionary
-    results_dict = {"Domain": planning_domain, "Problem" : planning_problem, "Specificity" : specificity, "Time" : (end - start), "Memory" : test_object.get_memory_usage()['vmpeak'], "Triples" : triples_count, "Words": words_count}
+    results_dict = {"Domain": planning_domain, "Problem" : planning_problem, "Specificity" : specificity, \
+                    "Time" : (end - start), "Memory" : test_object.get_memory_usage()['vmpeak'], "Triples" : triples_count, \
+                    "Words": words_count, "Readability score": read_score}
     
 
     with open(evaluation_results_file, 'w', newline='') as g:
@@ -118,4 +142,5 @@ if __name__ == '__main__':
     print(" Memory usage (peak): ", results_dict["Memory"], " MB") # 'vmpeak' 'vmsize' 'vmlck' 'vmpin' 'vmhwm' 'vmrss' 'vmdata' 'vmstk' 'vmexe' 'vmlib' 'vmpte' 'vmswap'
     print(" Number of triples: ", results_dict["Triples"]) 
     print(" Narrative number of words (aprox.): ", results_dict["Words"]) 
+    print(" Narrative readability (score): ", results_dict["Readability score"])
     print("\n")

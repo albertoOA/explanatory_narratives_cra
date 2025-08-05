@@ -4,7 +4,7 @@
 
 """
 What is this code?
-  - acxon test for ontology-based narratives. 
+  - acxon test for ontology-based narratives. MODIFIED TO SPEED UP THE CONSTRUCTION
   You can expect to find here an example of use of the algorithm for explanatory ontology-based narratives in the 
   collaborative robotics and adaptation domain. Make sure that you have properly selected the algorithm parameters
   (e.g., the temporal locality (t_locality), the specificity, etc.). You can modify them below.
@@ -17,9 +17,11 @@ import time
 import rospy
 import roslib
 import rospkg
+import textstat
 from utils.test_module import *
 from acxon.acxon_module import *
 from prolog.prolog_module import *
+from readability import Readability
 from rosprolog_client import PrologException, Prolog
 from know_cra.rosplan_cra_module import ROSPlanCRA
 
@@ -86,13 +88,13 @@ if __name__ == '__main__':
         pair_of_plans_to_c_narrate_name[0] \
         + " and " + \
         pair_of_plans_to_c_narrate_name[1] + ". \n\n"
+      introductory_text_plans = introductory_text_plans.replace(pair_of_plans_to_c_narrate_name[0], "Plan_A")
+      introductory_text_plans = introductory_text_plans.replace(pair_of_plans_to_c_narrate_name[1], "Plan_B")
 
       plans_c_narrative = construct_narrative(client_rosprolog, pairs_id_to_pairs_to_compare_dict[pair_to_compare_id], \
                                       tuples_of_the_pair)
       
-      triples_count = triples_count + len(tuples_of_the_pair[pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][0]]) + len(tuples_of_the_pair[pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1]])
-      words_count = words_count + len(plans_c_narrative.split())
-      
+            
       ## print(introductory_text_plans)
       ## print(plans_c_narrative) 
 
@@ -102,7 +104,7 @@ if __name__ == '__main__':
       # - substitute the 'has data value' when it appears [PARTIALLY DONE - with previous (propperties modficiation)]
 
       # Combine all the narratives
-      combined_c_narrative = introductory_text_plans + plans_c_narrative
+      combined_c_narrative = plans_c_narrative
       ## print("\nC-Narrative")
       ## print(combined_c_narrative)
 
@@ -115,9 +117,30 @@ if __name__ == '__main__':
       combined_c_narrative_mod = combined_c_narrative_mod.replace("has role", "is classified as")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("is role of", "classifies")
       combined_c_narrative_mod = combined_c_narrative_mod.replace("defines task", "includes task")
+      combined_c_narrative_mod = combined_c_narrative_mod.replace("_", " ")
 
-      ## print("\nC-Narrative modified")
-      ## print(combined_c_narrative_mod)
+      # Evaluation metrics
+      words_count = len(combined_c_narrative_mod.split())
+      triples_count = triples_count + len(tuples_of_the_pair[pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][0]]) + len(tuples_of_the_pair[pairs_id_to_pairs_to_compare_dict[pair_to_compare_id][1]])
+
+      """
+      if words_count > 99:
+        r = Readability(combined_c_narrative_mod)
+        read_metric = r.gunning_fog()
+        read_score = read_metric.score
+        read_score = textstat.dale_chall_readability_score(combined_c_narrative_mod)
+        read_grade_level = read_metric.grade_level
+      else:
+        read_score = "Not enough words"
+        read_grade_level = "Not enough words"
+      """
+
+      read_score = textstat.dale_chall_readability_score(combined_c_narrative_mod)
+
+      # Add introductory text
+      combined_c_narrative_mod = introductory_text_plans + combined_c_narrative_mod
+      ## print("\nC-Narrative")
+      ## print(combined_c_narrative)
 
       f.write(combined_c_narrative_mod)
 
@@ -128,7 +151,9 @@ if __name__ == '__main__':
     end = time.time()
     
     # results dictionary
-    results_dict = {"Domain": planning_domain, "Problem" : planning_problem, "Specificity" : specificity, "Time" : (end - start), "Memory" : test_object.get_memory_usage()['vmpeak'], "Triples" : triples_count, "Words": words_count}
+    results_dict = {"Domain": planning_domain, "Problem" : planning_problem, "Specificity" : specificity, \
+                    "Time" : (end - start), "Memory" : test_object.get_memory_usage()['vmpeak'], "Triples" : triples_count, \
+                      "Words": words_count, "Readability score": read_score}
     
 
     with open(evaluation_results_file, 'w', newline='') as g:
@@ -142,4 +167,5 @@ if __name__ == '__main__':
     print(" Memory usage (peak): ", results_dict["Memory"], " MB") # 'vmpeak' 'vmsize' 'vmlck' 'vmpin' 'vmhwm' 'vmrss' 'vmdata' 'vmstk' 'vmexe' 'vmlib' 'vmpte' 'vmswap'
     print(" Number of triples: ", results_dict["Triples"]) 
     print(" Narrative number of words (aprox.): ", results_dict["Words"]) 
+    print(" Narrative readability (score): ", results_dict["Readability score"]) 
     print("\n")
