@@ -1467,7 +1467,8 @@ def extract_individual_from_tuple_element(tuple_element_in):
     information_to_delete = tuple_element.split(':')[0] # the URI label
     interesting_information = tuple_element.replace(information_to_delete+":", '')
     if "'" in interesting_information:
-        ## print(interesting_information)
+        #print(interesting_information)
+        #print(tuple_element)
         interesting_information = ast.literal_eval(interesting_information) # removing extra '' of the strings (e.g. "'has qualiy'" -> "has quality")
     else: 
         pass
@@ -1686,7 +1687,11 @@ def group_tuples_of_same_object_type(tuples_in): # ont_prop_plural_dict
                one_tuple_[5] == tuples_cp[i][5]):
                 # 
                 if type(one_tuple_[2]) == list:
-                    one_tuple_[2].append(tuples_cp[i][2])
+                    if type(tuples_cp[i][2]) == str and tuples_cp[i][2] not in one_tuple_[2]:
+                        one_tuple_[2].append(tuples_cp[i][2])
+                    else:
+                        #print(tuples_cp[i][2]) 
+                        pass
                 else:
                     new_list = []
                     new_list.append(one_tuple_[2])
@@ -1870,6 +1875,7 @@ def construct_text_about_multiple_tuples(tuples_in, cluster_semantic_id):
                 tuple_object = "'" + tuple_object + "'"
             else: 
                 if are_there_multiple_related_tuples_for_same_object_:
+                    ##print(tuple_)
                     tuple_object = tuple_object + ', and also ' + tuple_relationship + ' ' + "'" + extract_individual_from_tuple_element(obj) + "'"
                 else:
                     tuple_object = tuple_object + ', and ' + "'" + extract_individual_from_tuple_element(obj) + "'"
