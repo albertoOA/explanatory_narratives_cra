@@ -1,0 +1,950 @@
+
+
+·····There are two plans to disambiguate: A and B. 
+
+'A' is cheaper plan than and is shorter plan than and is slower plan than 'B'. 
+
+
+·····There are two plans to disambiguate: A and C. 
+
+'A' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'C'. 
+
+
+·····There are two plans to disambiguate: A and D. 
+
+'A' is cheaper plan than and is shorter plan than and is slower plan than 'D'. 
+
+
+·····There are two plans to disambiguate: A and E. 
+
+'A' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'E'. 
+
+
+·····There are two plans to disambiguate: A and F. 
+
+'A' is more expensive plan than and is shorter plan than and is slower plan than 'F'. 
+
+
+·····There are two plans to disambiguate: A and G. 
+
+'A' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'G'. 
+
+
+·····There are two plans to disambiguate: A and H. 
+
+'A' is cheaper plan than and is shorter plan than and is slower plan than 'H'. 
+
+
+·····There are two plans to disambiguate: A and I. 
+
+'A' is cheaper plan than and is shorter plan than and is slower plan than 'I'. 
+
+
+·····There are two plans to disambiguate: A and J. 
+
+'A' is cheaper plan than and is shorter plan than and is slower plan than 'J'. 
+
+
+·····There are two plans to disambiguate: A and K. 
+
+'A' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'K'. 
+
+
+·····There are two plans to disambiguate: A and L. 
+
+'A' is cheaper plan than and is shorter plan than and is slower plan than 'L'. 
+
+
+·····There are two plans to disambiguate: A and M. 
+
+'A' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: A and N. 
+
+'A' is cheaper plan than and is shorter plan than and is slower plan than 'N'. 
+
+
+·····There are two plans to disambiguate: A and O. 
+
+'A' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'O'. 
+
+
+·····There are two plans to disambiguate: A and P. 
+
+'A' is more expensive plan than and is shorter plan than and is slower plan than 'P'. 
+
+
+·····There are two plans to disambiguate: A and Q. 
+
+'A' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: A and R. 
+
+'A' is cheaper plan than and is shorter plan than and is slower plan than 'R'. 
+
+
+·····There are two plans to disambiguate: A and S. 
+
+'A' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'S'. 
+
+
+·····There are two plans to disambiguate: A and T. 
+
+'A' is cheaper plan than and is shorter plan than and is slower plan than 'T'. 
+
+
+·····There are two plans to disambiguate: B and C. 
+
+'B' is cheaper plan than and is longer plan than and is faster plan than 'C'. 
+
+
+·····There are two plans to disambiguate: B and D. 
+
+'B' is cheaper plan than and is longer plan than and is faster plan than 'D'. 
+
+
+·····There are two plans to disambiguate: B and E. 
+
+'B' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'E'. 
+
+
+·····There are two plans to disambiguate: B and F. 
+
+'B' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'F'. 
+
+
+·····There are two plans to disambiguate: B and G. 
+
+'B' is cheaper plan than and is longer plan than and is faster plan than 'G'. 
+
+
+·····There are two plans to disambiguate: B and H. 
+
+'B' is more expensive plan than and is longer plan than and is faster plan than 'H'. 
+
+
+·····There are two plans to disambiguate: B and I. 
+
+'B' is cheaper plan than and is longer plan than and is faster plan than 'I'. 
+
+
+·····There are two plans to disambiguate: B and J. 
+
+'B' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'J'. 
+
+
+·····There are two plans to disambiguate: B and K. 
+
+'B' is cheaper plan than and is longer plan than and is faster plan than 'K'. 
+
+
+·····There are two plans to disambiguate: B and L. 
+
+'B' is more expensive plan than and is longer plan than and is faster plan than 'L'. 
+
+
+·····There are two plans to disambiguate: B and M. 
+
+'B' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: B and N. 
+
+'B' is cheaper plan than and is longer plan than and is faster plan than 'N'. 
+
+
+·····There are two plans to disambiguate: B and O. 
+
+'B' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'O'. 
+
+
+·····There are two plans to disambiguate: B and P. 
+
+'B' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'P'. 
+
+
+·····There are two plans to disambiguate: B and Q. 
+
+'B' is cheaper plan than and is longer plan than and is faster plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: B and R. 
+
+'B' is more expensive plan than and is longer plan than and is faster plan than 'R'. 
+
+
+·····There are two plans to disambiguate: B and S. 
+
+'B' is cheaper plan than and is longer plan than and is faster plan than 'S'. 
+
+
+·····There are two plans to disambiguate: B and T. 
+
+'B' is more expensive plan than and is longer plan than and is faster plan than 'T'. 
+
+
+·····There are two plans to disambiguate: C and D. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'D'. 
+
+
+·····There are two plans to disambiguate: C and E. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'E'. 
+
+
+·····There are two plans to disambiguate: C and F. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'F'. 
+
+
+·····There are two plans to disambiguate: C and G. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'G'. 
+
+
+·····There are two plans to disambiguate: C and H. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'H'. 
+
+
+·····There are two plans to disambiguate: C and I. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'I'. 
+
+
+·····There are two plans to disambiguate: C and J. 
+
+'C' is more expensive plan than and is shorter plan than and is slower plan than 'J'. 
+
+
+·····There are two plans to disambiguate: C and K. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'K'. 
+
+
+·····There are two plans to disambiguate: C and L. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'L'. 
+
+
+·····There are two plans to disambiguate: C and M. 
+
+'C' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: C and N. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'N'. 
+
+
+·····There are two plans to disambiguate: C and O. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'O'. 
+
+
+·····There are two plans to disambiguate: C and P. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'P'. 
+
+
+·····There are two plans to disambiguate: C and Q. 
+
+'C' is more expensive plan than and is shorter plan than and is slower plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: C and R. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'R'. 
+
+
+·····There are two plans to disambiguate: C and S. 
+
+'C' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'S'. 
+
+
+·····There are two plans to disambiguate: C and T. 
+
+'C' is more expensive plan than and is shorter plan than and is slower plan than 'T'. 
+
+
+·····There are two plans to disambiguate: D and E. 
+
+'D' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'E'. 
+
+
+·····There are two plans to disambiguate: D and F. 
+
+'D' is more expensive plan than and is shorter plan than and is slower plan than 'F'. 
+
+
+·····There are two plans to disambiguate: D and G. 
+
+'D' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'G'. 
+
+
+·····There are two plans to disambiguate: D and H. 
+
+'D' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'H'. 
+
+
+·····There are two plans to disambiguate: D and I. 
+
+'D' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'I'. 
+
+
+·····There are two plans to disambiguate: D and J. 
+
+'D' is more expensive plan than and is shorter plan than and is slower plan than 'J'. 
+
+
+·····There are two plans to disambiguate: D and K. 
+
+'D' is cheaper plan than and is longer plan than and is faster plan than 'K'. 
+
+
+·····There are two plans to disambiguate: D and L. 
+
+'D' is more expensive plan than and is shorter plan than and is slower plan than 'L'. 
+
+
+·····There are two plans to disambiguate: D and M. 
+
+'D' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: D and N. 
+
+'D' is more expensive plan than and is shorter plan than and is slower plan than 'N'. 
+
+
+·····There are two plans to disambiguate: D and O. 
+
+'D' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'O'. 
+
+
+·····There are two plans to disambiguate: D and P. 
+
+'D' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'P'. 
+
+
+·····There are two plans to disambiguate: D and Q. 
+
+'D' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: D and R. 
+
+'D' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'R'. 
+
+
+·····There are two plans to disambiguate: D and S. 
+
+'D' is cheaper plan than and is plan with same number of tasks as and is faster plan than 'S'. 
+
+
+·····There are two plans to disambiguate: D and T. 
+
+'D' is more expensive plan than and is shorter plan than and is slower plan than 'T'. 
+
+
+·····There are two plans to disambiguate: E and F. 
+
+'E' is cheaper plan than and is shorter plan than and is slower plan than 'F'. 
+
+
+·····There are two plans to disambiguate: E and G. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'G'. 
+
+
+·····There are two plans to disambiguate: E and H. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'H'. 
+
+
+·····There are two plans to disambiguate: E and I. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'I'. 
+
+
+·····There are two plans to disambiguate: E and J. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'J'. 
+
+
+·····There are two plans to disambiguate: E and K. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'K'. 
+
+
+·····There are two plans to disambiguate: E and L. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'L'. 
+
+
+·····There are two plans to disambiguate: E and M. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: E and N. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'N'. 
+
+
+·····There are two plans to disambiguate: E and O. 
+
+'E' is cheaper plan than and is longer plan than and is faster plan than 'O'. 
+
+
+·····There are two plans to disambiguate: E and P. 
+
+'E' is cheaper plan than and is shorter plan than and is slower plan than 'P'. 
+
+
+·····There are two plans to disambiguate: E and Q. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: E and R. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'R'. 
+
+
+·····There are two plans to disambiguate: E and S. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'S'. 
+
+
+·····There are two plans to disambiguate: E and T. 
+
+'E' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'T'. 
+
+
+·····There are two plans to disambiguate: F and G. 
+
+'F' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'G'. 
+
+
+·····There are two plans to disambiguate: F and H. 
+
+'F' is cheaper plan than and is longer plan than and is faster plan than 'H'. 
+
+
+·····There are two plans to disambiguate: F and I. 
+
+'F' is cheaper plan than and is longer plan than and is faster plan than 'I'. 
+
+
+·····There are two plans to disambiguate: F and J. 
+
+'F' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'J'. 
+
+
+·····There are two plans to disambiguate: F and K. 
+
+'F' is cheaper plan than and is longer plan than and is faster plan than 'K'. 
+
+
+·····There are two plans to disambiguate: F and L. 
+
+'F' is cheaper plan than and is longer plan than and is faster plan than 'L'. 
+
+
+·····There are two plans to disambiguate: F and M. 
+
+'F' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: F and N. 
+
+'F' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'N'. 
+
+
+·····There are two plans to disambiguate: F and O. 
+
+'F' is cheaper plan than and is longer plan than and is faster plan than 'O'. 
+
+
+·····There are two plans to disambiguate: F and P. 
+
+'F' is cheaper plan than and is longer plan than and is faster plan than 'P'. 
+
+
+·····There are two plans to disambiguate: F and Q. 
+
+'F' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: F and R. 
+
+'F' is cheaper plan than and is longer plan than and is faster plan than 'R'. 
+
+
+·····There are two plans to disambiguate: F and S. 
+
+'F' is cheaper plan than and is longer plan than and is faster plan than 'S'. 
+
+
+·····There are two plans to disambiguate: F and T. 
+
+'F' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'T'. 
+
+
+·····There are two plans to disambiguate: G and H. 
+
+'G' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'H'. 
+
+
+·····There are two plans to disambiguate: G and I. 
+
+'G' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'I'. 
+
+
+·····There are two plans to disambiguate: G and J. 
+
+'G' is more expensive plan than and is shorter plan than and is slower plan than 'J'. 
+
+
+·····There are two plans to disambiguate: G and K. 
+
+'G' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'K'. 
+
+
+·····There are two plans to disambiguate: G and L. 
+
+'G' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'L'. 
+
+
+·····There are two plans to disambiguate: G and M. 
+
+'G' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: G and N. 
+
+'G' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'N'. 
+
+
+·····There are two plans to disambiguate: G and O. 
+
+'G' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'O'. 
+
+
+·····There are two plans to disambiguate: G and P. 
+
+'G' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'P'. 
+
+
+·····There are two plans to disambiguate: G and Q. 
+
+'G' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: G and R. 
+
+'G' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'R'. 
+
+
+·····There are two plans to disambiguate: G and S. 
+
+'G' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'S'. 
+
+
+·····There are two plans to disambiguate: G and T. 
+
+'G' is more expensive plan than and is shorter plan than and is slower plan than 'T'. 
+
+
+·····There are two plans to disambiguate: H and I. 
+
+'H' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'I'. 
+
+
+·····There are two plans to disambiguate: H and J. 
+
+'H' is more expensive plan than and is shorter plan than and is slower plan than 'J'. 
+
+
+·····There are two plans to disambiguate: H and K. 
+
+'H' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'K'. 
+
+
+·····There are two plans to disambiguate: H and L. 
+
+'H' is cheaper plan than and is shorter plan than and is slower plan than 'L'. 
+
+
+·····There are two plans to disambiguate: H and M. 
+
+'H' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: H and N. 
+
+'H' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'N'. 
+
+
+·····There are two plans to disambiguate: H and O. 
+
+'H' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'O'. 
+
+
+·····There are two plans to disambiguate: H and P. 
+
+'H' is more expensive plan than and is shorter plan than and is slower plan than 'P'. 
+
+
+·····There are two plans to disambiguate: H and Q. 
+
+'H' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: H and R. 
+
+'H' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'R'. 
+
+
+·····There are two plans to disambiguate: H and S. 
+
+'H' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'S'. 
+
+
+·····There are two plans to disambiguate: H and T. 
+
+'H' is cheaper plan than and is shorter plan than and is slower plan than 'T'. 
+
+
+·····There are two plans to disambiguate: I and J. 
+
+'I' is more expensive plan than and is shorter plan than and is slower plan than 'J'. 
+
+
+·····There are two plans to disambiguate: I and K. 
+
+'I' is cheaper plan than and is longer plan than and is faster plan than 'K'. 
+
+
+·····There are two plans to disambiguate: I and L. 
+
+'I' is more expensive plan than and is shorter plan than and is slower plan than 'L'. 
+
+
+·····There are two plans to disambiguate: I and M. 
+
+'I' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: I and N. 
+
+'I' is plan with same cost as and is shorter plan than and is faster plan than 'N'. 
+
+
+·····There are two plans to disambiguate: I and O. 
+
+'I' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'O'. 
+
+
+·····There are two plans to disambiguate: I and P. 
+
+'I' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'P'. 
+
+
+·····There are two plans to disambiguate: I and Q. 
+
+'I' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: I and R. 
+
+'I' is more expensive plan than and is longer plan than and is faster plan than 'R'. 
+
+
+·····There are two plans to disambiguate: I and S. 
+
+'I' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'S'. 
+
+
+·····There are two plans to disambiguate: I and T. 
+
+'I' is more expensive plan than and is shorter plan than and is slower plan than 'T'. 
+
+
+·····There are two plans to disambiguate: J and K. 
+
+'J' is cheaper plan than and is longer plan than and is faster plan than 'K'. 
+
+
+·····There are two plans to disambiguate: J and L. 
+
+'J' is cheaper plan than and is longer plan than and is faster plan than 'L'. 
+
+
+·····There are two plans to disambiguate: J and M. 
+
+'J' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: J and N. 
+
+'J' is cheaper plan than and is longer plan than and is faster plan than 'N'. 
+
+
+·····There are two plans to disambiguate: J and O. 
+
+'J' is more expensive plan than and is longer plan than and is faster plan than 'O'. 
+
+
+·····There are two plans to disambiguate: J and P. 
+
+'J' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'P'. 
+
+
+·····There are two plans to disambiguate: J and Q. 
+
+'J' is cheaper plan than and is longer plan than and is faster plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: J and R. 
+
+'J' is cheaper plan than and is longer plan than and is faster plan than 'R'. 
+
+
+·····There are two plans to disambiguate: J and S. 
+
+'J' is cheaper plan than and is longer plan than and is faster plan than 'S'. 
+
+
+·····There are two plans to disambiguate: J and T. 
+
+'J' is cheaper plan than and is longer plan than and is faster plan than 'T'. 
+
+
+·····There are two plans to disambiguate: K and L. 
+
+'K' is more expensive plan than and is shorter plan than and is slower plan than 'L'. 
+
+
+·····There are two plans to disambiguate: K and M. 
+
+'K' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: K and N. 
+
+'K' is more expensive plan than and is shorter plan than and is slower plan than 'N'. 
+
+
+·····There are two plans to disambiguate: K and O. 
+
+'K' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'O'. 
+
+
+·····There are two plans to disambiguate: K and P. 
+
+'K' is more expensive plan than and is shorter plan than and is slower plan than 'P'. 
+
+
+·····There are two plans to disambiguate: K and Q. 
+
+'K' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: K and R. 
+
+'K' is more expensive plan than and is shorter plan than and is slower plan than 'R'. 
+
+
+·····There are two plans to disambiguate: K and S. 
+
+'K' is more expensive plan than and is shorter plan than and is slower plan than 'S'. 
+
+
+·····There are two plans to disambiguate: K and T. 
+
+'K' is more expensive plan than and is shorter plan than and is slower plan than 'T'. 
+
+
+·····There are two plans to disambiguate: L and M. 
+
+'L' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'M'. 
+
+
+·····There are two plans to disambiguate: L and N. 
+
+'L' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'N'. 
+
+
+·····There are two plans to disambiguate: L and O. 
+
+'L' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'O'. 
+
+
+·····There are two plans to disambiguate: L and P. 
+
+'L' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'P'. 
+
+
+·····There are two plans to disambiguate: L and Q. 
+
+'L' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: L and R. 
+
+'L' is cheaper plan than and is longer plan than and is faster plan than 'R'. 
+
+
+·····There are two plans to disambiguate: L and S. 
+
+'L' is cheaper plan than and is longer plan than and is faster plan than 'S'. 
+
+
+·····There are two plans to disambiguate: L and T. 
+
+'L' is cheaper plan than and is shorter plan than and is slower plan than 'T'. 
+
+
+·····There are two plans to disambiguate: M and N. 
+
+'M' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'N'. 
+
+
+·····There are two plans to disambiguate: M and O. 
+
+'M' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'O'. 
+
+
+·····There are two plans to disambiguate: M and P. 
+
+'M' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'P'. 
+
+
+·····There are two plans to disambiguate: M and Q. 
+
+'M' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: M and R. 
+
+'M' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'R'. 
+
+
+·····There are two plans to disambiguate: M and S. 
+
+'M' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'S'. 
+
+
+·····There are two plans to disambiguate: M and T. 
+
+'M' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'T'. 
+
+
+·····There are two plans to disambiguate: N and O. 
+
+'N' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'O'. 
+
+
+·····There are two plans to disambiguate: N and P. 
+
+'N' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'P'. 
+
+
+·····There are two plans to disambiguate: N and Q. 
+
+'N' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: N and R. 
+
+'N' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'R'. 
+
+
+·····There are two plans to disambiguate: N and S. 
+
+'N' is cheaper plan than and is longer plan than and is faster plan than 'S'. 
+
+
+·····There are two plans to disambiguate: N and T. 
+
+'N' is more expensive plan than and is shorter plan than and is slower plan than 'T'. 
+
+
+·····There are two plans to disambiguate: O and P. 
+
+'O' is cheaper plan than and is shorter plan than and is slower plan than 'P'. 
+
+
+·····There are two plans to disambiguate: O and Q. 
+
+'O' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: O and R. 
+
+'O' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'R'. 
+
+
+·····There are two plans to disambiguate: O and S. 
+
+'O' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'S'. 
+
+
+·····There are two plans to disambiguate: O and T. 
+
+'O' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'T'. 
+
+
+·····There are two plans to disambiguate: P and Q. 
+
+'P' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'Q'. 
+
+
+·····There are two plans to disambiguate: P and R. 
+
+'P' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'R'. 
+
+
+·····There are two plans to disambiguate: P and S. 
+
+'P' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'S'. 
+
+
+·····There are two plans to disambiguate: P and T. 
+
+'P' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'T'. 
+
+
+·····There are two plans to disambiguate: Q and R. 
+
+'Q' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'R'. 
+
+
+·····There are two plans to disambiguate: Q and S. 
+
+'Q' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'S'. 
+
+
+·····There are two plans to disambiguate: Q and T. 
+
+'Q' is more expensive plan than and is longer plan than and is slower plan than and is worse plan than 'T'. 
+
+
+·····There are two plans to disambiguate: R and S. 
+
+'R' is cheaper plan than and is shorter plan than and is faster plan than and is better plan than 'S'. 
+
+
+·····There are two plans to disambiguate: R and T. 
+
+'R' is more expensive plan than and is shorter plan than and is slower plan than 'T'. 
+
+
+·····There are two plans to disambiguate: S and T. 
+
+'S' is more expensive plan than and is shorter plan than and is slower plan than 'T'. 
